@@ -100,6 +100,23 @@
 .session-refs a{color:var(--teal);text-decoration:none;border-bottom:1px dotted var(--teal);}
 .session-refs a:hover{color:#fff;background:var(--teal);}
 </style>
+<style>/*mobilefix*/
+@media(max-width:720px){
+  #topbar{flex-wrap:wrap;gap:.35rem .8rem;padding:.5rem .9rem;}
+  #topbar .brand{width:100%;text-align:center;}
+  #topbar span:not(.brand){display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem .95rem;width:100%;}
+  #topbar a{margin-left:0;}
+  .description{padding:1.2rem 1rem;}
+  .quicklinks{gap:.4rem;}
+  .quicklinks a{padding:.35rem .8rem;font-size:.8rem;}
+  .toc-bar h2{font-size:1.3rem;}
+  .session{padding:1rem .8rem;}
+  .session ul li{overflow-wrap:break-word;}
+  .session-refs{font-size:.8rem;}
+  .session table{display:block;overflow-x:auto;}
+  .files{margin-left:0;width:100%;justify-content:flex-start;}
+}
+</style>
 </head>
 <body>
 
