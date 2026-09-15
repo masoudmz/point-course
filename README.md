@@ -27,7 +27,7 @@ Online (GitHub Pages): <https://masoudmz.github.io/point-course/> — syllabus a
 
 <!-- SESSIONS:START -->
 
-> **Progress:** 4/64 sessions have compiled lecture notes.
+> **Progress:** 5/64 sessions have compiled lecture notes.
 
 
 ### Prelude — Essential Prerequisites
@@ -43,7 +43,7 @@ Online (GitHub Pages): <https://masoudmz.github.io/point-course/> — syllabus a
 | ID | Session | Online | LaTeX | PDF | Status |
 |:--:|---|---|:--:|:--:|:--:|
 | S1 | Rings, Ideals, Quotients, Prime & Maximal Ideals | [site](https://masoudmz.github.io/point-course/#s1) | [tex](lectures/S1-rings.tex) | [pdf](lectures/S1-rings.pdf) | ✅ done |
-| S2 | Modules, Tensor Products, and Exact Sequences | [site](https://masoudmz.github.io/point-course/#s2) | — | — | 🚧 planned |
+| S2 | Modules, Tensor Products, and Exact Sequences | [site](https://masoudmz.github.io/point-course/#s2) | [tex](lectures/S2-modules.tex) | [pdf](lectures/S2-modules.pdf) | ✅ done |
 | S3 | Fields, Extensions, and Algebraic Closure | [site](https://masoudmz.github.io/point-course/#s3) | — | — | 🚧 planned |
 | S4 | Category Theory Essentials | [site](https://masoudmz.github.io/point-course/#s4) | — | — | 🚧 planned |
 
