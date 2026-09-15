@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Point — Final Edition (v2.1)</title>
+<style>
+  :root{--paper:#f5efe3;--card:#fffdf6;--ink:#241e16;--muted:#79705f;--line:#e3dac8;--navy:#14304a;--navy-deep:#0b1f33;--brass:#b3812f;--brass-soft:#f3e6c8;--crimson:#a02c2c;--teal:#1e6e64;--session-bg:#fbf7ec;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Georgia','Times New Roman',serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+  #topbar{position:sticky;top:0;z-index:100;background:var(--navy-deep);color:#f0e8d8;display:flex;justify-content:space-between;align-items:center;padding:.55rem 1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.25);font-size:.9rem;}
+  #topbar .brand{font-weight:bold;letter-spacing:.06em;}
+  #topbar a{color:var(--brass-soft);text-decoration:none;margin-left:1.1rem;border-bottom:1px dotted var(--brass);}
+  #topbar a:hover{color:#fff;}
+  header{background:linear-gradient(135deg,var(--navy-deep) 0%,var(--navy) 55%,#1f4e5f 100%);color:#f4ecdc;text-align:center;padding:4.2rem 1.5rem 3.2rem;border-bottom:5px solid var(--brass);}
+  header h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:700;}
+  header .subtitle{font-size:clamp(1.05rem,2.4vw,1.4rem);font-style:italic;opacity:.92;margin-top:.6rem;}
+  header .meta{margin-top:1.2rem;font-size:.95rem;opacity:.85;}
+  header .rule{width:90px;height:3px;background:var(--brass);margin:1.2rem auto 0;border-radius:2px;}
+  .container{max-width:980px;margin:0 auto;padding:2.5rem 1.4rem;}
+  .description{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--brass);padding:1.8rem 2rem;border-radius:0 0 12px 12px;box-shadow:0 3px 14px rgba(60,45,20,.08);margin-bottom:2.6rem;}
+  .description h2{color:var(--navy);font-size:1.3rem;margin-bottom:.7rem;}
+  .description p{margin-bottom:.7rem;color:#3c352b;}
+  .toc{margin-bottom:3.2rem;}
+  .toc-bar{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.7rem;}
+  .toc-bar h2{color:var(--navy);font-size:1.55rem;border-bottom:3px solid var(--brass);padding-bottom:.3rem;}
+  .toc-bar .hint{font-size:.8rem;color:var(--muted);font-style:italic;}
+  .toc-actions{display:flex;gap:.6rem;}
+  .toc-btn{font-family:inherit;font-size:.8rem;font-weight:700;letter-spacing:.04em;color:var(--navy);background:var(--card);border:1.5px solid var(--brass);border-radius:999px;padding:.45rem 1.15rem;cursor:pointer;transition:.2s;}
+  .toc-btn:hover{background:var(--brass);color:#fff;}
+  .timeline{position:relative;}
+  .timeline::before{content:"";position:absolute;left:25px;top:16px;bottom:16px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--brass) 0%,var(--navy) 45%,var(--teal) 100%);opacity:.5;}
+  .stop{position:relative;padding-left:64px;margin-bottom:1.15rem;}
+  .node{position:absolute;left:12px;top:12px;width:28px;height:28px;border-radius:50%;z-index:1;background:var(--navy);border:2px solid var(--brass);color:var(--brass-soft);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;box-shadow:0 0 0 4px var(--paper);}
+  .stop-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(60,45,20,.07);}
+  .stop-head{display:flex;align-items:stretch;}
+  .toc-toggle{flex:1;display:flex;align-items:center;gap:.6rem;background:none;border:none;cursor:pointer;font-family:inherit;font-size:1.02rem;font-weight:700;color:var(--navy);padding:.9rem 1.2rem;text-align:left;}
+  .toc-toggle:hover{background:var(--brass-soft);}
+  .toc-toggle .caret{color:var(--brass);font-size:.8em;transition:transform .25s;}
+  .toc-act.open .toc-toggle .caret{transform:rotate(90deg);}
+  .toc-jump{display:flex;align-items:center;padding:0 .9rem;color:var(--teal);text-decoration:none;border-left:1px solid var(--line);font-size:1rem;}
+  .toc-jump:hover{background:var(--brass-soft);color:var(--crimson);}
+  .toc-sessions{display:grid;grid-template-rows:0fr;opacity:0;background:#fbf6ea;border-top:1px solid transparent;transition:grid-template-rows .35s ease,opacity .3s ease;}
+  .toc-act.open .toc-sessions{grid-template-rows:1fr;opacity:1;border-top-color:var(--line);}
+  .toc-sessions-inner{overflow:hidden;display:flex;flex-wrap:wrap;gap:.5rem;padding:0 1.2rem;}
+  .toc-act.open .toc-sessions-inner{padding:.95rem 1.2rem 1.15rem;}
+  .chip{display:inline-flex;align-items:center;gap:.45rem;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.34rem .9rem;font-size:.8rem;color:var(--teal);text-decoration:none;transition:.18s;}
+  .chip .n{font-weight:700;color:var(--brass);}
+  .chip:hover{background:var(--navy);border-color:var(--navy);color:#f4ecdc;transform:translateY(-1px);}
+  .chip:hover .n{color:var(--brass-soft);}
+  .act{margin-bottom:3.4rem;scroll-margin-top:4rem;}
+  .act-header{background:linear-gradient(90deg,var(--navy) 0%,var(--navy-deep) 100%);color:#f4ecdc;padding:1.1rem 1.6rem;border-radius:12px 12px 0 0;display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
+  .act-header .act-number{font-size:.8rem;text-transform:uppercase;letter-spacing:.22em;color:var(--brass-soft);white-space:nowrap;}
+  .act-header h2{font-size:1.3rem;font-weight:600;}
+  .act-description{background:var(--brass-soft);color:#6b5626;padding:.85rem 1.6rem;font-style:italic;border:1px solid var(--line);border-top:none;font-size:.95rem;}
+  .session{background:var(--session-bg);border:1px solid var(--line);border-top:none;padding:1.4rem 1.7rem;scroll-margin-top:4rem;}
+  .session:last-of-type{border-radius:0 0 12px 12px;}
+  .session-title{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.7rem;flex-wrap:wrap;}
+  .session-number{background:var(--navy);color:#f4ecdc;font-size:.72rem;font-weight:700;padding:.18rem .7rem;border-radius:12px;white-space:nowrap;}
+  .session-title h3{font-size:1.08rem;font-weight:600;color:var(--ink);}
+  .session ul{list-style:none;}
+  .session ul li{padding:.2rem 0 .2rem 1.2rem;position:relative;color:#443c30;font-size:.93rem;}
+  .session ul li::before{content:'❧';position:absolute;left:0;color:var(--brass);font-size:.85em;}
+  .proved,.role{margin:.5rem 0;font-size:.88rem;color:#4a4234;background:#f6efdf;border-left:3px solid var(--teal);padding:.45rem .8rem;border-radius:0 6px 6px 0;}
+  .role{border-left-color:var(--navy);}
+  .proved strong,.role strong{color:var(--crimson);}
+  .theorem{background:var(--brass-soft);border-left:4px solid var(--brass);padding:.55rem .9rem;margin:.55rem 0;font-size:.9rem;border-radius:0 6px 6px 0;color:#5c4a1f;}
+  .theorem strong{color:var(--crimson);}
+  .thread{margin:.4rem 0;font-size:.88rem;font-style:italic;color:#5c5344;}
+  .session-refs{margin-top:.7rem;padding-top:.5rem;border-top:1px dashed var(--line);font-size:.82rem;color:var(--muted);}
+  .session-refs strong{color:#5c5344;}
+  .backtop{display:block;text-align:right;font-size:.78rem;margin-top:.5rem;}
+  .backtop a{color:var(--teal);text-decoration:none;}
+  table.sum{border-collapse:collapse;margin:.6rem auto;font-size:.85rem;}
+  table.sum td,table.sum th{border:1px solid var(--line);padding:.3rem .7rem;}
+  table.sum th{background:var(--brass-soft);}
+  .references-section{margin-top:3.5rem;padding-top:2rem;border-top:4px solid var(--navy);scroll-margin-top:4rem;}
+  .references-section h2{font-size:1.5rem;color:var(--navy);margin-bottom:1.4rem;}
+  .ref-category{margin-bottom:1.5rem;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.3rem;}
+  .ref-category h3{font-size:1rem;color:var(--teal);margin-bottom:.5rem;border-bottom:1px solid var(--line);padding-bottom:.3rem;}
+  .ref-category ol{padding-left:1.4rem;}
+  .ref-category li{margin-bottom:.35rem;font-size:.88rem;color:#443c30;}
+  footer{text-align:center;padding:2.4rem 1rem;color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);margin-top:2.5rem;background:var(--card);}
+  .motif{text-align:center;font-size:1.5rem;color:var(--brass);margin:2rem 0;letter-spacing:1rem;}
+  @media(max-width:640px){.container{padding:1.4rem .8rem;}.session{padding:1.1rem 1rem;}.act-header{padding:.9rem 1rem;}.timeline::before{left:19px;}.stop{padding-left:48px;}.node{left:6px;width:26px;height:26px;}}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="brand">POINT · Final Edition</span>
+  <span><a href="#toc">Contents</a><a href="#acts">Sessions</a><a href="#refs">References</a></span>
+</div>
+
+<header>
+  <h1>Point</h1>
+  <div class="subtitle">From Number Theory to Algebraic Geometry and Logic</div>
+  <div class="rule"></div>
+  <div class="meta">Weekly Sessions · 2–2.5 Hours · 64 Meetings (P1–P3 + S1–S61)<br>Final Edition: every session carries all content, proofs, course-role, and references</div>
+</header>
+
+<div class="container">
+
+<div class="description">
+  <h2>Course Description</h2>
+  <p>This course traces a single unifying concept — the <strong>point</strong> — through all its incarnations: a prime number, a valuation, a prime ideal, a closed or generic point of a scheme, a <em>T</em>-valued point via the functor of points, a place of a number field, a geometric morphism into a topos, a model of a logical theory, and a state of a non-commutative algebra. From Gauss's quadratic reciprocity through Galois theory, valuation theory, scheme theory, Class Field Theory, and topos theory, it culminates in Deligne's theorem that every coherent topos has enough points.</p>
+  <p>Every main theorem is proved. The course is fully self-contained: all prerequisites (groups, topology, algebraic topology, modules, category theory, complex analysis, homological algebra) are built inside the course, just in time.</p>
+  <p><strong>Anatomy of each session entry:</strong> <em>Content to cover</em> (bullets) · <em>Main results proved</em> · <em>Role in the course</em> (Depends on / Feeds / Arc) · <em>Unifying thread</em> (the session's incarnation of "point") · <em>References</em>.</p>
+  <p><strong>How to navigate:</strong> click an Act to unfold its sessions as chips; click a chip to jump; ↓ jumps to the Act's section; Expand/Collapse all toggle everything.</p>
+</div>
+
+<!-- ══ TOC ══ -->
+<div class="toc" id="toc">
+  <div class="toc-bar">
+    <div><h2>Contents — The Journey</h2><div class="hint">Each node is an Act; unfold it to see its sessions.</div></div>
+    <div class="toc-actions">
+      <button id="expandAll" class="toc-btn">⊞ Expand all</button>
+      <button id="collapseAll" class="toc-btn">⊟ Collapse all</button>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="stop toc-act"><span class="node">P</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Prelude — Prerequisites</button><a class="toc-jump" href="#act-pre">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#sP1"><span class="n">P1</span> Group Theory I</a><a class="chip" href="#sP2"><span class="n">P2</span> Topology &amp; Metric Spaces</a><a class="chip" href="#sP3"><span class="n">P3</span> Algebraic Topology Crash</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">0</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act 0 — Foundations</button><a class="toc-jump" href="#act0">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s1"><span class="n">1</span> Rings, Ideals, Spectra</a><a class="chip" href="#s2"><span class="n">2</span> Modules &amp; Tensor</a><a class="chip" href="#s3"><span class="n">3</span> Fields &amp; Closure</a><a class="chip" href="#s4"><span class="n">4</span> Category Theory</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">I</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act I — Point as a Prime</button><a class="toc-jump" href="#act1">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s5"><span class="n">5</span> Quadratic Residues</a><a class="chip" href="#s6"><span class="n">6</span> QR: First Proof</a><a class="chip" href="#s7"><span class="n">7</span> QR: Geometric</a><a class="chip" href="#s8"><span class="n">8</span> QR in Galois Language</a><a class="chip" href="#s9"><span class="n">9</span> Cyclotomic</a><a class="chip" href="#s10"><span class="n">10</span> Summary</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">II</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act II — Galois Theory</button><a class="toc-jump" href="#act2">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s11"><span class="n">11</span> Solvable Groups</a><a class="chip" href="#s12"><span class="n">12</span> Galois Extensions</a><a class="chip" href="#s13"><span class="n">13</span> FTGT</a><a class="chip" href="#s14"><span class="n">14</span> Radicals</a><a class="chip" href="#s15"><span class="n">15</span> Quintic</a><a class="chip" href="#s16"><span class="n">16</span> Absolute Galois Group</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">III</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act III — Valuations &amp; p-adics</button><a class="toc-jump" href="#act3">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s17"><span class="n">17</span> Ostrowski</a><a class="chip" href="#s18"><span class="n">18</span> ℚ, ℤₚ</a><a class="chip" href="#s19"><span class="n">19</span> Hensel</a><a class="chip" href="#s20"><span class="n">20</span> Ramification</a><a class="chip" href="#s21"><span class="n">21</span> Function Fields</a><a class="chip" href="#s22"><span class="n">22</span> Adeles</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">IV</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act IV — Algebraic Geometry</button><a class="toc-jump" href="#act4">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s23"><span class="n">23</span> Comm. Alg. I</a><a class="chip" href="#s24"><span class="n">24</span> Dedekind</a><a class="chip" href="#s25"><span class="n">25</span> Nullstellensatz</a><a class="chip" href="#s26"><span class="n">26</span> Sheaves</a><a class="chip" href="#s27"><span class="n">27</span> Sheafification</a><a class="chip" href="#s28"><span class="n">28</span> Schemes</a><a class="chip" href="#s29"><span class="n">29</span> Functor of Points</a><a class="chip" href="#s30"><span class="n">30</span> Comm. Alg. II</a><a class="chip" href="#s31"><span class="n">31</span> Projective</a><a class="chip" href="#s32"><span class="n">32</span> Riemann–Roch</a><a class="chip" href="#s33"><span class="n">33</span> Valuative Criterion</a><a class="chip" href="#s34"><span class="n">34</span> Profinite</a><a class="chip" href="#s35"><span class="n">35</span> Étale π₁</a><a class="chip" href="#s36"><span class="n">36</span> Bridge</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">V</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act V — Curves over ℂ &amp; Elliptic</button><a class="toc-jump" href="#act5">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s37"><span class="n">37</span> Complex I</a><a class="chip" href="#s38"><span class="n">38</span> Riemann Surfaces</a><a class="chip" href="#s39"><span class="n">39</span> Elliptic Geometry</a><a class="chip" href="#s40"><span class="n">40</span> Elliptic Arithmetic</a><a class="chip" href="#s41"><span class="n">41</span> Moduli &amp; Rational Points</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">VI</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act VI — Class Field Theory</button><a class="toc-jump" href="#act6">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s42"><span class="n">42</span> Hom. Alg. I</a><a class="chip" href="#s43"><span class="n">43</span> Hom. Alg. II</a><a class="chip" href="#s44"><span class="n">44</span> Group Cohomology</a><a class="chip" href="#s45"><span class="n">45</span> Galois Cohomology</a><a class="chip" href="#s46"><span class="n">46</span> Artin Map</a><a class="chip" href="#s47"><span class="n">47</span> Reciprocity</a><a class="chip" href="#s48"><span class="n">48</span> Existence</a><a class="chip" href="#s49"><span class="n">49</span> Ideles</a><a class="chip" href="#s50"><span class="n">50</span> Lubin–Tate</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">◈</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Interlude — Spaces without Points</button><a class="toc-jump" href="#act-int">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s51"><span class="n">51</span> Gelfand–Naimark</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">VII</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Act VII — Topos &amp; Logic</button><a class="toc-jump" href="#act7">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s52"><span class="n">52</span> Sites</a><a class="chip" href="#s53"><span class="n">53</span> Topoi</a><a class="chip" href="#s54"><span class="n">54</span> Points of a Topos</a><a class="chip" href="#s55"><span class="n">55</span> Enough Points</a><a class="chip" href="#s56"><span class="n">56</span> Classifying Topoi</a><a class="chip" href="#s57"><span class="n">57</span> Model Theory</a><a class="chip" href="#s58"><span class="n">58</span> Deligne: Proof</a><a class="chip" href="#s59"><span class="n">59</span> Deligne: Geometry</a>
+    </div></div></div></div>
+    <div class="stop toc-act"><span class="node">✦</span><div class="stop-card"><div class="stop-head"><button class="toc-toggle" aria-expanded="false"><span class="caret">▸</span> Postlude — Synthesis</button><a class="toc-jump" href="#act8">↓</a></div><div class="toc-sessions"><div class="toc-sessions-inner">
+      <a class="chip" href="#s60"><span class="n">60</span> One Concept, Many Worlds</a><a class="chip" href="#s61"><span class="n">61</span> Physics &amp; Langlands</a>
+    </div></div></div></div>
+  </div>
+</div>
+
+<div class="motif">· · · · ·</div>
+<div id="acts">
+
+<!-- PRELUDE -->
+<div class="act" id="act-pre">
+  <div class="act-header"><span class="act-number">Prelude</span><h2>Essential Prerequisites</h2></div>
+  <div class="act-description">The common algebraic, topological, and homotopical language, built from scratch.</div>
+
+  <div class="session" id="sP1"><div class="session-title"><span class="session-number">P1</span><h3>Group Theory: Part I</h3></div>
+    <ul>
+      <li>Groups and examples: ℤ, ℚ*, Sₙ, GLₙ(k), SOₙ(ℝ), circle group; abelian vs non-abelian; orders</li>
+      <li>Subgroups; subgroup criterion; generated &amp; cyclic subgroups; order of an element; Lagrange + corollaries (order divides; gⁿ=e; prime order ⇒ cyclic)</li>
+      <li>Homomorphisms; kernel/image; injectivity via trivial kernel; isomorphisms; inner automorphisms &amp; center</li>
+      <li>Normal subgroups &amp; criteria; quotient groups (well-definedness); natural projection; First/Second/Third Isomorphism Theorems</li>
+      <li>Three worked First-Iso examples: det, sign, ℤ→ℤ/n</li>
+      <li>Group actions; orbits, stabilizers; Orbit–Stabilizer; conjugation action; class equation (mention); Cayley (mention)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> subgroup criterion; Lagrange; First Isomorphism; Orbit–Stabilizer.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> none (entry). <em>Feeds</em> Act II, S24, S49, P3/S35, Act VII. <em>Arc:</em> quotient = identify what looks the same from a viewpoint — the pattern later instantiated by norm groups and G<sub>K</sub><sup>ab</sup>≅C<sub>K</sub>.</div>
+    <div class="thread">Thread: a quotient group is a space of viewpoints collapsed to points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Artin ch.2; Herstein ch.2; Rotman ch.1–4.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="sP2"><div class="session-title"><span class="session-number">P2</span><h3>Topology and Metric Spaces</h3></div>
+    <ul>
+      <li>Topology axioms; open/closed; bases; subspace &amp; product topologies; infinite products vs box (remark previewing restricted product, S22)</li>
+      <li>Continuity (open-set); homeomorphism; connectedness &amp; components; intervals connected (proof); compactness; [0,1] compact (bisection proof); Heine–Borel (statement); Hausdorff</li>
+      <li>Metric spaces; balls; metric topology; convergence; Cauchy; completeness; examples ℝ complete, ℚ not, C[0,1] sup complete</li>
+      <li>Completion (Cauchy mod null): existence &amp; uniqueness; ℚ→ℝ</li>
+      <li>Preview: p-adic metric &amp; ℚ→ℚₚ (S17–S18); Ostrowski preview (S17)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> bases generate topology; balls a basis; intervals connected; [0,1] compact; compact⊆Hausdorff closed; unique limits; ε–δ ⟺ open-set continuity; convergent⇒Cauchy; completion existence/uniqueness.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> none. <em>Feeds</em> S18, S19, S21, S22, S34, S38. <em>Arc:</em> supplies the two machines the course runs on — completion (adding missing points) and compactness (finiteness).</div>
+    <div class="thread">Thread: completion adds the points Cauchy sequences deserved; compactness makes point-counts finite.</div>
+    <div class="session-refs"><strong>Refs:</strong> Munkres ch.2–4; Sutherland; Rudin ch.2–4; Gouvêa ch.1–3.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="sP3"><div class="session-title"><span class="session-number">P3</span><h3>Algebraic Topology Crash Course</h3></div>
+    <ul>
+      <li>Paths &amp; homotopy of paths; homotopy equivalence; π₁(X,x₀); computations for S¹ and the torus; simply-connected spaces</li>
+      <li>Covering spaces; lifting of paths &amp; homotopies; deck transformations; universal cover; classification of coverings via π₁-sets</li>
+      <li>The topological Galois correspondence: covers ↔ subgroups / π₁-sets (prototype of S35)</li>
+      <li>Monodromy: lifting a loop permutes the fiber — a first "evaluation along a loop"</li>
+      <li>Scope note: no homology; just enough to make étale π₁ intuitive; remark on profinite completion &amp; the G<sub>ℚ</sub> analogy (S16)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> π₁(S¹)=ℤ; the covering-space correspondence (construction).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2. <em>Feeds</em> S35, S59, S60. <em>Arc:</em> provides the exact categorical pattern (covers ↔ π₁-sets) that S35 reproduces for schemes and Act VII internalizes in topoi.</div>
+    <div class="thread">Thread: a covering is a space of points over points; monodromy is evaluation along loops.</div>
+    <div class="session-refs"><strong>Refs:</strong> Hatcher ch.0–1 (selected); May ch.1–3 (selected); Munkres §51–54; Szamuely ch.2.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT 0 -->
+<div class="act" id="act0">
+  <div class="act-header"><span class="act-number">Act 0</span><h2>Foundations</h2></div>
+  <div class="act-description">Rings, modules, fields, and categories: the structural grammar of the course.</div>
+
+  <div class="session" id="s1"><div class="session-title"><span class="session-number">1</span><h3>Rings, Ideals, Quotients, Prime &amp; Maximal Ideals</h3></div>
+    <ul>
+      <li>Zorn's lemma; Krull's theorem (existence of maximal ideals) [prereq for S3, S58]</li>
+      <li>Rings, ideals, quotient rings; localization R<sub>S</sub>, R<sub>𝔭</sub>; examples ℤ, k[x], ℤ[i], ℤ[√−5]</li>
+      <li>Prime ideals (R/𝔭 a domain); maximal ideals (R/𝔪 a field); maximal⇒prime (proofs); nilradical = ∩ primes (proof)</li>
+      <li>Spec(R); Zariski topology via V(I); basic opens D(f) form a basis; quasi-compactness (proof)</li>
+      <li>Closed points = maximal; generic point = minimal prime; specialization; examples Spec ℤ, ℂ[x], [x,y], ₍ₚ₎</li>
+      <li>Functoriality Spec: Ring<sup>op</sup>→Top; remark: why Zariski is not Hausdorff (preview S28)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> maximal/prime characterizations; Krull; nilradical intersection; Zariski axioms; D(f) basis; Spec quasi-compact.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> none. <em>Feeds</em> S28, S46, S54; Zorn reused in S3, S58. <em>Arc:</em> the first incarnation of point.</div>
+    <div class="thread">Thread: prime ideal = point; the generic point is "the whole space seen as one point".</div>
+    <div class="session-refs"><strong>Refs:</strong> Atiyah–Macdonald ch.1–4; Eisenbud ch.2; Vakil ch.3–4.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s2"><div class="session-title"><span class="session-number">2</span><h3>Modules, Tensor Products, and Exact Sequences</h3></div>
+    <ul>
+      <li>Modules, submodules, quotients; free &amp; finitely generated; examples</li>
+      <li>Nakayama's lemma (proof) + applications to local rings &amp; generators</li>
+      <li>Tensor product M⊗<sub>R</sub>N; universal property; right-exactness (proof); base change; M⊗<sub>R</sub>k(𝔭) as the fiber at 𝔭</li>
+      <li>Short &amp; long exact sequences; split sequences; diagram-chasing warm-up (snake deferred to S42)</li>
+      <li>Flatness: definition &amp; first examples (free, localized); preview of its role in étale maps (serious treatment S30)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Nakayama; right-exactness of tensor; base-change identities.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1. <em>Feeds</em> S23, S30, S42–S45. <em>Arc:</em> tensoring with a residue field = evaluating a family at a point.</div>
+    <div class="thread">Thread: the fiber M⊗<sub>R</sub>k(𝔭) is the value of the module at the point 𝔭.</div>
+    <div class="session-refs"><strong>Refs:</strong> Atiyah–Macdonald ch.2–3; Eisenbud ch.1,6; Lang ch.XVI.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s3"><div class="session-title"><span class="session-number">3</span><h3>Fields, Extensions, and Algebraic Closure</h3></div>
+    <ul>
+      <li>Fields; characteristic; finite fields 𝔽, 𝔽<sub>pⁿ</sub> (existence/uniqueness deferred to S12)</li>
+      <li>Extensions L/K, degree, tower law; algebraic vs transcendental; minimal polynomial</li>
+      <li>Splitting fields (preview); algebraic closure K̄: existence via Zorn (proof), uniqueness (mention); ℚ̄</li>
+      <li>Definition of G<sub>ℚ</sub>=Gal(ℚ̄/ℚ) as the horizon object (developed S16)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> tower law; existence of algebraic closures.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1 (Zorn). <em>Feeds</em> Act II, S16, S35. <em>Arc:</em> ℚ̄ is the space of all algebraic points over ℚ.</div>
+    <div class="thread">Thread: algebraic closure gathers all points of all extensions into one space.</div>
+    <div class="session-refs"><strong>Refs:</strong> Lang ch.V; Artin, <em>Galois Theory</em> ch.1–3.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s4"><div class="session-title"><span class="session-number">4</span><h3>Category Theory Essentials</h3></div>
+    <ul>
+      <li>Categories, functors, natural transformations; examples Set, Ring, Top, R-Mod</li>
+      <li>Limits &amp; colimits concretely: products, equalizers, inverse limits (ℤₚ, profinite groups, G<sub>ℚ</sub>), directed colimits (stalks, localization)</li>
+      <li>Adjunctions &amp; universal properties (free/forgetful; preview f⁻¹⊣f<sub>*</sub>); Spec as Ring<sup>op</sup>→Top</li>
+      <li>Yoneda lemma: statement &amp; preview (full proof S29)</li>
+      <li>Remark (one line): monads/comonads — sheafification (S27) is an idempotent monad; full monad theory not pursued</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> worked (co)limit computations; adjunction examples.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1–S2. <em>Feeds</em> S16, S18, S26, S29, S34, S53–S54. <em>Arc:</em> an object is determined by its maps in/out — precursor of "point = morphism".</div>
+    <div class="thread">Thread: limits glue local data into global objects; colimits extract germs at points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane ch.I–V; Leinster.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT I -->
+<div class="act" id="act1">
+  <div class="act-header"><span class="act-number">Act I</span><h2>The Point as a Prime Number</h2></div>
+  <div class="act-description">Quadratic reciprocity, Frobenius elements, and the first glimpse of hidden Galois structure.</div>
+
+  <div class="session" id="s5"><div class="session-title"><span class="session-number">5</span><h3>Quadratic Residues and the Legendre Symbol</h3></div>
+    <ul>
+      <li>Congruences recap; quadratic residues; the Legendre symbol (a/p)</li>
+      <li>Cyclicity of (ℤ/p)× (primitive roots); Euler's criterion (proof); multiplicativity</li>
+      <li>Supplementary laws (−1/p), (2/p) (proofs); extensive small-prime computations</li>
+      <li>The quadratic character as a homomorphism (ℤ/p)×→{±1} — the first "evaluation character"</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> primitive roots; Euler's criterion; supplementary laws.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P1. <em>Feeds</em> S6–S8, S46, S61. <em>Arc:</em> the prime p acts as a place evaluating squareness.</div>
+    <div class="thread">Thread: (a/p) is the value of a at the point p.</div>
+    <div class="session-refs"><strong>Refs:</strong> Ireland–Rosen ch.5; Hardy–Wright ch.VI.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s6"><div class="session-title"><span class="session-number">6</span><h3>Quadratic Reciprocity: Statement and First Proof</h3></div>
+    <ul>
+      <li>Precise statement of QR; Gauss's Lemma (counting least residues)</li>
+      <li>Complete proof of QR via Gauss's Lemma; numerical examples</li>
+      <li>Reformulation preview: (p/q) as splitting of q in ℚ(√p)</li>
+    </ul>
+    <div class="theorem"><strong>Theorem (Gauss, 1796).</strong> For distinct odd primes p, q: (p/q)(q/p) = (−1)<sup>(p−1)(q−1)/4</sup>.</div>
+    <div class="proved"><strong>Proved:</strong> QR via Gauss's Lemma.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S5. <em>Feeds</em> S7–S8, S47. <em>Arc:</em> the theorem whose generalization is the whole course.</div>
+    <div class="thread">Thread: two primes evaluate each other; the answers agree up to a sign rule.</div>
+    <div class="session-refs"><strong>Refs:</strong> Ireland–Rosen ch.5; Cox ch.1.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s7"><div class="session-title"><span class="session-number">7</span><h3>Quadratic Reciprocity: Geometric Proofs &amp; Generalizations</h3></div>
+    <ul>
+      <li>Lattice-point (geometric) proof of QR (proof); Eisenstein's trigonometric-sum proof (mention)</li>
+      <li>Jacobi symbol; QR for Jacobi; computational applications</li>
+      <li>Remark: reciprocity as a point-counting statement (preview of L-functions S40 and Langlands S61)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> geometric proof of QR.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S6. <em>Feeds</em> S8, S40, S61. <em>Arc:</em> shows reciprocity has geometric content.</div>
+    <div class="thread">Thread: counting points mod p packages into the reciprocity law.</div>
+    <div class="session-refs"><strong>Refs:</strong> Ireland–Rosen ch.5; Lemmermeyer.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s8"><div class="session-title"><span class="session-number">8</span><h3>Reciprocity in the Language of Galois Theory</h3></div>
+    <ul>
+      <li>Pre-Galois toolkit (self-contained): Gal(L/K)=Aut(L/K); concrete Galois groups of ℚ(√d) and ℚ(ζₙ)</li>
+      <li>Frobenius for quadratic extensions: Frob<sub>p</sub>=(d/p); QR as the symmetry Frob<sub>p</sub> in ℚ(√q) ↔ Frob<sub>q</sub> in ℚ(√p)</li>
+      <li>Kronecker–Weber for quadratic extensions (proof via cyclotomic fields)</li>
+      <li>The Legendre symbol re-read as "evaluation at the point q"</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> QR as Frobenius reciprocity; Kronecker–Weber (quadratic case).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S5–S7. <em>Feeds</em> S9, S20, S46, Act II. <em>Arc:</em> introduces the Frobenius element, central to Acts III &amp; VI and the Langlands outlook.</div>
+    <div class="thread">Thread: Legendre = Frobenius = evaluation at a point, now group-valued.</div>
+    <div class="session-refs"><strong>Refs:</strong> Ireland–Rosen ch.13; Neukirch ch.I §9.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s9"><div class="session-title"><span class="session-number">9</span><h3>Cyclotomic Extensions and Frobenius Elements</h3></div>
+    <ul>
+      <li>Cyclotomic polynomials; ℚ(ζₙ); Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/n)× (proof)</li>
+      <li>Concrete decomposition of primes: split / inert / ramified according to p mod n; Dedekind's criterion examples</li>
+      <li>Concrete inertia &amp; ramification in cyclotomic fields</li>
+      <li>Signposting: valuation-theoretic e, f in S20; decomposition/inertia <em>groups</em> in S46</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> structure of cyclotomic Galois groups; concrete prime decomposition.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S8. <em>Feeds</em> S16, S47–S49. <em>Arc:</em> first infinite family where Frobenius is explicitly computable.</div>
+    <div class="thread">Thread: in ℚ(ζₙ), the point p is completely described by p mod n.</div>
+    <div class="session-refs"><strong>Refs:</strong> Lang, <em>ANT</em> ch.I; Ireland–Rosen ch.13.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s10"><div class="session-title"><span class="session-number">10</span><h3>Summary: From Reciprocity to Galois Theory</h3></div>
+    <ul>
+      <li>Recap of Act I; the hierarchy of reciprocity laws; the question of non-abelian generalizations</li>
+      <li>Preview of Act II as the language for those generalizations</li>
+    </ul>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S5–S9. <em>Feeds</em> Act II. <em>Arc:</em> consolidation; sets the "generalize QR" agenda.</div>
+    <div class="session-refs"><strong>Refs:</strong> Review of Act I sources.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT II -->
+<div class="act" id="act2">
+  <div class="act-header"><span class="act-number">Act II</span><h2>Galois Theory and Solvability</h2></div>
+  <div class="act-description">From the group-theoretic engine to the absolute Galois group.</div>
+
+  <div class="session" id="s11"><div class="session-title"><span class="session-number">11</span><h3>Solvable Groups, Sₙ, and Aₙ</h3></div>
+    <ul>
+      <li>Sₙ: cycle decomposition, sign homomorphism; Aₙ=ker(sign)</li>
+      <li>Simplicity of Aₙ for n≥5 (statement &amp; proof idea via 3-cycles)</li>
+      <li>Solvable groups via composition series with abelian quotients; commutator subgroup; S₃, S₄ solvable, S₅ not</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> simplicity of Aₙ (n≥5); solvability of S₃, S₄; non-solvability of S₅.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P1. <em>Feeds</em> S14, S15. <em>Arc:</em> the engine turning symmetry into a solvability obstruction.</div>
+    <div class="thread">Thread: composition factors are the elementary symmetries a point-system can have.</div>
+    <div class="session-refs"><strong>Refs:</strong> Artin ch.2 §7–8; Rotman ch.4.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s12"><div class="session-title"><span class="session-number">12</span><h3>Galois Extensions, Finite Fields, and Linear Independence</h3></div>
+    <ul>
+      <li>Separable polynomials &amp; extensions; normal extensions; splitting fields; characterizations of Galois extensions (proofs)</li>
+      <li>Finite fields 𝔽<sub>pⁿ</sub>: existence, uniqueness, Galois group cyclic generated by Frobenius (proof)</li>
+      <li>Dedekind's lemma: linear independence of characters (proof); trace &amp; norm preview; used in S13, S14, S20, S45</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Galois characterizations; structure of finite fields; Dedekind's lemma.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S3, S11. <em>Feeds</em> S13, S14, S20, S45. <em>Arc:</em> finite-field Frobenius is the prototype of Frob<sub>𝔭</sub> (S46).</div>
+    <div class="thread">Thread: Frobenius is the canonical point-moving symmetry of finite fields.</div>
+    <div class="session-refs"><strong>Refs:</strong> Lang ch.VI; Artin, <em>Galois Theory</em>; Conrad, <em>FGT</em>.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s13"><div class="session-title"><span class="session-number">13</span><h3>The Fundamental Theorem of Galois Theory</h3></div>
+    <ul>
+      <li>FTGT: inclusion-reversing bijection subgroups ↔ intermediate fields (complete proof using S12)</li>
+      <li>Examples ℚ(√2,√3)/ℚ, (∛2)/ℚ; normal subgroups ↔ Galois subextensions</li>
+      <li>Primitive element theorem (statement/proof idea); Galois group of finite fields</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> FTGT; normal ↔ Galois.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S12. <em>Feeds</em> S14–S16, S35, S56. <em>Arc:</em> the dictionary later categorified (covers↔π₁-sets) and logicalized (subtopos↔theory quotient).</div>
+    <div class="thread">Thread: intermediate fields are subspaces of points of the Galois correspondence.</div>
+    <div class="session-refs"><strong>Refs:</strong> Artin ch.4; Lang ch.VI.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s14"><div class="session-title"><span class="session-number">14</span><h3>Solvable Groups and Solvability by Radicals</h3></div>
+    <ul>
+      <li>Radical extensions; Kummer theory (statement); roots of unity</li>
+      <li>Theorem: f solvable by radicals ⟺ Gal(f) solvable (proof using S11–S13)</li>
+      <li>Worked examples of solvable and non-solvable polynomials</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> solvability-by-radicals characterization.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S11–S13. <em>Feeds</em> S15. <em>Arc:</em> the classical payoff of the Galois dictionary.</div>
+    <div class="session-refs"><strong>Refs:</strong> Artin ch.5; Lang ch.VI §8.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s15"><div class="session-title"><span class="session-number">15</span><h3>The Insolvability of the Quintic</h3></div>
+    <ul>
+      <li>The general polynomial of degree n; its Galois group Sₙ</li>
+      <li>Abel–Ruffini: degree ≥5 not solvable by radicals (proof via S11)</li>
+      <li>An explicit unsolvable quintic (example/mention)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Abel–Ruffini.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S14. <em>Feeds</em> S16. <em>Arc:</em> closes the classical problem; motivates studying Galois groups as objects.</div>
+    <div class="session-refs"><strong>Refs:</strong> Artin ch.5; Stewart ch.3–4.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s16"><div class="session-title"><span class="session-number">16</span><h3>The Absolute Galois Group</h3></div>
+    <ul>
+      <li>G<sub>ℚ</sub>=Gal(ℚ̄/ℚ); Krull/profinite topology as an inverse limit (S4)</li>
+      <li>The inverse Galois problem; why G<sub>ℚ</sub> is mysterious; local decomposition preview (S46)</li>
+      <li>Abelianization G<sub>ℚ</sub><sup>ab</sup>; Kronecker–Weber (statement); preview of CFT (Act VI)</li>
+      <li>G<sub>ℚ</sub> as "fundamental group of Spec ℚ" (made precise S35)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> profinite structure of G<sub>ℚ</sub>; Kronecker–Weber stated &amp; checked on examples.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S4, S13. <em>Feeds</em> Acts III, VI, VII. <em>Arc:</em> the master symmetry space of all algebraic points over ℚ.</div>
+    <div class="thread">Thread: G<sub>ℚ</sub> is the holonomy of the covering Spec ℚ̄ → Spec ℚ.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.I; Szamuely ch.1.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT III -->
+<div class="act" id="act3">
+  <div class="act-header"><span class="act-number">Act III</span><h2>Valuations and p-adic Points</h2></div>
+  <div class="act-description">Points as valuations; all points gathered into the adeles.</div>
+
+  <div class="session" id="s17"><div class="session-title"><span class="session-number">17</span><h3>Absolute Values, Valuations, and Ostrowski's Theorem</h3></div>
+    <ul>
+      <li>Absolute values; equivalence; archimedean vs non-archimedean; additive valuations v:K*→Γ</li>
+      <li>Valuation ring 𝒪<sub>v</sub>, maximal ideal 𝔪<sub>v</sub>, residue field k<sub>v</sub>, value group</li>
+      <li>Ostrowski's theorem for ℚ (proof sketch): places of ℚ are {∞,2,3,5,…}</li>
+      <li>Remark: Ostrowski for k(t) (function-field places) previewing S21</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Ostrowski (sketch); basic properties of valuation rings.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2. <em>Feeds</em> S18–S22, S33, S46. <em>Arc:</em> the census of points of ℚ.</div>
+    <div class="thread">Thread: a place is a point; Ostrowski lists every point of ℚ.</div>
+    <div class="session-refs"><strong>Refs:</strong> Gouvêa ch.1–2; Neukirch ch.II §1.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s18"><div class="session-title"><span class="session-number">18</span><h3>Construction of ℚ and ℤₚ</h3></div>
+    <ul>
+      <li>Completion of ℚ w.r.t. |·|<sub>p</sub> via the P2 machine; ℤₚ=lim ℤ/pⁿ (S4); equivalence of the two constructions</li>
+      <li>Series representation Σaᵢp; valuation &amp; topology on ℚₚ; ℤₚ a local ring with residue 𝔽ₚ</li>
+      <li>Unit structure ℚₚ* ≅ p<sup>ℤ</sup>×ℤₚ*; concrete computations (−1, 1/2, √7 in ℤ₃)</li>
+      <li>ℚ not algebraically closed; ̄ₚ and ℂₚ (mention)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> equivalence of completion &amp; inverse-limit constructions; unit structure.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2, S4, S17. <em>Feeds</em> S19, S22, S34, S50, S28/S30. <em>Arc:</em> ℚ completed at the point p.</div>
+    <div class="thread">Thread: completion at a point yields a new, purely local number system.</div>
+    <div class="session-refs"><strong>Refs:</strong> Gouvêa ch.3–4; Serre, <em>Course in Arithmetic</em> ch.II.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s19"><div class="session-title"><span class="session-number">19</span><h3>Hensel's Lemma and p-adic Topology</h3></div>
+    <ul>
+      <li>Hensel's lemma (proof via Newton iteration/contraction); applications to roots &amp; factorization (√2, √−1 in ℚₚ?)</li>
+      <li>The ultrametric inequality; all triangles isosceles; open balls clopen</li>
+      <li>Compactness of ℤₚ (proof); local compactness of ℚ</li>
+      <li>Hensel as "smooth points lift": preview of étale (S30)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Hensel's lemma; compactness of ℤ.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2, S18. <em>Feeds</em> S22, S30, S34. <em>Arc:</em> the local inverse-function theorem of arithmetic.</div>
+    <div class="thread">Thread: Hensel lifts residue-field points to genuine local points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Gouvêa ch.4; Neukirch ch.II §4.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s20"><div class="session-title"><span class="session-number">20</span><h3>Extension of Valuations: Ramification and Residue Degree</h3></div>
+    <ul>
+      <li>Extending v from K to L; ramification index e; residue degree f (the formal definitions promised in S9)</li>
+      <li>Fundamental inequality Σeᵢf ≤ [L:K] (proof via Dedekind's lemma, S12); equality in the Galois case</li>
+      <li>Unramified / split / inert; examples in quadratic &amp; cyclotomic fields; relation to S9</li>
+      <li>Preview of decomposition &amp; inertia groups (S46)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> fundamental inequality; equality for Galois extensions.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S12, S17. <em>Feeds</em> S24, S46, S50. <em>Arc:</em> makes S9's concrete decomposition rigorous.</div>
+    <div class="thread">Thread: ramification measures how several points merge into one.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.I §8–9; Lang, <em>ANT</em> ch.I.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s21"><div class="session-title"><span class="session-number">21</span><h3>Function Fields and the Geometric Analogy</h3></div>
+    <ul>
+      <li>k(t) and its places = points of ℙ¹; the t-adic valuation; completion k((t))</li>
+      <li>The analogy table: ℚ ↔ k((t)), ℤₚ ↔ k[[t]], prime p ↔ point t=0</li>
+      <li>Divisors &amp; degree preview; Riemann–Roch preview (S32, S38)</li>
+      <li>Remark: the number-field / function-field dictionary as a working philosophy</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> place–point correspondence for k(t); completion to k((t)).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S17. <em>Feeds</em> S32, S36, S38, S60. <em>Arc:</em> makes explicit the identification "prime ↔ point".</div>
+    <div class="thread">Thread: Spec ℤ and a curve are the same kind of object.</div>
+    <div class="session-refs"><strong>Refs:</strong> Gouvêa ch.2; Rosen ch.1.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s22"><div class="session-title"><span class="session-number">22</span><h3>Adeles, Ideles, and Adelic Compactness</h3></div>
+    <ul>
+      <li>Restricted product: definition, topology, local compactness (using P2); the adele ring 𝔸<sub>ℚ</sub> &amp; idele group 𝔸<sub>ℚ</sub>*</li>
+      <li>ℚ embedded diagonally &amp; discrete; Product Formula ∏<sub>v</sub>|x|<sub>v</sub>=1 (proof)</li>
+      <li>𝔸<sub>ℚ</sub>/ℚ is compact (proof sketch via a fundamental domain); consequences previewed (S24)</li>
+      <li>Adelic viewpoint on ideals &amp; class groups (preview S24); automorphic preview (S40, S61)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Product Formula; adelic compactness (sketch).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2, S18. <em>Feeds</em> S24, S41, S49, S61. <em>Arc:</em> adeles = all points simultaneously; compactness = the finiteness engine.</div>
+    <div class="thread">Thread: the adele ring is tuples of local points glued by the product formula.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.VII §1; Cassels–Fröhlich ch.VII; Weil.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT IV -->
+<div class="act" id="act4">
+  <div class="act-header"><span class="act-number">Act IV</span><h2>Algebraic Geometry — The Point as Prime Ideal and as Morphism</h2></div>
+  <div class="act-description">Commutative algebra, sheaves, schemes, the functor of points, and the étale fundamental group.</div>
+
+  <div class="session" id="s23"><div class="session-title"><span class="session-number">23</span><h3>Commutative Algebra I</h3></div>
+    <ul>
+      <li>Noetherian rings &amp; equivalent conditions; Hilbert Basis Theorem (proof)</li>
+      <li>Integral elements; integral closure; integrally closed domains; examples</li>
+      <li>Krull dimension; dimension of local rings; examples 𝒪<sub>K</sub>, coordinate rings, ℤ</li>
+      <li>Local rings &amp; completion (preview of the S18/S30 interplay)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Hilbert Basis; integral-closure properties; dimension computations.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1–S2. <em>Feeds</em> S24, S25, S28, S30. <em>Arc:</em> finiteness &amp; integrality make arithmetic points behave geometrically.</div>
+    <div class="thread">Thread: dimension counts independent directions in which points can move.</div>
+    <div class="session-refs"><strong>Refs:</strong> Atiyah–Macdonald ch.5,7; Eisenbud ch.4,7.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s24"><div class="session-title"><span class="session-number">24</span><h3>Dedekind Domains and Ideal Class Groups</h3></div>
+    <ul>
+      <li>Dedekind domains &amp; equivalent characterizations; unique factorization of ideals (proof)</li>
+      <li>Fractional ideals &amp; their group; the class group Cl(𝒪<sub>K</sub>); example Cl(ℤ[√−5])≅/2</li>
+      <li>Finiteness of the class group via adelic compactness (S22) (proof); Minkowski alternative (mention)</li>
+      <li>Relation to ideal factorization (S20); bridge to S46–S47; recalled again at S46</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> unique factorization of ideals; finiteness of the class group (adelic route).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S20, S22, S23. <em>Feeds</em> S46, S47–S49. <em>Arc:</em> the arithmetic of number rings placed inside the geometry act.</div>
+    <div class="thread">Thread: the class group measures how far the points of Spec 𝒪<sub>K</sub> are from being principal.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.I §3; Lang, <em>ANT</em> ch.I; Cassels–Fröhlich.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s25"><div class="session-title"><span class="session-number">25</span><h3>Affine Varieties and Hilbert's Nullstellensatz</h3></div>
+    <ul>
+      <li>Algebraic sets in kⁿ; the Zariski topology on kⁿ; coordinate rings</li>
+      <li>Hilbert's Nullstellensatz (proof via Rabinowitch / Noether normalization); algebraic-set ↔ radical-ideal correspondence</li>
+      <li>Morphisms of affine varieties; maximal ideals as closed points (over k̄)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Nullstellensatz; the classical correspondence.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S23. <em>Feeds</em> S28, S31. <em>Arc:</em> the classical bridge where "point = maximal ideal" first becomes a theorem.</div>
+    <div class="thread">Thread: over an algebraically closed field, geometry is recovered from maximal ideals.</div>
+    <div class="session-refs"><strong>Refs:</strong> Vakil ch.3; Hartshorne ch.I.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s26"><div class="session-title"><span class="session-number">26</span><h3>Presheaves and Sheaves</h3></div>
+    <ul>
+      <li>Presheaf as contravariant functor Open(X)<sup>op</sup>→C; restriction maps; sections; PSh(X)</li>
+      <li>Examples &amp; non-examples: continuous; holomorphic (defined inline; full theory S37–S38); constant presheaf not a sheaf; bounded functions fail gluing</li>
+      <li>Sheaf axioms (uniqueness + gluing); equalizer-diagram formulation; sheaf morphisms; kernel &amp; cokernel</li>
+      <li>Epi ≠ surjective on sections: the exp:𝒪→𝒪* example on ℂ</li>
+      <li>Stalks as directed colimits (S4); germs of sections</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> equalizer formulation equivalent to gluing axioms; kernel is a sheaf; the exp counterexample.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S4, P2. <em>Feeds</em> S27, S28, S53, S54. <em>Arc:</em> a sheaf assigns data to every open and reconciles local into global.</div>
+    <div class="thread">Thread: the stalk at x is the value of the sheaf at the point x.</div>
+    <div class="session-refs"><strong>Refs:</strong> Vakil ch.2; Hartshorne ch.II §1; Tennison; Mac Lane–Moerdijk.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s27"><div class="session-title"><span class="session-number">27</span><h3>Sheafification, Categories of Sheaves, and Étale Spaces</h3></div>
+    <ul>
+      <li>Sheafification &amp; universal property; plus-construction F→F⁺→F⁺⁺ (the idempotent-monad remark of S4 made concrete)</li>
+      <li>Adjunction a⊣i; Sh(X) as reflective subcategory / localization of PSh(X); limits &amp; colimits in Sh(X)</li>
+      <li>Direct image f<sub>*</sub> &amp; inverse image f⁻¹; adjunction f⁻¹⊣f<sub>*</sub></li>
+      <li>Étale-space equivalence: Sh(X) ≃ spaces over X via local homeomorphisms; stalk = fiber π⁻¹(x); skyscraper &amp; constant sheaves via étale spaces</li>
+      <li>Origin of the word "étale" and its reuse in S30 / S35 / S52</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> sheafification universal property; f⁻¹⊣f<sub>*</sub>; the étale-space equivalence (construction).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S26. <em>Feeds</em> S28, S53, S35/S52. <em>Arc:</em> a sheaf is a space of germs; its points are its stalks.</div>
+    <div class="thread">Thread: sheafification turns inconsistent local data into a genuine space of points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.II,VI; Tennison.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s28"><div class="session-title"><span class="session-number">28</span><h3>Schemes: Spec(R), the Structure Sheaf, Closed &amp; Generic Points</h3></div>
+    <ul>
+      <li>Locally ringed spaces; affine schemes; structure sheaf 𝒪<sub>Spec R</sub> (glueing proof); stalks R<sub>𝔭</sub>; residue fields κ(𝔭)</li>
+      <li>Closed points = maximal ideals; generic points = minimal primes; specialization; examples Spec ℤ, 𝔸¹, a curve</li>
+      <li>Morphisms of schemes; first examples; the non-Hausdorff nature revisited</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> structure presheaf is a sheaf; stalk &amp; residue computations.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1, S26–S27. <em>Feeds</em> S29–S35, S46, S54. <em>Arc:</em> the stage on which points are primes with local rings of germs.</div>
+    <div class="thread">Thread: a scheme is a space whose points carry their own local algebra.</div>
+    <div class="session-refs"><strong>Refs:</strong> Vakil ch.4; Hartshorne ch.II §2; Görtz–Wedhorn ch.3.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s29"><div class="session-title"><span class="session-number">29</span><h3>The Functor of Points and Yoneda's Perspective</h3></div>
+    <ul>
+      <li>Yoneda lemma (complete proof); representable functors; the Yoneda embedding</li>
+      <li>Functor of points h<sub>X</sub>(T)=Hom(T,X); T-valued points; examples (X(T) as solution sets of equations); X ≅ Hom(−,X)</li>
+      <li>A scheme is determined by its functor of points; natural transformations = morphisms</li>
+      <li>Non-representable functors → moduli problems (preview S41)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Yoneda lemma.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S4, S28. <em>Feeds</em> S41, S54, S56. <em>Arc:</em> the conceptual heart: point = morphism into the object.</div>
+    <div class="thread">Thread: to know a space is to know its points over every possible base.</div>
+    <div class="session-refs"><strong>Refs:</strong> Vakil ch.7,9; Eisenbud–Harris ch.VI; Demazure–Gabriel ch.1.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s30"><div class="session-title"><span class="session-number">30</span><h3>Commutative Algebra II: Morphisms, Fiber Products, Étale Maps</h3></div>
+    <ul>
+      <li>Morphisms of schemes; fiber products via tensor products (S2); base change &amp; fibers</li>
+      <li>Properties: finite type, separated; flat (serious treatment now, previewed S2), unramified, étale, smooth</li>
+      <li>Jacobian criterion (proof idea); examples &amp; non-examples</li>
+      <li>Étale = "algebraic local homeomorphism": Hensel-lifting characterization (S19)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> existence of fiber products of affine schemes; Jacobian criterion.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S2, S28. <em>Feeds</em> S33, S35, S39, S52. <em>Arc:</em> maps that preserve local point-structure.</div>
+    <div class="thread">Thread: étale maps are the maps under which points look locally identical.</div>
+    <div class="session-refs"><strong>Refs:</strong> Görtz–Wedhorn ch.6,11; Vakil ch.7,13; Stacks Project.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s31"><div class="session-title"><span class="session-number">31</span><h3>Projective Varieties and Points at Infinity</h3></div>
+    <ul>
+      <li>Graded rings &amp; homogeneous ideals; Proj(S); ℙ; affine charts</li>
+      <li>Points at infinity &amp; why they are necessary; projective = proper (preview S33)</li>
+      <li>Bézout's theorem (statement); examples of intersection at infinity</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> covering by affine charts; basic properties of Proj.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S28. <em>Feeds</em> S32, S39, S41. <em>Arc:</em> completeness: adding the points at infinity makes every count exact.</div>
+    <div class="thread">Thread: projective space is affine space with its missing points restored.</div>
+    <div class="session-refs"><strong>Refs:</strong> Vakil ch.6; Hartshorne ch.I §2.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s32"><div class="session-title"><span class="session-number">32</span><h3>Divisors, the Product Formula, and Riemann–Roch (Algebraic)</h3></div>
+    <ul>
+      <li>Divisors Σn<sub>P</sub>[P]; principal divisors (f)=Σv<sub>P</sub>(f)[P]; deg(f)=0 on a projective curve (proof)</li>
+      <li>Arithmetic analogue: the product formula (S22); function-field analogue (S21)</li>
+      <li>Canonical divisor &amp; Kähler differentials; genus; Riemann–Roch ℓ(D)−ℓ(K−D)=deg D+1−g (algebraic proof via Riemann's theorem)</li>
+      <li>Examples ℙ¹, elliptic curves; Remark: the analytic viewpoint in S38</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> deg(f)=0; Riemann–Roch for curves (algebraic).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S21, S31. <em>Feeds</em> S39, S38, S41. <em>Arc:</em> the exact accounting of zeros &amp; poles across all points.</div>
+    <div class="thread">Thread: Riemann–Roch balances the vanishing of functions at every point of the curve.</div>
+    <div class="session-refs"><strong>Refs:</strong> Hartshorne ch.IV; Fulton; Miranda (analytic companion).</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s33"><div class="session-title"><span class="session-number">33</span><h3>The Valuative Criterion of Properness</h3></div>
+    <ul>
+      <li>Separated &amp; proper morphisms (definitions using S30 fiber products)</li>
+      <li>Valuative criterion of properness (statement; proof for curves); restatement via specialization generic→closed</li>
+      <li>Examples: 𝔸¹ not proper, ℙ¹ proper; analogy with compactness (S22)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> valuative criterion (curves).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S20, S30, S31. <em>Feeds</em> S41, S36. <em>Arc:</em> makes "complete = no missing points" rigorous.</div>
+    <div class="thread">Thread: properness is the refusal of points to run away to infinity.</div>
+    <div class="session-refs"><strong>Refs:</strong> Vakil ch.7; Hartshorne ch.II §4.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s34"><div class="session-title"><span class="session-number">34</span><h3>Free Groups and Profinite Groups</h3></div>
+    <ul>
+      <li>Free groups Fₙ: universal property; examples; F₁≅ℤ</li>
+      <li>Profinite groups as inverse limits of finite groups (S4); ℤ̂=lim ℤ/n; profinite topology compact &amp; totally disconnected (P2)</li>
+      <li>Continuous actions of profinite groups; Galois groups as profinite (S16)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> universal property of free groups; compactness of profinite groups.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2, S4, S16. <em>Feeds</em> S35, S59. <em>Arc:</em> the group objects in which π₁<sup>ét</sup> and G<sub>ℚ</sub> live.</div>
+    <div class="thread">Thread: a profinite group is the Galois group of an infinite system of points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Ribes–Zalesskii ch.1; Szamuely ch.1; Serre, <em>Galois Cohomology</em> ch.I.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s35"><div class="session-title"><span class="session-number">35</span><h3>Étale Fundamental Group and Grothendieck's Galois Theory</h3></div>
+    <ul>
+      <li>Étale covers (S30); the fiber functor; definition of π₁<sup>ét</sup>(X, x̄)</li>
+      <li>Grothendieck's correspondence: finite étale covers ↔ finite continuous π₁<sup>ét</sup>-sets (statement &amp; construction), generalizing the topological theory of P3</li>
+      <li>Case X=Spec(K) recovers FTGT (S13); examples π₁<sup>ét</sup>(𝔾<sub>m,ℂ</sub>)=ℤ̂, π₁<sup>ét</sup>(ℙ¹∖{0,1,∞})=F̂₂</li>
+      <li>Using the topological intuition of P3 (coverings ↔ π₁); preview of Dessins (S60)</li>
+    </ul>
+    <div class="theorem"><strong>Theorem (Grothendieck).</strong> Finite étale covers of a connected X with geometric point x̄ ↔ finite sets with a continuous π₁<sup>ét</sup>(X,x̄)-action.</div>
+    <div class="proved"><strong>Proved:</strong> Grothendieck's correspondence (construction); the Spec K case.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P3, S13, S30, S34. <em>Feeds</em> S52–S53, S59, S60. <em>Arc:</em> unifies topology, Galois theory, and étale geometry.</div>
+    <div class="thread">Thread: π₁<sup>ét</sup> is the symmetry group of all finite point-systems over X.</div>
+    <div class="session-refs"><strong>Refs:</strong> Szamuely ch.4–5; SGA1 exp.V.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s36"><div class="session-title"><span class="session-number">36</span><h3>Summary: The Bridge Between Number Theory and Geometry</h3></div>
+    <ul>
+      <li>Spec ℤ as a "curve"; primes = points; ∞ = the point at infinity</li>
+      <li>The big number-field / function-field analogy table; CFT previewed as abelian Galois theory of Spec ℤ</li>
+    </ul>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> Acts III–IV. <em>Feeds</em> Acts V–VI. <em>Arc:</em> consolidation; sets the CFT agenda.</div>
+    <div class="session-refs"><strong>Refs:</strong> Lorenzini; review of Acts III–IV.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT V -->
+<div class="act" id="act5">
+  <div class="act-header"><span class="act-number">Act V</span><h2>Curves over ℂ and Elliptic Curves</h2></div>
+  <div class="act-description">Complex analysis in two sessions, then elliptic curves, modular forms, and moduli.</div>
+
+  <div class="session" id="s37"><div class="session-title"><span class="session-number">37</span><h3>Complex Analysis I: Holomorphic Functions &amp; Cauchy Theory</h3></div>
+    <ul>
+      <li>Holomorphic functions; Cauchy–Riemann equations; power-series expansion</li>
+      <li>Cauchy's theorem &amp; integral formula; identity theorem; Liouville; maximum principle</li>
+      <li>Meromorphic functions; residues &amp; the argument principle (mention)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Cauchy integral formula; identity theorem; Liouville.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> P2. <em>Feeds</em> S38, S40, and the S26 holomorphic example. <em>Arc:</em> analytic continuation = global from local.</div>
+    <div class="thread">Thread: a holomorphic function is rigid local data: its germ at one point knows everything.</div>
+    <div class="session-refs"><strong>Refs:</strong> Ahlfors ch.1–4; Conway.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s38"><div class="session-title"><span class="session-number">38</span><h3>Complex Analysis II: Riemann Surfaces</h3></div>
+    <ul>
+      <li>Riemann surfaces: definition &amp; examples; meromorphic functions &amp; their divisors; deg of a principal divisor = 0 (proof) — the analytic product formula</li>
+      <li>Compact Riemann surfaces = smooth projective curves over ℂ (GAGA flavour); genus</li>
+      <li>Analytic Riemann–Roch (statement), completing S32's remark; uniformization (mention)</li>
+      <li>Complex tori ℂ/Λ; Weierstrass ℘; tori ↔ elliptic curves; upper half-plane ℍ &amp; SL₂(ℤ) action (preview S40–S41)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> analytic product formula; torus = elliptic curve (construction).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S37, S32. <em>Feeds</em> S39, S40, S41. <em>Arc:</em> the analytic avatar of algebraic curves; topological genus = arithmetic genus.</div>
+    <div class="thread">Thread: a compact Riemann surface is a curve; its points are the places of its function field.</div>
+    <div class="session-refs"><strong>Refs:</strong> Forster; Miranda; Serre, <em>GAGA</em> (mention).</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s39"><div class="session-title"><span class="session-number">39</span><h3>Elliptic Curves: Geometry and Group Law</h3></div>
+    <ul>
+      <li>Weierstrass equations; smoothness via the Jacobian criterion (S30); discriminant</li>
+      <li>Projective closure; the point at infinity 𝒪 as the identity element</li>
+      <li>Chord-and-tangent law; group axioms via Riemann–Roch (S32) (proof); associativity; torsion points</li>
+      <li>Over ℂ: E(ℂ) ≅ ℂ/Λ (S38); torus addition = chord-and-tangent</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> group law well-defined &amp; associative (via RR).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S30, S32, S38. <em>Feeds</em> S40, S41. <em>Arc:</em> the central example; its identity is literally a point at infinity.</div>
+    <div class="thread">Thread: the group structure lives on the points; the identity is the point at infinity.</div>
+    <div class="session-refs"><strong>Refs:</strong> Silverman ch.I–III; Washington.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s40"><div class="session-title"><span class="session-number">40</span><h3>Elliptic Curves: Arithmetic and Modular Forms</h3></div>
+    <ul>
+      <li>Reduction mod p: good / multiplicative / additive; the L-function of an elliptic curve</li>
+      <li>Mordell–Weil theorem (statement)</li>
+      <li>Modular forms on ℍ (holomorphy from S37–S38): weight-k, growth at cusps; Hecke operators (mention)</li>
+      <li>Modularity Theorem (statement); the link to Fermat's Last Theorem</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> basic reduction properties; modularity stated &amp; verified on examples.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S37–S39. <em>Feeds</em> S41, S61. <em>Arc:</em> the first non-abelian-flavoured reciprocity; L-functions package point-counts.</div>
+    <div class="thread">Thread: the L-function packages the point-counts of E mod p into one analytic object.</div>
+    <div class="session-refs"><strong>Refs:</strong> Silverman ch.VII–VIII; Diamond–Shurman ch.1–3.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s41"><div class="session-title"><span class="session-number">41</span><h3>Points as Objects: Moduli Spaces and Rational Points</h3></div>
+    <ul>
+      <li>The j-invariant; the moduli problem ℳ<sub>1,1</sub>: points = isomorphism classes of elliptic curves</li>
+      <li>(Non-)representability &amp; the need for stacks (survey); compactified moduli; ties to S29</li>
+      <li>Rational points &amp; Diophantine geometry: Mordell–Weil, Faltings (statements); BSD (mention)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> j-invariant classifies elliptic curves over algebraically closed fields.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S29, S39–S40. <em>Feeds</em> S56, S60–S61. <em>Arc:</em> objects become points; arithmetic asks which points are rational.</div>
+    <div class="thread">Thread: moduli spaces turn objects into points; arithmetic asks which points are rational.</div>
+    <div class="session-refs"><strong>Refs:</strong> Silverman ch.III; Hartshorne ch.IV; Mazur; Katz–Mazur (selected); Hindry–Silverman (survey).</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT VI -->
+<div class="act" id="act6">
+  <div class="act-header"><span class="act-number">Act VI</span><h2>Class Field Theory</h2></div>
+  <div class="act-description">The homological engine (two sessions), cohomology, reciprocity, existence, and Lubin–Tate.</div>
+
+  <div class="session" id="s42"><div class="session-title"><span class="session-number">42</span><h3>Homological Algebra I: Complexes and the Snake Lemma</h3></div>
+    <ul>
+      <li>Chain complexes; chain maps; homology; exact sequences; abelian categories (mention)</li>
+      <li>Snake lemma (proof / proof idea); five lemma; the long exact sequence of homology</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> snake lemma; five lemma; long exact sequence.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S2. <em>Feeds</em> S43–S45. <em>Arc:</em> the homological engine that makes reciprocity provable.</div>
+    <div class="session-refs"><strong>Refs:</strong> Weibel ch.1–2; Rotman, <em>Homological Algebra</em> ch.1–2.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s43"><div class="session-title"><span class="session-number">43</span><h3>Homological Algebra II: Resolutions and Derived Functors</h3></div>
+    <ul>
+      <li>Projective &amp; injective modules; resolutions; derived functors</li>
+      <li>Tor &amp; Ext; Ext¹ classifies extensions (proof idea); long exact sequences of derived functors</li>
+      <li>Group cohomology as Ext over ℤG (preview S44); uses S2</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> existence of resolutions; Ext¹ classification; derived long exact sequences.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S42. <em>Feeds</em> S44, S45, S59. <em>Arc:</em> the derived language in which reciprocity is an H² statement.</div>
+    <div class="session-refs"><strong>Refs:</strong> Weibel ch.2–3; Mac Lane, <em>Homology</em>.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s44"><div class="session-title"><span class="session-number">44</span><h3>Group Cohomology and Tate Cohomology</h3></div>
+    <ul>
+      <li>G-modules; invariants; the cochain complex Cⁿ(G,M); H⁰, H¹, H² explicitly</li>
+      <li>H¹ = crossed homomorphisms mod principal; H² = group extensions</li>
+      <li>Derived-functor viewpoint Hⁿ = Extⁿ<sub>ℤG</sub>(ℤ,M) (S43)</li>
+      <li>Tate cohomology Ĥⁿ for finite G; periodicity for cyclic groups (proof idea)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> equivalence of cochain &amp; derived definitions in low degrees; Tate periodicity for cyclic groups.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S43. <em>Feeds</em> S45, S47. <em>Arc:</em> the cohomology of symmetry groups, ready for Galois groups.</div>
+    <div class="session-refs"><strong>Refs:</strong> Serre, <em>Galois Cohomology</em> ch.I; Cassels–Fröhlich ch.VIII; Weibel ch.6.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s45"><div class="session-title"><span class="session-number">45</span><h3>Galois Cohomology and the Fundamental Exact Sequence</h3></div>
+    <ul>
+      <li>Galois cohomology of L*; Hilbert's Theorem 90 (proof via Dedekind's lemma, S12)</li>
+      <li>The Brauer group (mention); local invariant H²(ℚₚ) ≅ ℚ/ℤ (statement)</li>
+      <li>The fundamental exact sequence 0→H²→⊕<sub>v</sub>ℚ/ℤ→ℚ/ℤ→0 (proof using S42 snake lemma &amp; S22 product formula)</li>
+      <li>The cohomological statement of class field theory (preview S47)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Hilbert 90; local invariant isomorphism; the fundamental exact sequence.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S22, S44. <em>Feeds</em> S47, S49. <em>Arc:</em> the product formula rewritten in cohomology.</div>
+    <div class="thread">Thread: the exact sequence is the cohomological shadow of "the product of all local evaluations is 1".</div>
+    <div class="session-refs"><strong>Refs:</strong> Serre ch.II; Neukirch ch.IV.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s46"><div class="session-title"><span class="session-number">46</span><h3>The Artin Map</h3></div>
+    <ul>
+      <li>Recap from S24: fractional ideals &amp; the class group, freshened after the gap</li>
+      <li>Decomposition &amp; inertia groups (formal definitions, as promised in S9); residue field extensions; Frobenius conjugacy class</li>
+      <li>Unramified primes give a well-defined Frobenius element; the Artin symbol (L/K / 𝔭); extension to fractional ideals</li>
+      <li>Examples: cyclotomic &amp; quadratic extensions</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> well-definedness of Frobenius; the Artin map is a homomorphism on ideals.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S9, S20, S24. <em>Feeds</em> S47–S49. <em>Arc:</em> evaluation at a point, now group-valued &amp; multiplicative.</div>
+    <div class="thread">Thread: the Artin map evaluates the prime 𝔭 into the symmetry group of the extension.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.VII §3; Lang, <em>ANT</em> ch.XI.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s47"><div class="session-title"><span class="session-number">47</span><h3>Artin Reciprocity</h3></div>
+    <ul>
+      <li>Artin Reciprocity Law: statement; kernel = norm group; Gal(L/K) ≅ I<sub>K</sub>/N<sub>L/K</sub>(I<sub>L</sub>)·P<sub>K</sub></li>
+      <li>Complete proofs for quadratic &amp; cyclotomic extensions; general outline via S45</li>
+      <li>Quadratic reciprocity recovered as a corollary (S6)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Artin reciprocity for quadratic &amp; cyclotomic; general outline.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S45, S46. <em>Feeds</em> S48–S49, S61. <em>Arc:</em> the First Isomorphism Theorem (P1) realized at global scale.</div>
+    <div class="thread">Thread: global reciprocity: the product of all local evaluations is the identity.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.VII §6; Cassels–Fröhlich ch.X.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s48"><div class="session-title"><span class="session-number">48</span><h3>The Existence Theorem</h3></div>
+    <ul>
+      <li>Existence Theorem (Takagi–Artin): statement; open subgroups of finite index ↔ abelian extensions</li>
+      <li>Proof ideas (cohomological / adelic); the Hilbert class field; examples</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> existence theorem (ideas &amp; structure).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S47. <em>Feeds</em> S49. <em>Arc:</em> every admissible subgroup of "points" comes from a field.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.VII §8; Lang ch.XIII.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s49"><div class="session-title"><span class="session-number">49</span><h3>The Idele Formulation and Global CFT</h3></div>
+    <ul>
+      <li>Ideles J<sub>K</sub> &amp; idele class group C<sub>K</sub> (S22); the Artin map in idele language</li>
+      <li>Reciprocity: C<sub>K</sub>/N(C<sub>L</sub>) ≅ Gal(L/K); G<sub>K</sub><sup>ab</sup> ≅ C<sub>K</sub> (statement)</li>
+      <li>Comparison with the ideal version; the role of adelic compactness (S22)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> idele-theoretic reciprocity; the abelianization isomorphism.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S22, S47–S48. <em>Feeds</em> S61. <em>Arc:</em> the modern formulation; C<sub>K</sub> = product of all local points modulo globals.</div>
+    <div class="thread">Thread: global abelian symmetry is exactly the idele class group — all points at once.</div>
+    <div class="session-refs"><strong>Refs:</strong> Neukirch ch.VII; Cassels–Fröhlich ch.XII.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s50"><div class="session-title"><span class="session-number">50</span><h3>Local Class Field Theory: Lubin–Tate</h3></div>
+    <ul>
+      <li>Formal group laws (self-contained opening): 1-dim commutative FGLs over a ring; additive &amp; multiplicative examples; formal logarithm; the notion of height</li>
+      <li>Lubin–Tate series &amp; formal modules; Theorem: all abelian extensions of ℚₚ arise from Lubin–Tate theory (key ideas)</li>
+      <li>The local reciprocity map ℚₚ* → Gal(L/ℚₚ)<sup>ab</sup>; the local analogue of Kronecker–Weber</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Lubin–Tate theorem (key ideas); local reciprocity.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S18–S19, S44. <em>Feeds</em> S61. <em>Arc:</em> local CFT made explicit; formal groups = points near the identity.</div>
+    <div class="thread">Thread: local reciprocity: the prime's own formal group generates all its abelian symmetry.</div>
+    <div class="session-refs"><strong>Refs:</strong> Serre, <em>Local Fields</em> ch.XIV–XV; Neukirch ch.V §6; Iwasawa.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- INTERLUDE -->
+<div class="act" id="act-int">
+  <div class="act-header"><span class="act-number">Interlude</span><h2>Spaces without Points</h2></div>
+  <div class="act-description">A one-session glimpse: how algebra remembers space even when classical points disappear — the bridge into Act VII.</div>
+
+  <div class="session" id="s51"><div class="session-title"><span class="session-number">51</span><h3>Gelfand–Naimark and the Non-commutative Glimpse</h3></div>
+    <ul>
+      <li>C*-algebras: minimal definitions; the Gelfand transform</li>
+      <li>Theorem (Gelfand–Naimark, categorical statement): commutative unital C*-algebras ≃ compact Hausdorff spaces, contravariantly (via maximal ideals = "points"); no functional analysis assumed</li>
+      <li>Points of X = characters of C(X) = maximal ideals (one more appearance)</li>
+      <li>Non-commutative C*-algebra = "space without classical points" (Connes perspective, survey)</li>
+      <li>Slogan: dropping commutativity drops points; but the algebra still remembers geometry</li>
+      <li>Scope note: no spectral theory, no dagger categories — pointers as further reading only; echoes S1/S28 and previews Act VII</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> Gelfand–Naimark duality (categorical statement &amp; proof outline).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1, P2. <em>Feeds</em> S55, S58, S61. <em>Arc:</em> shows "space without points" is meaningful, motivating the logical treatment of points.</div>
+    <div class="thread">Thread: dropping commutativity drops classical points — but the algebra still remembers the geometry.</div>
+    <div class="session-refs"><strong>Refs:</strong> Gracia-Bondía–Várilly–Figueroa ch.3 (survey); Kadison–Ringrose ch.4; Connes (further reading).</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- ACT VII -->
+<div class="act" id="act7">
+  <div class="act-header"><span class="act-number">Act VII</span><h2>Topos Theory and Logic</h2></div>
+  <div class="act-description">The point as geometric morphism, as model, and as completeness witness; Deligne's theorem.</div>
+
+  <div class="session" id="s52"><div class="session-title"><span class="session-number">52</span><h3>Sites and Grothendieck Topologies</h3></div>
+    <ul>
+      <li>Grothendieck topologies: coverings &amp; sieves; sites (C,J)</li>
+      <li>Examples: Zariski, étale, fppf; contrast with point-set topology (P2, S28)</li>
+      <li>Subcanonical sites; the Yoneda embedding of a site (S29)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> equivalence of sieve &amp; covering-family formulations.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S4, S28, S30. <em>Feeds</em> S53, S59. <em>Arc:</em> generalizes "open cover" so point-less spaces still have sheaf theory.</div>
+    <div class="thread">Thread: a covering says how points cover — even when the points are not there.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.III; Johnstone ch.C.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s53"><div class="session-title"><span class="session-number">53</span><h3>Sheaves on Sites and Topoi</h3></div>
+    <ul>
+      <li>Sheaves on a site (generalizing S26–S27); the sheaf condition for arbitrary covers</li>
+      <li>A topos = Sh(C,J); examples Sh(X), X<sub>Zar</sub>, X<sub>ét</sub>, G-sets</li>
+      <li>The generalized plus-construction (S27); limits/colimits; subobject classifier (mention)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> sheaf-condition equivalences; topos completeness/cocompleteness.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S27, S52. <em>Feeds</em> S54–S59. <em>Arc:</em> the world in which S54's points live.</div>
+    <div class="thread">Thread: a topos is "the world of sheaves" — a space whose points may be invisible.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.III; Johnstone ch.C.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s54"><div class="session-title"><span class="session-number">54</span><h3>Geometric Morphisms and Points of a Topos</h3></div>
+    <ul>
+      <li>Geometric morphisms (f<sup>*</sup>, f<sub>*</sub>) with f<sup>*</sup> ⊣ f<sub>*</sub> and f<sup>*</sup> left exact</li>
+      <li>Definition of a point: p: Set → E; the stalk functor p<sup>*</sup></li>
+      <li>Examples: point of a space → stalk; point of Spec R → prime → localization; étale point → geometric point Spec(Ω)→X; points of G-sets</li>
+      <li>Comparison with S29: point = morphism into the object</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> equivalence of point definitions (stalk-functor vs geometric morphism).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S4, S29, S53. <em>Feeds</em> S55, S58. <em>Arc:</em> the final, unifying definition of point.</div>
+    <div class="thread">Thread: point = "morphism from Set into the topos" — evaluation from the outside.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.IV; Johnstone ch.C.2.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s55"><div class="session-title"><span class="session-number">55</span><h3>Enough Points</h3></div>
+    <ul>
+      <li>Conservative families of points: definition; examples &amp; counterexamples</li>
+      <li>A topos with no points (explicit example); comparison with S51 (pointless spaces)</li>
+      <li>Deligne's theorem previewed (S58)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> basic properties of conservative families; the point-free example.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S54. <em>Feeds</em> S58. <em>Arc:</em> states the crisis — points can fail to exist — that Deligne resolves.</div>
+    <div class="thread">Thread: enough points = "evaluations determine the structure".</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.IV §6; Johnstone ch.C.2.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s56"><div class="session-title"><span class="session-number">56</span><h3>Classifying Topoi and Geometric Theories</h3></div>
+    <ul>
+      <li>Geometric logic: signatures, geometric formulas &amp; axioms, models (gentle introduction)</li>
+      <li>The classifying topos Set[T] &amp; its universal property; points of Set[T] = models of T in Set</li>
+      <li>Examples: theory of fields, of groups, of graphs; comparison with S41 (moduli as classifying objects)</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> points-of-classifying-topos = models (construction).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S53. <em>Feeds</em> S57, S58. <em>Arc:</em> a theory has a space whose points are its models.</div>
+    <div class="thread">Thread: the classifying topos is the space of models = the space of points of a theory.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.V; Johnstone ch.D.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s57"><div class="session-title"><span class="session-number">57</span><h3>Geometric Model Theory</h3></div>
+    <ul>
+      <li>Types &amp; Stone spaces; saturated models (gentle introduction)</li>
+      <li>Theorem: the type space of T ≅ the space of points of Set[T]; saturated models = points realizing all types</li>
+      <li>Logical completeness ↔ enough points</li>
+      <li>Pearl (optional, time-permitting): Lawvere's fixed-point theorem — the categorical diagonal behind Cantor, Russell, Gödel, Tarski</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> type-space / point-space correspondence (statement &amp; construction).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S56. <em>Feeds</em> S58. <em>Arc:</em> the logical reading of points; a type is a "generic point".</div>
+    <div class="thread">Thread: model theory is the algebraic geometry of theories; types are their points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Makkai–Reyes; Johnstone ch.D; Hodges; Lawvere (1969).</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s58"><div class="session-title"><span class="session-number">58</span><h3>Deligne's Theorem: Statement and Proof</h3></div>
+    <ul>
+      <li>Coherent topoi: definition &amp; examples</li>
+      <li>Deligne's Theorem: every coherent topos has enough points; full proof via Zorn (S1) + stepwise model construction</li>
+      <li>Equivalence with the completeness theorem for coherent geometric logic</li>
+    </ul>
+    <div class="theorem"><strong>Theorem (Deligne, SGA4).</strong> Every coherent topos has enough points; equivalently every consistent coherent geometric theory has a Set-model.</div>
+    <div class="proved"><strong>Proved:</strong> Deligne's theorem (full proof).</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S1, S55–S57. <em>Feeds</em> S59, S60. <em>Arc:</em> the crown of the course: models are enough = points are enough.</div>
+    <div class="thread">Thread: Deligne: coherence forces a space of logic to have points.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.VII; SGA4 exp.VI; Johnstone ch.D.3.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s59"><div class="session-title"><span class="session-number">59</span><h3>Deligne's Theorem in Algebraic Geometry</h3></div>
+    <ul>
+      <li>The étale topos of a qcqs scheme is coherent (S28, S52)</li>
+      <li>Étale points = geometric points; étale sheaves determined by stalks at geometric points</li>
+      <li>Application to étale cohomology (mention); relation to S35, S52</li>
+    </ul>
+    <div class="proved"><strong>Proved:</strong> coherence of the étale topos of a qcqs scheme.</div>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S35, S52, S58. <em>Feeds</em> S60–S61. <em>Arc:</em> closes the loop: the étale world has enough points.</div>
+    <div class="thread">Thread: geometric points suffice to see everything étale — Deligne in geometry.</div>
+    <div class="session-refs"><strong>Refs:</strong> Mac Lane–Moerdijk ch.VII; SGA4 exp.VI; Milne ch.II.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+<!-- POSTLUDE -->
+<div class="act" id="act8">
+  <div class="act-header"><span class="act-number">Postlude</span><h2>Synthesis and the Big Picture</h2></div>
+  <div class="act-description">One concept, many worlds — and where the story goes next.</div>
+
+  <div class="session" id="s60"><div class="session-title"><span class="session-number">60</span><h3>The Point: One Concept, Many Worlds</h3></div>
+    <ul>
+      <li>Recap of all incarnations: prime, valuation, prime ideal, closed/generic, T-valued point, place, geometric morphism, model, non-commutative glimpse</li>
+      <li>The big summary table (below); Dessins d'Enfants: G<sub>ℚ</sub> acting on children's drawings (via S35)</li>
+      <li>Final message: the point is a precise structure — evaluation from a local perspective</li>
+    </ul>
+    <table class="sum">
+      <tr><th>World</th><th>"Point" is</th><th>Evaluation is</th></tr>
+      <tr><td>Number theory</td><td>prime / place</td><td>residue, |·|<sub>p</sub></td></tr>
+      <tr><td>Geometry</td><td>prime ideal / closed–generic</td><td>κ(𝔭)</td></tr>
+      <tr><td>Topology</td><td>point of a space</td><td>stalk</td></tr>
+      <tr><td>Topos theory</td><td>geom. morphism Set→E</td><td>p<sup>*</sup></td></tr>
+      <tr><td>Logic</td><td>model of a theory</td><td>truth</td></tr>
+      <tr><td>Non-commutative</td><td>character / state</td><td>expectation</td></tr>
+    </table>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> everything. <em>Feeds</em> S61. <em>Arc:</em> the payoff: one structure, many disguises.</div>
+    <div class="session-refs"><strong>Refs:</strong> Grothendieck, <em>Esquisse</em>; Schneps.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+
+  <div class="session" id="s61"><div class="session-title"><span class="session-number">61</span><h3>Points in Mechanics, Quantum Physics, and Langlands</h3></div>
+    <ul>
+      <li>Points as states in classical mechanics (phase space); states as "points" of non-commutative algebras in QM (echo of S51)</li>
+      <li>The Langlands program as non-abelian reciprocity (template S47); p-adic Hodge theory; geometric Langlands &amp; ∞-topoi; perfectoid spaces; arithmetic topology (knots ↔ primes)</li>
+      <li>Open problems &amp; reading paths per participant</li>
+    </ul>
+    <div class="role"><strong>Role:</strong> <em>Depends on</em> S60. <em>Feeds</em> future study. <em>Arc:</em> the research map; audience-tailored horizon.</div>
+    <div class="session-refs"><strong>Refs:</strong> Connes; Frenkel; Scholze; Mazur.</div>
+    <span class="backtop"><a href="#toc">↑ contents</a></span></div>
+</div>
+
+</div><!-- /acts -->
+
+<div class="motif">· · · · ·</div>
+
+<!-- REFERENCES -->
+<div class="references-section" id="refs">
+  <h2>Consolidated References</h2>
+  <div class="ref-category"><h3>Preliminaries &amp; Algebraic Topology</h3><ol>
+    <li>Artin, E. <em>Algebra</em>. Dover, 1998.</li>
+    <li>Herstein, I.N. <em>Topics in Algebra</em>. Wiley, 1975.</li>
+    <li>Rotman, J.J. <em>An Introduction to the Theory of Groups</em>. Springer, 1995.</li>
+    <li>Munkres, J.R. <em>Topology</em>. Pearson, 2000.</li>
+    <li>Sutherland, W.A. <em>Introduction to Metric and Topological Spaces</em>. Oxford, 2009.</li>
+    <li>Rudin, W. <em>Principles of Mathematical Analysis</em>. McGraw-Hill, 1976.</li>
+    <li>Hatcher, A. <em>Algebraic Topology</em>. CUP, 2002 (ch.0–1 selected).</li>
+    <li>May, J.P. <em>A Concise Course in Algebraic Topology</em>. Chicago, 1999 (selected).</li>
+  </ol></div>
+  <div class="ref-category"><h3>Categories, Commutative Algebra, Number Theory</h3><ol>
+    <li>Mac Lane, S. <em>Categories for the Working Mathematician</em>. Springer, 1998.</li>
+    <li>Leinster, T. <em>Basic Category Theory</em>. CUP, 2014.</li>
+    <li>Atiyah, M.F. &amp; Macdonald, I.G. <em>Introduction to Commutative Algebra</em>. 1969.</li>
+    <li>Eisenbud, D. <em>Commutative Algebra with a View Toward Algebraic Geometry</em>. Springer, 1995.</li>
+    <li>Lang, S. <em>Algebra</em>. Springer, 2002.</li>
+    <li>Ireland, K. &amp; Rosen, M. <em>A Classical Introduction to Modern Number Theory</em>. Springer, 1990.</li>
+    <li>Hardy, G.H. &amp; Wright, E.M. <em>An Introduction to the Theory of Numbers</em>. Oxford, 2008.</li>
+    <li>Cox, D.A. <em>Primes of the Form x²+ny²</em>. Wiley, 2013.</li>
+    <li>Lemmermeyer, F. <em>Reciprocity Laws</em>. Springer, 2000.</li>
+    <li>Neukirch, J. <em>Algebraic Number Theory</em>. Springer, 1999.</li>
+    <li>Gouvêa, F.Q. <em>p-adic Numbers</em>. Springer, 2020.</li>
+    <li>Weil, A. <em>Basic Number Theory</em>. Springer, 1974.</li>
+    <li>Rosen, M. <em>Number Theory in Function Fields</em>. Springer, 2002.</li>
+  </ol></div>
+  <div class="ref-category"><h3>Algebraic Geometry &amp; Sheaves</h3><ol>
+    <li>Vakil, R. <em>The Rising Sea</em>. Online.</li>
+    <li>Hartshorne, R. <em>Algebraic Geometry</em>. Springer, 1977.</li>
+    <li>Görtz, U. &amp; Wedhorn, T. <em>Algebraic Geometry I</em>. Springer, 2020.</li>
+    <li>Eisenbud, D. &amp; Harris, J. <em>The Geometry of Schemes</em>. Springer, 2000.</li>
+    <li>Demazure, M. &amp; Gabriel, P. <em>Groupes Algébriques</em>, ch.1.</li>
+    <li>Fulton, W. <em>Algebraic Curves</em>. Benjamin, 1969.</li>
+    <li>Miranda, R. <em>Algebraic Curves and Riemann Surfaces</em>. AMS, 1995.</li>
+    <li>Shafarevich, I.R. <em>Basic Algebraic Geometry 1</em>. Springer, 2013.</li>
+    <li>Lorenzini, D. <em>An Invitation to Arithmetic Geometry</em>. AMS, 1996.</li>
+    <li>Tennison, B.R. <em>Sheaf Theory</em>. Cambridge, 1975.</li>
+    <li>Stacks Project. Online.</li>
+  </ol></div>
+  <div class="ref-category"><h3>Complex Analysis, Elliptic Curves, Moduli</h3><ol>
+    <li>Ahlfors, L.V. <em>Complex Analysis</em>. McGraw-Hill, 1979.</li>
+    <li>Conway, J.B. <em>Functions of One Complex Variable</em>. Springer, 1978.</li>
+    <li>Forster, O. <em>Lectures on Riemann Surfaces</em>. Springer, 1981.</li>
+    <li>Serre, J.-P. <em>GAGA</em>, Ann. of Math. 1956.</li>
+    <li>Silverman, J.H. <em>The Arithmetic of Elliptic Curves</em>. Springer, 2009.</li>
+    <li>Washington, L.C. <em>Elliptic Curves</em>. CRC, 2008.</li>
+    <li>Diamond, F. &amp; Shurman, J. <em>A First Course in Modular Forms</em>. Springer, 2005.</li>
+    <li>Katz, N. &amp; Mazur, B. <em>Arithmetic Moduli of Elliptic Curves</em> (selected).</li>
+    <li>Hindry, M. &amp; Silverman, J.H. <em>Diophantine Geometry</em> (survey chapters).</li>
+  </ol></div>
+  <div class="ref-category"><h3>Cohomology, Class Field Theory, Non-commutative Glimpse</h3><ol>
+    <li>Weibel, C. <em>An Introduction to Homological Algebra</em>. Cambridge, 1994.</li>
+    <li>Rotman, J.J. <em>An Introduction to Homological Algebra</em>. Springer, 2009.</li>
+    <li>Mac Lane, S. <em>Homology</em>. Springer, 1963.</li>
+    <li>Serre, J.-P. <em>Galois Cohomology</em>. Springer, 2002.</li>
+    <li>Serre, J.-P. <em>Local Fields</em>. Springer, 1979.</li>
+    <li>Cassels, J.W.S. &amp; Fröhlich, A. (eds.) <em>Algebraic Number Theory</em>. LMS, 2010.</li>
+    <li>Iwasawa, K. <em>Local Class Field Theory</em>. Oxford, 1986.</li>
+    <li>Gracia-Bondía, Várilly &amp; Figueroa, <em>Elements of Noncommutative Geometry</em> ch.3 (survey).</li>
+    <li>Kadison, R.V. &amp; Ringrose, J.R. <em>Fundamentals of Operator Algebras</em>. AMS, 1997.</li>
+    <li>Connes, A. <em>Noncommutative Geometry</em>. Academic Press, 1994 (further reading).</li>
+  </ol></div>
+  <div class="ref-category"><h3>Fundamental Groups &amp; Profinite Groups</h3><ol>
+    <li>Szamuely, T. <em>Galois Groups and Fundamental Groups</em>. Cambridge, 2009.</li>
+    <li>Grothendieck, A. <em>SGA 1</em>. Springer, 2003.</li>
+    <li>Ribes, L. &amp; Zalesskii, P. <em>Profinite Groups</em>. Springer, 2010.</li>
+  </ol></div>
+  <div class="ref-category"><h3>Topos Theory, Logic, Synthesis</h3><ol>
+    <li>Mac Lane, S. &amp; Moerdijk, I. <em>Sheaves in Geometry and Logic</em>. Springer, 1992.</li>
+    <li>Johnstone, P.T. <em>Sketches of an Elephant</em>. Oxford, 2002.</li>
+    <li>SGA 4, exp. VI; SGA 1, exp. V.</li>
+    <li>Makkai, M. &amp; Reyes, G.E. <em>First Order Categorical Logic</em>. Springer, 1977.</li>
+    <li>Hodges, W. <em>Model Theory</em>. Cambridge, 1993.</li>
+    <li>Lawvere, F.W. (1969), diagonal arguments and cartesian closed categories.</li>
+    <li>Milne, J.S. <em>Étale Cohomology</em>. Princeton, 1980.</li>
+    <li>Grothendieck, A. <em>Esquisse d'un Programme</em>, in Schneps (ed.), CUP, 1997.</li>
+    <li>Schneps, L. (ed.) <em>Dessins d'Enfants</em>. Cambridge, 1994.</li>
+    <li>Frenkel, E.; Scholze, P.; Mazur, B. (outlook readings).</li>
+  </ol></div>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <strong>Point</strong> — From Number Theory to Algebraic Geometry and Logic · Final Edition<br>
+  Weekly sessions, 2–2.5 hours · 64 meetings (P1–P3 + S1–S61)<br>
+  <span style="color:var(--brass);">· · · · ·</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.toc-toggle').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var act=btn.closest('.toc-act');
+      var open=act.classList.toggle('open');
+      btn.setAttribute('aria-expanded',open?'true':'false');
+    });
+  });
+  function setAll(o){
+    document.querySelectorAll('.toc-act').forEach(function(a){
+      a.classList.toggle('open',o);
+      var b=a.querySelector('.toc-toggle');
+      if(b)b.setAttribute('aria-expanded',o?'true':'false');
+    });
+  }
+  document.getElementById('expandAll').addEventListener('click',function(){setAll(true);});
+  document.getElementById('collapseAll').addEventListener('click',function(){setAll(false);});
+</script>
+</body>
+</html>

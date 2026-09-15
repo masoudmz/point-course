@@ -1,0 +1,1082 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\newtheorem*{theorem*}{Theorem}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\definecolor{navy}{RGB}{20,48,74}
+\definecolor{brass}{RGB}{179,129,47}
+
+% ── helpers ──
+\newcommand{\sess}[2]{\subsection[#1. #2]{Session #1 --- #2}}
+\newcommand{\chead}{\par\smallskip\noindent\textbf{Content to cover.}}
+\newcommand{\proved}[1]{\par\smallskip\noindent\textbf{Main results proved.} #1}
+\newcommand{\role}[1]{\par\smallskip\noindent\textbf{Role in the course.} #1}
+\newcommand{\thread}[1]{\par\smallskip\noindent\textbf{Unifying thread.} \textit{#1}}
+\newcommand{\srefs}[1]{\par\smallskip\noindent\textbf{References.} #1}
+% ── math macros ──
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\GG}{\mathbb{G}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Frob}{\operatorname{Frob}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\inv}{\operatorname{inv}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\m}{\mathfrak{m}}
+\newcommand{\im}{\operatorname{im}}
+
+\title{
+	{\color{navy}\textbf{\Huge Point}}\\[0.4em]
+	\Large \textit{From Number Theory to Algebraic Geometry and Logic}\\[0.8em]
+	\large \textbf{Detailed Syllabus --- Version 2.1 (Merged Maximal Edition)}\\[0.4em]
+	\normalsize 64 weekly meetings (2--2.5\,h): P1--P3 and S1--S61\\
+	\normalsize \emph{Every session: union of all content, proofs, course-role, thread, and references}
+}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+	
+	\begin{abstract}
+		\noindent
+		This is the \emph{merged maximal} edition of the syllabus: for each of the 64 meetings it records the union of all teaching content, the theorems proved in class, the session's role in the course (\emph{Depends on / Feeds / Arc}), its incarnation of the unifying concept of a \emph{point}, and consolidated references. The course follows the point from primes, through valuations, ideals, $T$-valued points, places, geometric morphisms, and models, to Deligne's theorem that every coherent topos has enough points. All main theorems are proved; all prerequisites are built inside the course, just in time.
+	\end{abstract}
+	
+	\subsection*{Anatomy of a session entry}
+	Each entry has five labelled parts: \textbf{Content to cover} (the complete teaching list); \textbf{Main results proved}; \textbf{Role in the course} (\emph{Depends on / Feeds / Arc}); \textbf{Unifying thread}; \textbf{References}.
+	
+	\tableofcontents
+	\newpage
+	
+	% ══════════════════════════════════════════════
+	\section*{Structure at a Glance}
+	\addcontentsline{toc}{section}{Structure at a Glance}
+	% ══════════════════════════════════════════════
+	\begin{center}
+		\begin{tabular}{|l|l|c|p{6cm}|}
+			\hline
+			\textbf{Part} & \textbf{Title} & \textbf{Sessions} & \textbf{Theme} \\
+			\hline
+			Prelude & Prerequisites & P1--P3 & Groups; topology \& metric; algebraic topology \\
+			Act 0 & Foundations & 1--4 & Rings/spectra; modules/tensor; fields; categories \\
+			Act I & Point as a Prime & 5--10 & Quadratic reciprocity \& Frobenius \\
+			Act II & Galois Theory & 11--16 & Solvability, FTGT, absolute Galois group \\
+			Act III & Valuations \& $p$-adics & 17--22 & Ostrowski, $\Q_p$, adeles \& compactness \\
+			Act IV & Algebraic Geometry & 23--36 & Comm.\ algebra, sheaves, schemes, functor of points, \'etale $\pi_1$ \\
+			Act V & Curves over $\C$ & 37--41 & Complex analysis, Riemann surfaces, elliptic curves, moduli \\
+			Act VI & Class Field Theory & 42--50 & Homological engine, cohomology, reciprocity, Lubin--Tate \\
+			Interlude & Spaces without Points & 51 & Gelfand--Naimark, non-commutative glimpse \\
+			Act VII & Topos \& Logic & 52--59 & Sites, topoi, points, classifying topoi, Deligne \\
+			Postlude & Synthesis & 60--61 & One concept many worlds; physics \& Langlands \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsection*{Prerequisite map (introduced $\to$ first used)}
+	\begin{center}\small
+		\begin{tabular}{|p{5cm}|c|p{5cm}|}
+			\hline
+			\textbf{Tool} & \textbf{Introduced} & \textbf{First used} \\
+			\hline
+			Zorn's lemma & S1 & S3, S58 \\
+			$\pi_1$ \& covering spaces & P3 & S35 \\
+			Modules, tensor, Nakayama & S2 & S23, S30, S42 \\
+			Yoneda lemma & S29 & S41, S54 \\
+			Cyclicity of $(\Z/p)^\times$ & S5 & S5 \\
+			Dedekind's lemma & S12 & S13, S14, S20, S45 \\
+			Noetherian, integral closure & S23 & S24, S25, S28 \\
+			Sheaf theory & S26--S27 & S28, S53 \\
+			Fiber products, \'etale & S30 & S33, S35, S39 \\
+			Restricted product, adelic compactness & S22 & S24, S49 \\
+			Complex analysis & S37--S38 & S39, S40 \\
+			Homological algebra & S42--S43 & S44, S45 \\
+			Formal group laws & S50 & S50 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\newpage
+	
+	% ══════════════════════════════════════════════
+	\section{Prelude --- Essential Prerequisites}
+	% ══════════════════════════════════════════════
+	
+	\sess{P1}{Group Theory: Part I}
+	\chead
+	\begin{itemize}
+		\item Groups and examples: $\Z$, $\Q^*$, $S_n$, $\GL_n(k)$, $\SO_n(\R)$, circle group; abelian vs non-abelian; orders.
+		\item Subgroups; subgroup criterion; generated \& cyclic subgroups; order of an element; Lagrange + corollaries (order divides; $g^n=e$; prime order $\Rightarrow$ cyclic).
+		\item Homomorphisms; kernel/image; injectivity via trivial kernel; isomorphisms; inner automorphisms \& center.
+		\item Normal subgroups \& criteria; quotient groups (well-definedness); natural projection; First/Second/Third Isomorphism Theorems.
+		\item Three worked First-Iso examples: $\det$, sign, $\Z\to\Z/n$.
+		\item Group actions; orbits, stabilizers; Orbit--Stabilizer; conjugation action; class equation (mention); Cayley (mention).
+	\end{itemize}
+	\proved{Subgroup criterion; Lagrange; First Isomorphism; Orbit--Stabilizer.}
+	\role{\emph{Depends on} none (entry). \emph{Feeds} Act~II, S24, S49, P3/S35, Act~VII. \emph{Arc:} quotient $=$ identify what looks the same from a viewpoint --- the pattern later instantiated by norm groups and $G_K^{\mathrm{ab}}\cong C_K$.}
+	\thread{A quotient group is a space of viewpoints collapsed to points.}
+	\srefs{Artin ch.2; Herstein ch.2; Rotman ch.1--4.}
+	
+	\sess{P2}{Topology and Metric Spaces}
+	\chead
+	\begin{itemize}
+		\item Topology axioms; open/closed; bases; subspace \& product topologies; infinite products vs box (remark previewing restricted product, S22).
+		\item Continuity (open-set); homeomorphism; connectedness \& components; intervals connected (proof); compactness; $[0,1]$ compact (bisection proof); Heine--Borel (statement); Hausdorff.
+		\item Metric spaces; balls; metric topology; convergence; Cauchy; completeness; examples $\R$ complete, $\Q$ not, $C[0,1]$ sup complete.
+		\item Completion (Cauchy mod null): existence \& uniqueness; $\Q\to\R$.
+		\item Preview: $p$-adic metric \& $\Q\to\Q_p$ (S17--S18); Ostrowski preview (S17).
+	\end{itemize}
+	\proved{Bases generate topology; balls a basis; intervals connected; $[0,1]$ compact; compact $\subseteq$ Hausdorff closed; unique limits; $\varepsilon$--$\delta$ $\iff$ open-set continuity; convergent $\Rightarrow$ Cauchy; completion existence/uniqueness.}
+	\role{\emph{Depends on} none. \emph{Feeds} S18, S19, S21, S22, S34, S38. \emph{Arc:} supplies the two machines the course runs on --- completion (adding missing points) and compactness (finiteness).}
+	\thread{Completion adds the points Cauchy sequences deserved; compactness makes point-counts finite.}
+	\srefs{Munkres ch.2--4; Sutherland; Rudin ch.2--4; Gouv\^ea ch.1--3.}
+	
+	\sess{P3}{Algebraic Topology Crash Course}
+	\chead
+	\begin{itemize}
+		\item Paths \& homotopy of paths; homotopy equivalence; $\pi_1(X,x_0)$; computations for $S^1$ and the torus; simply-connected spaces.
+		\item Covering spaces; lifting of paths \& homotopies; deck transformations; universal cover; classification of coverings via $\pi_1$-sets.
+		\item The topological Galois correspondence: covers $\leftrightarrow$ subgroups / $\pi_1$-sets (prototype of S35).
+		\item Monodromy: lifting a loop permutes the fiber --- a first ``evaluation along a loop''.
+		\item Scope note: no homology; just enough to make \'etale $\pi_1$ intuitive; remark on profinite completion \& the $G_\Q$ analogy (S16).
+	\end{itemize}
+	\proved{$\pi_1(S^1)=\Z$; the covering-space correspondence (construction).}
+	\role{\emph{Depends on} P2. \emph{Feeds} S35, S59, S60. \emph{Arc:} provides the exact categorical pattern (covers $\leftrightarrow$ $\pi_1$-sets) that S35 reproduces for schemes and Act~VII internalizes in topoi.}
+	\thread{A covering is a space of points over points; monodromy is evaluation along loops.}
+	\srefs{Hatcher ch.0--1 (selected); May ch.1--3 (selected); Munkres \S51--54; Szamuely ch.2.}
+	
+	% ══════════════════════════════════════════════
+	\section{Act 0 --- Foundations}
+	% ══════════════════════════════════════════════
+	
+	\sess{1}{Rings, Ideals, Quotients, Prime \& Maximal Ideals}
+	\chead
+	\begin{itemize}
+		\item Zorn's lemma; Krull's theorem (existence of maximal ideals) [prereq for S3, S58].
+		\item Rings, ideals, quotient rings; localization $R_S$, $R_\p$; examples $\Z$, $k[x]$, $\Z[i]$, $\Z[\sqrt{-5}]$.
+		\item Prime ideals ($R/\p$ a domain); maximal ideals ($R/\m$ a field); maximal $\Rightarrow$ prime (proofs); nilradical $=\bigcap$ primes (proof).
+		\item $\Spec(R)$; Zariski topology via $V(I)$; basic opens $D(f)$ form a basis; quasi-compactness (proof).
+		\item Closed points $=$ maximal; generic point $=$ minimal prime; specialization; examples $\Spec\Z$, $\Spec\C[x]$, $\Spec\C[x,y]$, $\Spec\Z_{(p)}$.
+		\item Functoriality $\Spec:\mathbf{Ring}^{\mathrm{op}}\to\mathbf{Top}$; remark: why Zariski is not Hausdorff (preview S28).
+	\end{itemize}
+	\proved{Maximal/prime characterizations; Krull; nilradical intersection; Zariski axioms; $D(f)$ basis; $\Spec$ quasi-compact.}
+	\role{\emph{Depends on} none. \emph{Feeds} S28, S46, S54; Zorn reused in S3, S58. \emph{Arc:} the first incarnation of point.}
+	\thread{Prime ideal $=$ point; the generic point is ``the whole space seen as one point''.}
+	\srefs{Atiyah--Macdonald ch.1--4; Eisenbud ch.2; Vakil ch.3--4.}
+	
+	\sess{2}{Modules, Tensor Products, and Exact Sequences}
+	\chead
+	\begin{itemize}
+		\item Modules, submodules, quotients; free \& finitely generated; examples.
+		\item Nakayama's lemma (proof) + applications to local rings \& generators.
+		\item Tensor product $M\otimes_R N$; universal property; right-exactness (proof); base change; $M\otimes_R k(\p)$ as the fiber at $\p$.
+		\item Short \& long exact sequences; split sequences; diagram-chasing warm-up (snake deferred to S42).
+		\item Flatness: definition \& first examples (free, localized); preview of its role in \'etale maps (serious treatment S30).
+	\end{itemize}
+	\proved{Nakayama; right-exactness of tensor; base-change identities.}
+	\role{\emph{Depends on} S1. \emph{Feeds} S23, S30, S42--S45. \emph{Arc:} tensoring with a residue field $=$ evaluating a family at a point.}
+	\thread{The fiber $M\otimes_R k(\p)$ is the value of the module at the point $\p$.}
+	\srefs{Atiyah--Macdonald ch.2--3; Eisenbud ch.1,6; Lang ch.XVI.}
+	
+	\sess{3}{Fields, Extensions, and Algebraic Closure}
+	\chead
+	\begin{itemize}
+		\item Fields; characteristic; finite fields $\F_p$, $\F_{p^n}$ (existence/uniqueness deferred to S12).
+		\item Extensions $L/K$, degree, tower law; algebraic vs transcendental; minimal polynomial.
+		\item Splitting fields (preview); algebraic closure $\bar K$: existence via Zorn (proof), uniqueness (mention); $\bar\Q$.
+		\item Definition of $G_\Q=\Gal(\bar\Q/\Q)$ as the horizon object (developed S16).
+	\end{itemize}
+	\proved{Tower law; existence of algebraic closures.}
+	\role{\emph{Depends on} S1 (Zorn). \emph{Feeds} Act~II, S16, S35. \emph{Arc:} $\bar\Q$ is the space of all algebraic points over $\Q$.}
+	\thread{Algebraic closure gathers all points of all extensions into one space.}
+	\srefs{Lang ch.V; Artin, \emph{Galois Theory} ch.1--3.}
+	
+	\sess{4}{Category Theory Essentials}
+	\chead
+	\begin{itemize}
+		\item Categories, functors, natural transformations; examples $\mathbf{Set}$, $\mathbf{Ring}$, $\mathbf{Top}$, $R\text{-}\mathbf{Mod}$.
+		\item Limits \& colimits concretely: products, equalizers, inverse limits ($\Z_p$, profinite groups, $G_\Q$), directed colimits (stalks, localization).
+		\item Adjunctions \& universal properties (free/forgetful; preview $f^{-1}\dashv f_*$); $\Spec$ as $\mathbf{Ring}^{\mathrm{op}}\to\mathbf{Top}$.
+		\item Yoneda lemma: statement \& preview (full proof S29).
+		\item Remark (one line): monads/comonads --- sheafification (S27) is an idempotent monad; full monad theory not pursued.
+	\end{itemize}
+	\proved{Worked (co)limit computations; adjunction examples.}
+	\role{\emph{Depends on} S1--S2. \emph{Feeds} S16, S18, S26, S29, S34, S53--S54. \emph{Arc:} an object is determined by its maps in/out --- precursor of ``point $=$ morphism''.}
+	\thread{Limits glue local data into global objects; colimits extract germs at points.}
+	\srefs{Mac Lane ch.I--V; Leinster.}
+	
+	% ══════════════════════════════════════════════
+	\section{Act I --- The Point as a Prime Number}
+	% ══════════════════════════════════════════════
+	
+	\sess{5}{Quadratic Residues and the Legendre Symbol}
+	\chead
+	\begin{itemize}
+		\item Congruences recap; quadratic residues; the Legendre symbol $(a/p)$.
+		\item Cyclicity of $(\Z/p)^\times$ (primitive roots); Euler's criterion (proof); multiplicativity.
+		\item Supplementary laws $(-1/p)$, $(2/p)$ (proofs); extensive small-prime computations.
+		\item The quadratic character as a homomorphism $(\Z/p)^\times\to\{\pm1\}$ --- the first ``evaluation character''.
+	\end{itemize}
+	\proved{Primitive roots; Euler's criterion; supplementary laws.}
+	\role{\emph{Depends on} P1. \emph{Feeds} S6--S8, S46, S61. \emph{Arc:} the prime $p$ acts as a place evaluating squareness.}
+	\thread{$(a/p)$ is the value of $a$ at the point $p$.}
+	\srefs{Ireland--Rosen ch.5; Hardy--Wright ch.VI.}
+	
+	\sess{6}{Quadratic Reciprocity: Statement and First Proof}
+	\chead
+	\begin{itemize}
+		\item Precise statement of QR; Gauss's Lemma (counting least residues).
+		\item Complete proof of QR via Gauss's Lemma; numerical examples.
+		\item Reformulation preview: $(p/q)$ as splitting of $q$ in $\Q(\sqrt p)$.
+	\end{itemize}
+	\begin{theorem*}[Gauss, 1796] For distinct odd primes $p,q$: $(p/q)(q/p)=(-1)^{(p-1)(q-1)/4}$.
+	\end{theorem*}
+	\proved{QR via Gauss's Lemma.}
+	\role{\emph{Depends on} S5. \emph{Feeds} S7--S8, S47. \emph{Arc:} the theorem whose generalization is the whole course.}
+	\thread{Two primes evaluate each other; the answers agree up to a sign rule.}
+	\srefs{Ireland--Rosen ch.5; Cox ch.1.}
+	
+	\sess{7}{Quadratic Reciprocity: Geometric Proofs \& Generalizations}
+	\chead
+	\begin{itemize}
+		\item Lattice-point (geometric) proof of QR (proof); Eisenstein's trigonometric-sum proof (mention).
+		\item Jacobi symbol; QR for Jacobi; computational applications.
+		\item Remark: reciprocity as a point-counting statement (preview of $L$-functions S40 and Langlands S61).
+	\end{itemize}
+	\proved{Geometric proof of QR.}
+	\role{\emph{Depends on} S6. \emph{Feeds} S8, S40, S61. \emph{Arc:} shows reciprocity has geometric content.}
+	\thread{Counting points mod $p$ packages into the reciprocity law.}
+	\srefs{Ireland--Rosen ch.5; Lemmermeyer.}
+	
+	\sess{8}{Reciprocity in the Language of Galois Theory}
+	\chead
+	\begin{itemize}
+		\item Pre-Galois toolkit (self-contained): $\Gal(L/K)=\Aut(L/K)$; concrete Galois groups of $\Q(\sqrt d)$ and $\Q(\zeta_n)$.
+		\item Frobenius for quadratic extensions: $\Frob_p=(d/p)$; QR as the symmetry $\Frob_p$ in $\Q(\sqrt q)$ $\leftrightarrow$ $\Frob_q$ in $\Q(\sqrt p)$.
+		\item Kronecker--Weber for quadratic extensions (proof via cyclotomic fields).
+		\item The Legendre symbol re-read as ``evaluation at the point $q$''.
+	\end{itemize}
+	\proved{QR as Frobenius reciprocity; Kronecker--Weber (quadratic case).}
+	\role{\emph{Depends on} S5--S7. \emph{Feeds} S9, S20, S46, Act~II. \emph{Arc:} introduces the Frobenius element, central to Acts III \& VI and the Langlands outlook.}
+	\thread{Legendre $=$ Frobenius $=$ evaluation at a point, now group-valued.}
+	\srefs{Ireland--Rosen ch.13; Neukirch ch.I \S9.}
+	
+	\sess{9}{Cyclotomic Extensions and Frobenius Elements}
+	\chead
+	\begin{itemize}
+		\item Cyclotomic polynomials; $\Q(\zeta_n)$; $\Gal(\Q(\zeta_n)/\Q)\cong(\Z/n)^\times$ (proof).
+		\item Concrete decomposition of primes: split / inert / ramified according to $p\bmod n$; Dedekind's criterion examples.
+		\item Concrete inertia \& ramification in cyclotomic fields.
+		\item Signposting: valuation-theoretic $e,f$ in S20; decomposition/inertia \emph{groups} in S46.
+	\end{itemize}
+	\proved{Structure of cyclotomic Galois groups; concrete prime decomposition.}
+	\role{\emph{Depends on} S8. \emph{Feeds} S16, S47--S49. \emph{Arc:} first infinite family where Frobenius is explicitly computable.}
+	\thread{In $\Q(\zeta_n)$, the point $p$ is completely described by $p\bmod n$.}
+	\srefs{Lang, \emph{ANT} ch.I; Ireland--Rosen ch.13.}
+	
+	\sess{10}{Summary: From Reciprocity to Galois Theory}
+	\chead
+	\begin{itemize}
+		\item Recap of Act~I; the hierarchy of reciprocity laws; the question of non-abelian generalizations.
+		\item Preview of Act~II as the language for those generalizations.
+	\end{itemize}
+	\role{\emph{Depends on} S5--S9. \emph{Feeds} Act~II. \emph{Arc:} consolidation; sets the ``generalize QR'' agenda.}
+	\srefs{Review of Act~I sources.}
+	
+	% ══════════════════════════════════════════════
+	\section{Act II --- Galois Theory and Solvability}
+	% ══════════════════════════════════════════════
+	
+	\sess{11}{Solvable Groups, $S_n$, and $A_n$}
+	\chead
+	\begin{itemize}
+		\item $S_n$: cycle decomposition, sign homomorphism; $A_n=\ker(\mathrm{sign})$.
+		\item Simplicity of $A_n$ for $n\geq5$ (statement \& proof idea via 3-cycles).
+		\item Solvable groups via composition series with abelian quotients; commutator subgroup; $S_3,S_4$ solvable, $S_5$ not.
+	\end{itemize}
+	\proved{Simplicity of $A_n$ ($n\geq5$); solvability of $S_3,S_4$; non-solvability of $S_5$.}
+	\role{\emph{Depends on} P1. \emph{Feeds} S14, S15. \emph{Arc:} the engine turning symmetry into a solvability obstruction.}
+	\thread{Composition factors are the elementary symmetries a point-system can have.}
+	\srefs{Artin ch.2 \S7--8; Rotman ch.4.}
+	
+	\sess{12}{Galois Extensions, Finite Fields, and Linear Independence}
+	\chead
+	\begin{itemize}
+		\item Separable polynomials \& extensions; normal extensions; splitting fields; characterizations of Galois extensions (proofs).
+		\item Finite fields $\F_{p^n}$: existence, uniqueness, Galois group cyclic generated by Frobenius (proof).
+		\item Dedekind's lemma: linear independence of characters (proof); trace \& norm preview; used in S13, S14, S20, S45.
+	\end{itemize}
+	\proved{Galois characterizations; structure of finite fields; Dedekind's lemma.}
+	\role{\emph{Depends on} S3, S11. \emph{Feeds} S13, S14, S20, S45. \emph{Arc:} finite-field Frobenius is the prototype of $\Frob_\p$ (S46).}
+	\thread{Frobenius is the canonical point-moving symmetry of finite fields.}
+	\srefs{Lang ch.VI; Artin, \emph{Galois Theory}; Conrad, \emph{FGT}.}
+	
+	\sess{13}{The Fundamental Theorem of Galois Theory}
+	\chead
+	\begin{itemize}
+		\item FTGT: inclusion-reversing bijection subgroups $\leftrightarrow$ intermediate fields (complete proof using S12).
+		\item Examples $\Q(\sqrt2,\sqrt3)/\Q$, $\Q(\sqrt[3]{2})/\Q$; normal subgroups $\leftrightarrow$ Galois subextensions.
+		\item Primitive element theorem (statement/proof idea); Galois group of finite fields.
+	\end{itemize}
+	\proved{FTGT; normal $\leftrightarrow$ Galois.}
+	\role{\emph{Depends on} S12. \emph{Feeds} S14--S16, S35, S56. \emph{Arc:} the dictionary later categorified (covers $\leftrightarrow$ $\pi_1$-sets) and logicalized (subtopos $\leftrightarrow$ theory quotient).}
+	\thread{Intermediate fields are subspaces of points of the Galois correspondence.}
+	\srefs{Artin ch.4; Lang ch.VI.}
+	
+	\sess{14}{Solvable Groups and Solvability by Radicals}
+	\chead
+	\begin{itemize}
+		\item Radical extensions; Kummer theory (statement); roots of unity.
+		\item Theorem: $f$ solvable by radicals $\iff$ $\Gal(f)$ solvable (proof using S11--S13).
+		\item Worked examples of solvable and non-solvable polynomials.
+	\end{itemize}
+	\proved{Solvability-by-radicals characterization.}
+	\role{\emph{Depends on} S11--S13. \emph{Feeds} S15. \emph{Arc:} the classical payoff of the Galois dictionary.}
+	\srefs{Artin ch.5; Lang ch.VI \S8.}
+	
+	\sess{15}{The Insolvability of the Quintic}
+	\chead
+	\begin{itemize}
+		\item The general polynomial of degree $n$; its Galois group $S_n$.
+		\item Abel--Ruffini: degree $\geq5$ not solvable by radicals (proof via S11).
+		\item An explicit unsolvable quintic (example/mention).
+	\end{itemize}
+	\proved{Abel--Ruffini.}
+	\role{\emph{Depends on} S14. \emph{Feeds} S16. \emph{Arc:} closes the classical problem; motivates studying Galois groups as objects.}
+	\srefs{Artin ch.5; Stewart ch.3--4.}
+	
+	\sess{16}{The Absolute Galois Group}
+	\chead
+	\begin{itemize}
+		\item $G_\Q=\Gal(\bar\Q/\Q)$; Krull/profinite topology as an inverse limit (S4).
+		\item The inverse Galois problem; why $G_\Q$ is mysterious; local decomposition preview (S46).
+		\item Abelianization $G_\Q^{\mathrm{ab}}$; Kronecker--Weber (statement); preview of CFT (Act~VI).
+		\item $G_\Q$ as ``fundamental group of $\Spec\Q$'' (made precise S35).
+	\end{itemize}
+	\proved{Profinite structure of $G_\Q$; Kronecker--Weber stated \& checked on examples.}
+	\role{\emph{Depends on} S4, S13. \emph{Feeds} Acts III, VI, VII. \emph{Arc:} the master symmetry space of all algebraic points over $\Q$.}
+	\thread{$G_\Q$ is the holonomy of the covering $\Spec\bar\Q\to\Spec\Q$.}
+	\srefs{Neukirch ch.I; Szamuely ch.1.}
+	
+	% ══════════════════════════════════════════════
+	\section{Act III --- Valuations and $p$-adic Points}
+	% ══════════════════════════════════════════════
+	
+	\sess{17}{Absolute Values, Valuations, and Ostrowski's Theorem}
+	\chead
+	\begin{itemize}
+		\item Absolute values; equivalence; archimedean vs non-archimedean; additive valuations $v:K^*\to\Gamma$.
+		\item Valuation ring $\mathcal O_v$, maximal ideal $\m_v$, residue field $k_v$, value group.
+		\item Ostrowski's theorem for $\Q$ (proof sketch): places of $\Q$ are $\{\infty,2,3,5,\dots\}$.
+		\item Remark: Ostrowski for $k(t)$ (function-field places) previewing S21.
+	\end{itemize}
+	\proved{Ostrowski (sketch); basic properties of valuation rings.}
+	\role{\emph{Depends on} P2. \emph{Feeds} S18--S22, S33, S46. \emph{Arc:} the census of points of $\Q$.}
+	\thread{A place is a point; Ostrowski lists every point of $\Q$.}
+	\srefs{Gouv\^ea ch.1--2; Neukirch ch.II \S1.}
+	
+	\sess{18}{Construction of $\Q_p$ and $\Z_p$}
+	\chead
+	\begin{itemize}
+		\item Completion of $\Q$ w.r.t.\ $|\cdot|_p$ via the P2 machine; $\Z_p=\varprojlim\Z/p^n$ (S4); equivalence of the two constructions.
+		\item Series representation $\sum a_i p^i$; valuation \& topology on $\Q_p$; $\Z_p$ a local ring with residue $\F_p$.
+		\item Unit structure $\Q_p^*\cong p^{\Z}\times\Z_p^*$; concrete computations ($-1$, $1/2$, $\sqrt7$ in $\Z_3$).
+		\item $\Q_p$ not algebraically closed; $\bar\Q_p$ and $\C_p$ (mention).
+	\end{itemize}
+	\proved{Equivalence of completion \& inverse-limit constructions; unit structure.}
+	\role{\emph{Depends on} P2, S4, S17. \emph{Feeds} S19, S22, S34, S50, S28/S30. \emph{Arc:} $\Q$ completed at the point $p$.}
+	\thread{Completion at a point yields a new, purely local number system.}
+	\srefs{Gouv\^ea ch.3--4; Serre, \emph{Course in Arithmetic} ch.II.}
+	
+	\sess{19}{Hensel's Lemma and $p$-adic Topology}
+	\chead
+	\begin{itemize}
+		\item Hensel's lemma (proof via Newton iteration/contraction); applications to roots \& factorization ($\sqrt2$, $\sqrt{-1}$ in $\Q_p$?).
+		\item The ultrametric inequality; all triangles isosceles; open balls clopen.
+		\item Compactness of $\Z_p$ (proof); local compactness of $\Q_p$.
+		\item Hensel as ``smooth points lift'': preview of \'etale (S30).
+	\end{itemize}
+	\proved{Hensel's lemma; compactness of $\Z_p$.}
+	\role{\emph{Depends on} P2, S18. \emph{Feeds} S22, S30, S34. \emph{Arc:} the local inverse-function theorem of arithmetic.}
+	\thread{Hensel lifts residue-field points to genuine local points.}
+	\srefs{Gouv\^ea ch.4; Neukirch ch.II \S4.}
+	
+	\sess{20}{Extension of Valuations: Ramification and Residue Degree}
+	\chead
+	\begin{itemize}
+		\item Extending $v$ from $K$ to $L$; ramification index $e$; residue degree $f$ (the formal definitions promised in S9).
+		\item Fundamental inequality $\sum e_i f_i\le[L:K]$ (proof via Dedekind's lemma, S12); equality in the Galois case.
+		\item Unramified / split / inert; examples in quadratic \& cyclotomic fields; relation to S9.
+		\item Preview of decomposition \& inertia groups (S46).
+	\end{itemize}
+	\proved{Fundamental inequality; equality for Galois extensions.}
+	\role{\emph{Depends on} S12, S17. \emph{Feeds} S24, S46, S50. \emph{Arc:} makes S9's concrete decomposition rigorous.}
+	\thread{Ramification measures how several points merge into one.}
+	\srefs{Neukirch ch.I \S8--9; Lang, \emph{ANT} ch.I.}
+	
+	\sess{21}{Function Fields and the Geometric Analogy}
+	\chead
+	\begin{itemize}
+		\item $k(t)$ and its places $=$ points of $\PP^1$; the $t$-adic valuation; completion $k((t))$.
+		\item The analogy table: $\Q_p\leftrightarrow k((t))$, $\Z_p\leftrightarrow k[[t]]$, prime $p\leftrightarrow$ point $t=0$.
+		\item Divisors \& degree preview; Riemann--Roch preview (S32, S38).
+		\item Remark: the number-field / function-field dictionary as a working philosophy.
+	\end{itemize}
+	\proved{Place--point correspondence for $k(t)$; completion to $k((t))$.}
+	\role{\emph{Depends on} S17. \emph{Feeds} S32, S36, S38, S60. \emph{Arc:} makes explicit the identification ``prime $\leftrightarrow$ point''.}
+	\thread{$\Spec\Z$ and a curve are the same kind of object.}
+	\srefs{Gouv\^ea ch.2; Rosen ch.1.}
+	
+	\sess{22}{Adeles, Ideles, and Adelic Compactness}
+	\chead
+	\begin{itemize}
+		\item Restricted product: definition, topology, local compactness (using P2); the adele ring $\A_\Q$ \& idele group $\A_\Q^*$.
+		\item $\Q$ embedded diagonally \& discrete; Product Formula $\prod_v|x|_v=1$ (proof).
+		\item $\A_\Q/\Q$ is compact (proof sketch via a fundamental domain); consequences previewed (S24).
+		\item Adelic viewpoint on ideals \& class groups (preview S24); automorphic preview (S40, S61).
+	\end{itemize}
+	\proved{Product Formula; adelic compactness (sketch).}
+	\role{\emph{Depends on} P2, S18. \emph{Feeds} S24, S41, S49, S61. \emph{Arc:} adeles $=$ all points simultaneously; compactness $=$ the finiteness engine.}
+	\thread{The adele ring is tuples of local points glued by the product formula.}
+	\srefs{Neukirch ch.VII \S1; Cassels--Fr\"ohlich ch.VII; Weil.}
+	
+	% ══════════════════════════════════════════════
+	\section{Act IV --- Algebraic Geometry}
+	% ══════════════════════════════════════════════
+	
+	\sess{23}{Commutative Algebra I}
+	\chead
+	\begin{itemize}
+		\item Noetherian rings \& equivalent conditions; Hilbert Basis Theorem (proof).
+		\item Integral elements; integral closure; integrally closed domains; examples.
+		\item Krull dimension; dimension of local rings; examples $\mathcal O_K$, coordinate rings, $\Z$.
+		\item Local rings \& completion (preview of the S18/S30 interplay).
+	\end{itemize}
+	\proved{Hilbert Basis; integral-closure properties; dimension computations.}
+	\role{\emph{Depends on} S1--S2. \emph{Feeds} S24, S25, S28, S30. \emph{Arc:} finiteness \& integrality make arithmetic points behave geometrically.}
+	\thread{Dimension counts independent directions in which points can move.}
+	\srefs{Atiyah--Macdonald ch.5,7; Eisenbud ch.4,7.}
+	
+	\sess{24}{Dedekind Domains and Ideal Class Groups}
+	\chead
+	\begin{itemize}
+		\item Dedekind domains \& equivalent characterizations; unique factorization of ideals (proof).
+		\item Fractional ideals \& their group; the class group $\Cl(\mathcal O_K)$; example $\Cl(\Z[\sqrt{-5}])\cong\Z/2$.
+		\item Finiteness of the class group via adelic compactness (S22) (proof); Minkowski alternative (mention).
+		\item Relation to ideal factorization (S20); bridge to S46--S47; recalled again at S46.
+	\end{itemize}
+	\proved{Unique factorization of ideals; finiteness of the class group (adelic route).}
+	\role{\emph{Depends on} S20, S22, S23. \emph{Feeds} S46, S47--S49. \emph{Arc:} the arithmetic of number rings placed inside the geometry act.}
+	\thread{The class group measures how far the points of $\Spec\mathcal O_K$ are from being principal.}
+	\srefs{Neukirch ch.I \S3; Lang, \emph{ANT} ch.I; Cassels--Fr\"ohlich.}
+	
+	\sess{25}{Affine Varieties and Hilbert's Nullstellensatz}
+	\chead
+	\begin{itemize}
+		\item Algebraic sets in $k^n$; the Zariski topology on $k^n$; coordinate rings.
+		\item Hilbert's Nullstellensatz (proof via Rabinowitch / Noether normalization); algebraic-set $\leftrightarrow$ radical-ideal correspondence.
+		\item Morphisms of affine varieties; maximal ideals as closed points (over $\bar k$).
+	\end{itemize}
+	\proved{Nullstellensatz; the classical correspondence.}
+	\role{\emph{Depends on} S23. \emph{Feeds} S28, S31. \emph{Arc:} the classical bridge where ``point $=$ maximal ideal'' first becomes a theorem.}
+	\thread{Over an algebraically closed field, geometry is recovered from maximal ideals.}
+	\srefs{Vakil ch.3; Hartshorne ch.I.}
+	
+	\sess{26}{Presheaves and Sheaves}
+	\chead
+	\begin{itemize}
+		\item Presheaf as contravariant functor $\mathrm{Open}(X)^{\mathrm{op}}\to\mathcal C$; restriction maps; sections; $\mathrm{PSh}(X)$.
+		\item Examples \& non-examples: continuous; holomorphic (defined inline; full theory S37--S38); constant presheaf not a sheaf; bounded functions fail gluing.
+		\item Sheaf axioms (uniqueness + gluing); equalizer-diagram formulation; sheaf morphisms; kernel \& cokernel.
+		\item Epi $\neq$ surjective on sections: the $\exp:\mathcal O\to\mathcal O^*$ example on $\C$.
+		\item Stalks as directed colimits (S4); germs of sections.
+	\end{itemize}
+	\proved{Equalizer formulation equivalent to gluing axioms; kernel is a sheaf; the exp counterexample.}
+	\role{\emph{Depends on} S4, P2. \emph{Feeds} S27, S28, S53, S54. \emph{Arc:} a sheaf assigns data to every open and reconciles local into global.}
+	\thread{The stalk at $x$ is the value of the sheaf at the point $x$.}
+	\srefs{Vakil ch.2; Hartshorne ch.II \S1; Tennison; Mac Lane--Moerdijk.}
+	
+	\sess{27}{Sheafification, Categories of Sheaves, and \'Etale Spaces}
+	\chead
+	\begin{itemize}
+		\item Sheafification \& universal property; plus-construction $\mathcal F\to\mathcal F^+\to\mathcal F^{++}$ (the idempotent-monad remark of S4 made concrete).
+		\item Adjunction $a\dashv i$; $\mathrm{Sh}(X)$ as reflective subcategory / localization of $\mathrm{PSh}(X)$; limits \& colimits in $\mathrm{Sh}(X)$.
+		\item Direct image $f_*$ \& inverse image $f^{-1}$; adjunction $f^{-1}\dashv f_*$.
+		\item \'Etale-space equivalence: $\mathrm{Sh}(X)\simeq$ spaces over $X$ via local homeomorphisms; stalk $=$ fiber $\pi^{-1}(x)$; skyscraper \& constant sheaves via \'etale spaces.
+		\item Origin of the word ``\'etale'' and its reuse in S30 / S35 / S52.
+	\end{itemize}
+	\proved{Sheafification universal property; $f^{-1}\dashv f_*$; the \'etale-space equivalence (construction).}
+	\role{\emph{Depends on} S26. \emph{Feeds} S28, S53, S35/S52. \emph{Arc:} a sheaf is a space of germs; its points are its stalks.}
+	\thread{Sheafification turns inconsistent local data into a genuine space of points.}
+	\srefs{Mac Lane--Moerdijk ch.II,VI; Tennison.}
+	
+	\sess{28}{Schemes: $\Spec(R)$, the Structure Sheaf, Closed \& Generic Points}
+	\chead
+	\begin{itemize}
+		\item Locally ringed spaces; affine schemes; structure sheaf $\mathcal O_{\Spec R}$ (glueing proof); stalks $R_\p$; residue fields $\kappa(\p)$.
+		\item Closed points $=$ maximal ideals; generic points $=$ minimal primes; specialization; examples $\Spec\Z$, $\mathbb A^1$, a curve.
+		\item Morphisms of schemes; first examples; the non-Hausdorff nature revisited.
+	\end{itemize}
+	\proved{Structure presheaf is a sheaf; stalk \& residue computations.}
+	\role{\emph{Depends on} S1, S26--S27. \emph{Feeds} S29--S35, S46, S54. \emph{Arc:} the stage on which points are primes with local rings of germs.}
+	\thread{A scheme is a space whose points carry their own local algebra.}
+	\srefs{Vakil ch.4; Hartshorne ch.II \S2; G\"ortz--Wedhorn ch.3.}
+	
+	\sess{29}{The Functor of Points and Yoneda's Perspective}
+	\chead
+	\begin{itemize}
+		\item Yoneda lemma (complete proof); representable functors; the Yoneda embedding.
+		\item Functor of points $h_X(T)=\Hom(T,X)$; $T$-valued points; examples ($X(T)$ as solution sets of equations); $X\cong\Hom(-,X)$.
+		\item A scheme is determined by its functor of points; natural transformations $=$ morphisms.
+		\item Non-representable functors $\to$ moduli problems (preview S41).
+	\end{itemize}
+	\proved{Yoneda lemma.}
+	\role{\emph{Depends on} S4, S28. \emph{Feeds} S41, S54, S56. \emph{Arc:} the conceptual heart: point $=$ morphism into the object.}
+	\thread{To know a space is to know its points over every possible base.}
+	\srefs{Vakil ch.7,9; Eisenbud--Harris ch.VI; Demazure--Gabriel ch.1.}
+	
+	\sess{30}{Commutative Algebra II: Morphisms, Fiber Products, \'Etale Maps}
+	\chead
+	\begin{itemize}
+		\item Morphisms of schemes; fiber products via tensor products (S2); base change \& fibers.
+		\item Properties: finite type, separated; flat (serious treatment now, previewed S2), unramified, \'etale, smooth.
+		\item Jacobian criterion (proof idea); examples \& non-examples.
+		\item \'Etale $=$ ``algebraic local homeomorphism'': Hensel-lifting characterization (S19).
+	\end{itemize}
+	\proved{Existence of fiber products of affine schemes; Jacobian criterion.}
+	\role{\emph{Depends on} S2, S28. \emph{Feeds} S33, S35, S39, S52. \emph{Arc:} maps that preserve local point-structure.}
+	\thread{\'Etale maps are the maps under which points look locally identical.}
+	\srefs{G\"ortz--Wedhorn ch.6,11; Vakil ch.7,13; Stacks Project.}
+	
+	\sess{31}{Projective Varieties and Points at Infinity}
+	\chead
+	\begin{itemize}
+		\item Graded rings \& homogeneous ideals; $\Proj(S)$; $\PP^n$; affine charts.
+		\item Points at infinity \& why they are necessary; projective $=$ proper (preview S33).
+		\item B\'ezout's theorem (statement); examples of intersection at infinity.
+	\end{itemize}
+	\proved{Covering by affine charts; basic properties of $\Proj$.}
+	\role{\emph{Depends on} S28. \emph{Feeds} S32, S39, S41. \emph{Arc:} completeness: adding the points at infinity makes every count exact.}
+	\thread{Projective space is affine space with its missing points restored.}
+	\srefs{Vakil ch.6; Hartshorne ch.I \S2.}
+	
+	\sess{32}{Divisors, the Product Formula, and Riemann--Roch (Algebraic)}
+	\chead
+	\begin{itemize}
+		\item Divisors $\sum n_P[P]$; principal divisors $(f)=\sum v_P(f)[P]$; $\deg(f)=0$ on a projective curve (proof).
+		\item Arithmetic analogue: the product formula (S22); function-field analogue (S21).
+		\item Canonical divisor \& K\"ahler differentials; genus; Riemann--Roch $\ell(D)-\ell(K-D)=\deg D+1-g$ (algebraic proof via Riemann's theorem).
+		\item Examples $\PP^1$, elliptic curves; Remark: the analytic viewpoint in S38.
+	\end{itemize}
+	\proved{$\deg(f)=0$; Riemann--Roch for curves (algebraic).}
+	\role{\emph{Depends on} S21, S31. \emph{Feeds} S39, S38, S41. \emph{Arc:} the exact accounting of zeros \& poles across all points.}
+	\thread{Riemann--Roch balances the vanishing of functions at every point of the curve.}
+	\srefs{Hartshorne ch.IV; Fulton; Miranda (analytic companion).}
+	
+	\sess{33}{The Valuative Criterion of Properness}
+	\chead
+	\begin{itemize}
+		\item Separated \& proper morphisms (definitions using S30 fiber products).
+		\item Valuative criterion of properness (statement; proof for curves); restatement via specialization generic $\to$ closed.
+		\item Examples: $\mathbb A^1$ not proper, $\PP^1$ proper; analogy with compactness (S22).
+	\end{itemize}
+	\proved{Valuative criterion (curves).}
+	\role{\emph{Depends on} S20, S30, S31. \emph{Feeds} S41, S36. \emph{Arc:} makes ``complete $=$ no missing points'' rigorous.}
+	\thread{Properness is the refusal of points to run away to infinity.}
+	\srefs{Vakil ch.7; Hartshorne ch.II \S4.}
+	
+	\sess{34}{Free Groups and Profinite Groups}
+	\chead
+	\begin{itemize}
+		\item Free groups $F_n$: universal property; examples; $F_1\cong\Z$.
+		\item Profinite groups as inverse limits of finite groups (S4); $\hat\Z=\varprojlim\Z/n$; profinite topology compact \& totally disconnected (P2).
+		\item Continuous actions of profinite groups; Galois groups as profinite (S16).
+	\end{itemize}
+	\proved{Universal property of free groups; compactness of profinite groups.}
+	\role{\emph{Depends on} P2, S4, S16. \emph{Feeds} S35, S59. \emph{Arc:} the group objects in which $\pi_1^{\text{\'et}}$ and $G_\Q$ live.}
+	\thread{A profinite group is the Galois group of an infinite system of points.}
+	\srefs{Ribes--Zalesskii ch.1; Szamuely ch.1; Serre, \emph{Galois Cohomology} ch.I.}
+	
+	\sess{35}{\'Etale Fundamental Group and Grothendieck's Galois Theory}
+	\chead
+	\begin{itemize}
+		\item \'Etale covers (S30); the fiber functor; definition of $\pi_1^{\text{\'et}}(X,\bar x)$.
+		\item Grothendieck's correspondence: finite \'etale covers $\leftrightarrow$ finite continuous $\pi_1^{\text{\'et}}$-sets (statement \& construction), generalizing the topological theory of P3.
+		\item Case $X=\Spec(K)$ recovers FTGT (S13); examples $\pi_1^{\text{\'et}}(\GG_{m,\C})=\hat\Z$, $\pi_1^{\text{\'et}}(\PP^1\setminus\{0,1,\infty\})=\hat F_2$.
+		\item Using the topological intuition of P3 (coverings $\leftrightarrow$ $\pi_1$); preview of Dessins (S60).
+	\end{itemize}
+	\begin{theorem*}[Grothendieck] Finite \'etale covers of a connected $X$ with geometric point $\bar x$ $\leftrightarrow$ finite sets with a continuous $\pi_1^{\text{\'et}}(X,\bar x)$-action.
+	\end{theorem*}
+	\proved{Grothendieck's correspondence (construction); the $\Spec K$ case.}
+	\role{\emph{Depends on} P3, S13, S30, S34. \emph{Feeds} S52--S53, S59, S60. \emph{Arc:} unifies topology, Galois theory, and \'etale geometry.}
+	\thread{$\pi_1^{\text{\'et}}$ is the symmetry group of all finite point-systems over $X$.}
+	\srefs{Szamuely ch.4--5; SGA1 exp.V.}
+	
+	\sess{36}{Summary: The Bridge Between Number Theory and Geometry}
+	\chead
+	\begin{itemize}
+		\item $\Spec\Z$ as a ``curve''; primes $=$ points; $\infty$ $=$ the point at infinity.
+		\item The big number-field / function-field analogy table; CFT previewed as abelian Galois theory of $\Spec\Z$.
+	\end{itemize}
+	\role{\emph{Depends on} Acts III--IV. \emph{Feeds} Acts V--VI. \emph{Arc:} consolidation; sets the CFT agenda.}
+	\srefs{Lorenzini; review of Acts III--IV.}
+	
+	% ══════════════════════════════════════════════
+	\section{Act V --- Curves over $\C$ and Elliptic Curves}
+	% ══════════════════════════════════════════════
+	
+	\sess{37}{Complex Analysis I: Holomorphic Functions \& Cauchy Theory}
+	\chead
+	\begin{itemize}
+		\item Holomorphic functions; Cauchy--Riemann equations; power-series expansion.
+		\item Cauchy's theorem \& integral formula; identity theorem; Liouville; maximum principle.
+		\item Meromorphic functions; residues \& the argument principle (mention).
+	\end{itemize}
+	\proved{Cauchy integral formula; identity theorem; Liouville.}
+	\role{\emph{Depends on} P2. \emph{Feeds} S38, S40, and the S26 holomorphic example. \emph{Arc:} analytic continuation $=$ global from local.}
+	\thread{A holomorphic function is rigid local data: its germ at one point knows everything.}
+	\srefs{Ahlfors ch.1--4; Conway.}
+	
+	\sess{38}{Complex Analysis II: Riemann Surfaces}
+	\chead
+	\begin{itemize}
+		\item Riemann surfaces: definition \& examples; meromorphic functions \& their divisors; deg of a principal divisor $=0$ (proof) --- the analytic product formula.
+		\item Compact Riemann surfaces $=$ smooth projective curves over $\C$ (GAGA flavour); genus.
+		\item Analytic Riemann--Roch (statement), completing S32's remark; uniformization (mention).
+		\item Complex tori $\C/\Lambda$; Weierstrass $\wp$; tori $\leftrightarrow$ elliptic curves; upper half-plane $\HH$ \& $\SL_2(\Z)$ action (preview S40--S41).
+	\end{itemize}
+	\proved{Analytic product formula; torus $=$ elliptic curve (construction).}
+	\role{\emph{Depends on} S37, S32. \emph{Feeds} S39, S40, S41. \emph{Arc:} the analytic avatar of algebraic curves; topological genus $=$ arithmetic genus.}
+	\thread{A compact Riemann surface is a curve; its points are the places of its function field.}
+	\srefs{Forster; Miranda; Serre, \emph{GAGA} (mention).}
+	
+	\sess{39}{Elliptic Curves: Geometry and Group Law}
+	\chead
+	\begin{itemize}
+		\item Weierstrass equations; smoothness via the Jacobian criterion (S30); discriminant.
+		\item Projective closure; the point at infinity $\mathcal O$ as the identity element.
+		\item Chord-and-tangent law; group axioms via Riemann--Roch (S32) (proof); associativity; torsion points.
+		\item Over $\C$: $E(\C)\cong\C/\Lambda$ (S38); torus addition $=$ chord-and-tangent.
+	\end{itemize}
+	\proved{Group law well-defined \& associative (via RR).}
+	\role{\emph{Depends on} S30, S32, S38. \emph{Feeds} S40, S41. \emph{Arc:} the central example; its identity is literally a point at infinity.}
+	\thread{The group structure lives on the points; the identity is the point at infinity.}
+	\srefs{Silverman ch.I--III; Washington.}
+	
+	\sess{40}{Elliptic Curves: Arithmetic and Modular Forms}
+	\chead
+	\begin{itemize}
+		\item Reduction mod $p$: good / multiplicative / additive; the $L$-function of an elliptic curve.
+		\item Mordell--Weil theorem (statement).
+		\item Modular forms on $\HH$ (holomorphy from S37--S38): weight-$k$, growth at cusps; Hecke operators (mention).
+		\item Modularity Theorem (statement); the link to Fermat's Last Theorem.
+	\end{itemize}
+	\proved{Basic reduction properties; modularity stated \& verified on examples.}
+	\role{\emph{Depends on} S37--S39. \emph{Feeds} S41, S61. \emph{Arc:} the first non-abelian-flavoured reciprocity; $L$-functions package point-counts.}
+	\thread{The $L$-function packages the point-counts of $E$ mod $p$ into one analytic object.}
+	\srefs{Silverman ch.VII--VIII; Diamond--Shurman ch.1--3.}
+	
+	\sess{41}{Points as Objects: Moduli Spaces and Rational Points}
+	\chead
+	\begin{itemize}
+		\item The $j$-invariant; the moduli problem $\mathcal M_{1,1}$: points $=$ isomorphism classes of elliptic curves.
+		\item (Non-)representability \& the need for stacks (survey); compactified moduli; ties to S29.
+		\item Rational points \& Diophantine geometry: Mordell--Weil, Faltings (statements); BSD (mention).
+	\end{itemize}
+	\proved{$j$-invariant classifies elliptic curves over algebraically closed fields.}
+	\role{\emph{Depends on} S29, S39--S40. \emph{Feeds} S56, S60--S61. \emph{Arc:} objects become points; arithmetic asks which points are rational.}
+	\thread{Moduli spaces turn objects into points; arithmetic asks which points are rational.}
+	\srefs{Silverman ch.III; Hartshorne ch.IV; Mazur; Katz--Mazur (selected); Hindry--Silverman (survey).}
+	
+	% ══════════════════════════════════════════════
+	\section{Act VI --- Class Field Theory}
+	% ══════════════════════════════════════════════
+	
+	\sess{42}{Homological Algebra I: Complexes and the Snake Lemma}
+	\chead
+	\begin{itemize}
+		\item Chain complexes; chain maps; homology; exact sequences; abelian categories (mention).
+		\item Snake lemma (proof / proof idea); five lemma; the long exact sequence of homology.
+	\end{itemize}
+	\proved{Snake lemma; five lemma; long exact sequence.}
+	\role{\emph{Depends on} S2. \emph{Feeds} S43--S45. \emph{Arc:} the homological engine that makes reciprocity provable.}
+	\srefs{Weibel ch.1--2; Rotman, \emph{Homological Algebra} ch.1--2.}
+	
+	\sess{43}{Homological Algebra II: Resolutions and Derived Functors}
+	\chead
+	\begin{itemize}
+		\item Projective \& injective modules; resolutions; derived functors.
+		\item $\Tor$ \& $\Ext$; $\Ext^1$ classifies extensions (proof idea); long exact sequences of derived functors.
+		\item Group cohomology as $\Ext$ over $\Z G$ (preview S44); uses S2.
+	\end{itemize}
+	\proved{Existence of resolutions; $\Ext^1$ classification; derived long exact sequences.}
+	\role{\emph{Depends on} S42. \emph{Feeds} S44, S45, S59. \emph{Arc:} the derived language in which reciprocity is an $H^2$ statement.}
+	\srefs{Weibel ch.2--3; Mac Lane, \emph{Homology}.}
+	
+	\sess{44}{Group Cohomology and Tate Cohomology}
+	\chead
+	\begin{itemize}
+		\item $G$-modules; invariants; the cochain complex $C^n(G,M)$; $H^0,H^1,H^2$ explicitly.
+		\item $H^1$ $=$ crossed homomorphisms mod principal; $H^2$ $=$ group extensions.
+		\item Derived-functor viewpoint $H^n(G,M)=\Ext^n_{\Z G}(\Z,M)$ (S43).
+		\item Tate cohomology $\hat H^n$ for finite $G$; periodicity for cyclic groups (proof idea).
+	\end{itemize}
+	\proved{Equivalence of cochain \& derived definitions in low degrees; Tate periodicity for cyclic groups.}
+	\role{\emph{Depends on} S43. \emph{Feeds} S45, S47. \emph{Arc:} the cohomology of symmetry groups, ready for Galois groups.}
+	\srefs{Serre, \emph{Galois Cohomology} ch.I; Cassels--Fr\"ohlich ch.VIII; Weibel ch.6.}
+	
+	\sess{45}{Galois Cohomology and the Fundamental Exact Sequence}
+	\chead
+	\begin{itemize}
+		\item Galois cohomology of $L^*$; Hilbert's Theorem 90 (proof via Dedekind's lemma, S12).
+		\item The Brauer group (mention); local invariant $H^2(\Q_p)\cong\Q/\Z$ (statement).
+		\item The fundamental exact sequence $0\to H^2\to\bigoplus_v\Q/\Z\to\Q/\Z\to0$ (proof using S42 snake lemma \& S22 product formula).
+		\item The cohomological statement of class field theory (preview S47).
+	\end{itemize}
+	\proved{Hilbert 90; local invariant isomorphism; the fundamental exact sequence.}
+	\role{\emph{Depends on} S22, S44. \emph{Feeds} S47, S49. \emph{Arc:} the product formula rewritten in cohomology.}
+	\thread{The exact sequence is the cohomological shadow of ``the product of all local evaluations is 1''.}
+	\srefs{Serre ch.II; Neukirch ch.IV.}
+	
+	\sess{46}{The Artin Map}
+	\chead
+	\begin{itemize}
+		\item Recap from S24: fractional ideals \& the class group, freshened after the gap.
+		\item Decomposition \& inertia groups (formal definitions, as promised in S9); residue field extensions; Frobenius conjugacy class.
+		\item Unramified primes give a well-defined Frobenius element; the Artin symbol $(L/K\,/\,\p)$; extension to fractional ideals.
+		\item Examples: cyclotomic \& quadratic extensions.
+	\end{itemize}
+	\proved{Well-definedness of Frobenius; the Artin map is a homomorphism on ideals.}
+	\role{\emph{Depends on} S9, S20, S24. \emph{Feeds} S47--S49. \emph{Arc:} evaluation at a point, now group-valued \& multiplicative.}
+	\thread{The Artin map evaluates the prime $\p$ into the symmetry group of the extension.}
+	\srefs{Neukirch ch.VII \S3; Lang, \emph{ANT} ch.XI.}
+	
+	\sess{47}{Artin Reciprocity}
+	\chead
+	\begin{itemize}
+		\item Artin Reciprocity Law: statement; kernel $=$ norm group; $\Gal(L/K)\cong I_K/N_{L/K}(I_L)\cdot P_K$.
+		\item Complete proofs for quadratic \& cyclotomic extensions; general outline via S45.
+		\item Quadratic reciprocity recovered as a corollary (S6).
+	\end{itemize}
+	\proved{Artin reciprocity for quadratic \& cyclotomic; general outline.}
+	\role{\emph{Depends on} S45, S46. \emph{Feeds} S48--S49, S61. \emph{Arc:} the First Isomorphism Theorem (P1) realized at global scale.}
+	\thread{Global reciprocity: the product of all local evaluations is the identity.}
+	\srefs{Neukirch ch.VII \S6; Cassels--Fr\"ohlich ch.X.}
+	
+	\sess{48}{The Existence Theorem}
+	\chead
+	\begin{itemize}
+		\item Existence Theorem (Takagi--Artin): statement; open subgroups of finite index $\leftrightarrow$ abelian extensions.
+		\item Proof ideas (cohomological / adelic); the Hilbert class field; examples.
+	\end{itemize}
+	\proved{Existence theorem (ideas \& structure).}
+	\role{\emph{Depends on} S47. \emph{Feeds} S49. \emph{Arc:} every admissible subgroup of ``points'' comes from a field.}
+	\srefs{Neukirch ch.VII \S8; Lang ch.XIII.}
+	
+	\sess{49}{The Idele Formulation and Global CFT}
+	\chead
+	\begin{itemize}
+		\item Ideles $J_K$ \& idele class group $C_K$ (S22); the Artin map in idele language.
+		\item Reciprocity: $C_K/N(C_L)\cong\Gal(L/K)$; $G_K^{\mathrm{ab}}\cong C_K$ (statement).
+		\item Comparison with the ideal version; the role of adelic compactness (S22).
+	\end{itemize}
+	\proved{Idele-theoretic reciprocity; the abelianization isomorphism.}
+	\role{\emph{Depends on} S22, S47--S48. \emph{Feeds} S61. \emph{Arc:} the modern formulation; $C_K$ $=$ product of all local points modulo globals.}
+	\thread{Global abelian symmetry is exactly the idele class group --- all points at once.}
+	\srefs{Neukirch ch.VII; Cassels--Fr\"ohlich ch.XII.}
+	
+	\sess{50}{Local Class Field Theory: Lubin--Tate}
+	\chead
+	\begin{itemize}
+		\item Formal group laws (self-contained opening): 1-dim commutative FGLs over a ring; additive \& multiplicative examples; formal logarithm; the notion of height.
+		\item Lubin--Tate series \& formal modules; Theorem: all abelian extensions of $\Q_p$ arise from Lubin--Tate theory (key ideas).
+		\item The local reciprocity map $\Q_p^*\to\Gal(L/\Q_p)^{\mathrm{ab}}$; the local analogue of Kronecker--Weber.
+	\end{itemize}
+	\proved{Lubin--Tate theorem (key ideas); local reciprocity.}
+	\role{\emph{Depends on} S18--S19, S44. \emph{Feeds} S61. \emph{Arc:} local CFT made explicit; formal groups $=$ points near the identity.}
+	\thread{Local reciprocity: the prime's own formal group generates all its abelian symmetry.}
+	\srefs{Serre, \emph{Local Fields} ch.XIV--XV; Neukirch ch.V \S6; Iwasawa.}
+	
+	% ══════════════════════════════════════════════
+	\section{Interlude --- Spaces without Points}
+	% ══════════════════════════════════════════════
+	
+	\sess{51}{Gelfand--Naimark and the Non-commutative Glimpse}
+	\chead
+	\begin{itemize}
+		\item $C^*$-algebras: minimal definitions; the Gelfand transform.
+		\item Theorem (Gelfand--Naimark, categorical statement): commutative unital $C^*$-algebras $\simeq$ compact Hausdorff spaces, contravariantly (via maximal ideals $=$ ``points''); no functional analysis assumed.
+		\item Points of $X$ $=$ characters of $C(X)$ $=$ maximal ideals (one more appearance).
+		\item Non-commutative $C^*$-algebra $=$ ``space without classical points'' (Connes perspective, survey).
+		\item Slogan: dropping commutativity drops points; but the algebra still remembers geometry.
+		\item Scope note: no spectral theory, no dagger categories --- pointers as further reading only; echoes S1/S28 and previews Act~VII.
+	\end{itemize}
+	\proved{Gelfand--Naimark duality (categorical statement \& proof outline).}
+	\role{\emph{Depends on} S1, P2. \emph{Feeds} S55, S58, S61. \emph{Arc:} shows ``space without points'' is meaningful, motivating the logical treatment of points.}
+	\thread{Dropping commutativity drops classical points --- but the algebra still remembers the geometry.}
+	\srefs{Gracia-Bond\'ia--V\'arilly--Figueroa ch.3 (survey); Kadison--Ringrose ch.4; Connes (further reading).}
+	
+	% ══════════════════════════════════════════════
+	\section{Act VII --- Topos Theory and Logic}
+	% ══════════════════════════════════════════════
+	
+	\sess{52}{Sites and Grothendieck Topologies}
+	\chead
+	\begin{itemize}
+		\item Grothendieck topologies: coverings \& sieves; sites $(\mathcal C,J)$.
+		\item Examples: Zariski, \'etale, fppf; contrast with point-set topology (P2, S28).
+		\item Subcanonical sites; the Yoneda embedding of a site (S29).
+	\end{itemize}
+	\proved{Equivalence of sieve \& covering-family formulations.}
+	\role{\emph{Depends on} S4, S28, S30. \emph{Feeds} S53, S59. \emph{Arc:} generalizes ``open cover'' so point-less spaces still have sheaf theory.}
+	\thread{A covering says how points cover --- even when the points are not there.}
+	\srefs{Mac Lane--Moerdijk ch.III; Johnstone ch.C.}
+	
+	\sess{53}{Sheaves on Sites and Topoi}
+	\chead
+	\begin{itemize}
+		\item Sheaves on a site (generalizing S26--S27); the sheaf condition for arbitrary covers.
+		\item A topos $=\mathrm{Sh}(\mathcal C,J)$; examples $\mathrm{Sh}(X)$, $X_{\mathrm{Zar}}$, $X_{\text{\'et}}$, $G$-sets.
+		\item The generalized plus-construction (S27); limits/colimits; subobject classifier (mention).
+	\end{itemize}
+	\proved{Sheaf-condition equivalences; topos completeness/cocompleteness.}
+	\role{\emph{Depends on} S27, S52. \emph{Feeds} S54--S59. \emph{Arc:} the world in which S54's points live.}
+	\thread{A topos is ``the world of sheaves'' --- a space whose points may be invisible.}
+	\srefs{Mac Lane--Moerdijk ch.III; Johnstone ch.C.}
+	
+	\sess{54}{Geometric Morphisms and Points of a Topos}
+	\chead
+	\begin{itemize}
+		\item Geometric morphisms $(f^*,f_*)$ with $f^*\dashv f_*$ and $f^*$ left exact.
+		\item Definition of a point: $p:\mathbf{Set}\to\mathcal E$; the stalk functor $p^*$.
+		\item Examples: point of a space $\to$ stalk; point of $\Spec R$ $\to$ prime $\to$ localization; \'etale point $\to$ geometric point $\Spec(\Omega)\to X$; points of $G$-sets.
+		\item Comparison with S29: point $=$ morphism into the object.
+	\end{itemize}
+	\proved{Equivalence of point definitions (stalk-functor vs geometric morphism).}
+	\role{\emph{Depends on} S4, S29, S53. \emph{Feeds} S55, S58. \emph{Arc:} the final, unifying definition of point.}
+	\thread{Point $=$ ``morphism from $\mathbf{Set}$ into the topos'' --- evaluation from the outside.}
+	\srefs{Mac Lane--Moerdijk ch.IV; Johnstone ch.C.2.}
+	
+	\sess{55}{Enough Points}
+	\chead
+	\begin{itemize}
+		\item Conservative families of points: definition; examples \& counterexamples.
+		\item A topos with no points (explicit example); comparison with S51 (pointless spaces).
+		\item Deligne's theorem previewed (S58).
+	\end{itemize}
+	\proved{Basic properties of conservative families; the point-free example.}
+	\role{\emph{Depends on} S54. \emph{Feeds} S58. \emph{Arc:} states the crisis --- points can fail to exist --- that Deligne resolves.}
+	\thread{Enough points $=$ ``evaluations determine the structure''.}
+	\srefs{Mac Lane--Moerdijk ch.IV \S6; Johnstone ch.C.2.}
+	
+	\sess{56}{Classifying Topoi and Geometric Theories}
+	\chead
+	\begin{itemize}
+		\item Geometric logic: signatures, geometric formulas \& axioms, models (gentle introduction).
+		\item The classifying topos $\mathbf{Set}[T]$ \& its universal property; points of $\mathbf{Set}[T]$ $=$ models of $T$ in $\mathbf{Set}$.
+		\item Examples: theory of fields, of groups, of graphs; comparison with S41 (moduli as classifying objects).
+	\end{itemize}
+	\proved{Points-of-classifying-topos $=$ models (construction).}
+	\role{\emph{Depends on} S53. \emph{Feeds} S57, S58. \emph{Arc:} a theory has a space whose points are its models.}
+	\thread{The classifying topos is the space of models $=$ the space of points of a theory.}
+	\srefs{Mac Lane--Moerdijk ch.V; Johnstone ch.D.}
+	
+	\sess{57}{Geometric Model Theory}
+	\chead
+	\begin{itemize}
+		\item Types \& Stone spaces; saturated models (gentle introduction).
+		\item Theorem: the type space of $T$ $\cong$ the space of points of $\mathbf{Set}[T]$; saturated models $=$ points realizing all types.
+		\item Logical completeness $\leftrightarrow$ enough points.
+		\item Pearl (optional, time-permitting): Lawvere's fixed-point theorem --- the categorical diagonal behind Cantor, Russell, G\"odel, Tarski.
+	\end{itemize}
+	\proved{Type-space / point-space correspondence (statement \& construction).}
+	\role{\emph{Depends on} S56. \emph{Feeds} S58. \emph{Arc:} the logical reading of points; a type is a ``generic point''.}
+	\thread{Model theory is the algebraic geometry of theories; types are their points.}
+	\srefs{Makkai--Reyes; Johnstone ch.D; Hodges; Lawvere (1969).}
+	
+	\sess{58}{Deligne's Theorem: Statement and Proof}
+	\chead
+	\begin{itemize}
+		\item Coherent topoi: definition \& examples.
+		\item Deligne's Theorem: every coherent topos has enough points; full proof via Zorn (S1) + stepwise model construction.
+		\item Equivalence with the completeness theorem for coherent geometric logic.
+	\end{itemize}
+	\begin{theorem*}[Deligne, SGA4] Every coherent topos has enough points; equivalently every consistent coherent geometric theory has a $\mathbf{Set}$-model.
+	\end{theorem*}
+	\proved{Deligne's theorem (full proof).}
+	\role{\emph{Depends on} S1, S55--S57. \emph{Feeds} S59, S60. \emph{Arc:} the crown of the course: models are enough $=$ points are enough.}
+	\thread{Deligne: coherence forces a space of logic to have points.}
+	\srefs{Mac Lane--Moerdijk ch.VII; SGA4 exp.VI; Johnstone ch.D.3.}
+	
+	\sess{59}{Deligne's Theorem in Algebraic Geometry}
+	\chead
+	\begin{itemize}
+		\item The \'etale topos of a qcqs scheme is coherent (S28, S52).
+		\item \'Etale points $=$ geometric points; \'etale sheaves determined by stalks at geometric points.
+		\item Application to \'etale cohomology (mention); relation to S35, S52.
+	\end{itemize}
+	\proved{Coherence of the \'etale topos of a qcqs scheme.}
+	\role{\emph{Depends on} S35, S52, S58. \emph{Feeds} S60--S61. \emph{Arc:} closes the loop: the \'etale world has enough points.}
+	\thread{Geometric points suffice to see everything \'etale --- Deligne in geometry.}
+	\srefs{Mac Lane--Moerdijk ch.VII; SGA4 exp.VI; Milne ch.II.}
+	
+	% ══════════════════════════════════════════════
+	\section{Postlude --- Synthesis and the Big Picture}
+	% ══════════════════════════════════════════════
+	
+	\sess{60}{The Point: One Concept, Many Worlds}
+	\chead
+	\begin{itemize}
+		\item Recap of all incarnations: prime, valuation, prime ideal, closed/generic, $T$-valued point, place, geometric morphism, model, non-commutative glimpse.
+		\item The big summary table (below); Dessins d'Enfants: $G_\Q$ acting on children's drawings (via S35).
+		\item Final message: the point is a precise structure --- evaluation from a local perspective.
+	\end{itemize}
+	\begin{center}\small
+		\begin{tabular}{|l|l|l|}
+			\hline
+			\textbf{World} & \textbf{``Point'' is} & \textbf{Evaluation is} \\
+			\hline
+			Number theory & prime / place & residue, $|\cdot|_p$ \\
+			Geometry & prime ideal / closed--generic & $\kappa(\p)$ \\
+			Topology & point of a space & stalk \\
+			Topos theory & geom.\ morphism $\mathbf{Set}\to\mathcal E$ & $p^*$ \\
+			Logic & model of a theory & truth \\
+			Non-comm.\ & character / state & expectation \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\role{\emph{Depends on} everything. \emph{Feeds} S61. \emph{Arc:} the payoff: one structure, many disguises.}
+	\srefs{Grothendieck, \emph{Esquisse}; Schneps.}
+	
+	\sess{61}{Points in Mechanics, Quantum Physics, and Langlands}
+	\chead
+	\begin{itemize}
+		\item Points as states in classical mechanics (phase space); states as ``points'' of non-commutative algebras in QM (echo of S51).
+		\item The Langlands program as non-abelian reciprocity (template S47); $p$-adic Hodge theory; geometric Langlands \& $\infty$-topoi; perfectoid spaces; arithmetic topology (knots $\leftrightarrow$ primes).
+		\item Open problems \& reading paths per participant.
+	\end{itemize}
+	\role{\emph{Depends on} S60. \emph{Feeds} future study. \emph{Arc:} the research map; audience-tailored horizon.}
+	\srefs{Connes; Frenkel; Scholze; Mazur.}
+	
+	% ══════════════════════════════════════════════
+	\section*{Consolidated References}
+	\addcontentsline{toc}{section}{Consolidated References}
+	% ══════════════════════════════════════════════
+	
+	\subsection*{Preliminaries \& Algebraic Topology}
+	\begin{enumerate}[label={[\arabic*]}]
+		\item Artin, E. \emph{Algebra}. Dover, 1998.
+		\item Herstein, I.N. \emph{Topics in Algebra}. Wiley, 1975.
+		\item Rotman, J.J. \emph{An Introduction to the Theory of Groups}. Springer, 1995.
+		\item Munkres, J.R. \emph{Topology}. Pearson, 2000.
+		\item Sutherland, W.A. \emph{Introduction to Metric and Topological Spaces}. Oxford, 2009.
+		\item Rudin, W. \emph{Principles of Mathematical Analysis}. McGraw-Hill, 1976.
+		\item Hatcher, A. \emph{Algebraic Topology}. CUP, 2002 (ch.0--1 selected).
+		\item May, J.P. \emph{A Concise Course in Algebraic Topology}. Chicago, 1999 (selected).
+	\end{enumerate}
+	\subsection*{Categories, Commutative Algebra, Number Theory}
+	\begin{enumerate}[label={[\arabic*]},resume]
+		\item Mac Lane, S. \emph{Categories for the Working Mathematician}. Springer, 1998.
+		\item Leinster, T. \emph{Basic Category Theory}. CUP, 2014.
+		\item Atiyah, M.F. \& Macdonald, I.G. \emph{Introduction to Commutative Algebra}. 1969.
+		\item Eisenbud, D. \emph{Commutative Algebra with a View Toward Algebraic Geometry}. Springer, 1995.
+		\item Lang, S. \emph{Algebra}. Springer, 2002.
+		\item Ireland, K. \& Rosen, M. \emph{A Classical Introduction to Modern Number Theory}. Springer, 1990.
+		\item Hardy, G.H. \& Wright, E.M. \emph{An Introduction to the Theory of Numbers}. Oxford, 2008.
+		\item Cox, D.A. \emph{Primes of the Form $x^2+ny^2$}. Wiley, 2013.
+		\item Lemmermeyer, F. \emph{Reciprocity Laws}. Springer, 2000.
+		\item Neukirch, J. \emph{Algebraic Number Theory}. Springer, 1999.
+		\item Gouv\^ea, F.Q. \emph{$p$-adic Numbers}. Springer, 2020.
+		\item Weil, A. \emph{Basic Number Theory}. Springer, 1974.
+		\item Rosen, M. \emph{Number Theory in Function Fields}. Springer, 2002.
+	\end{enumerate}
+	\subsection*{Algebraic Geometry \& Sheaves}
+	\begin{enumerate}[label={[\arabic*]},resume]
+		\item Vakil, R. \emph{The Rising Sea}. Online.
+		\item Hartshorne, R. \emph{Algebraic Geometry}. Springer, 1977.
+		\item G\"ortz, U. \& Wedhorn, T. \emph{Algebraic Geometry I}. Springer, 2020.
+		\item Eisenbud, D. \& Harris, J. \emph{The Geometry of Schemes}. Springer, 2000.
+		\item Demazure, M. \& Gabriel, P. \emph{Groupes Alg\'ebriques}, ch.1.
+		\item Fulton, W. \emph{Algebraic Curves}. Benjamin, 1969.
+		\item Miranda, R. \emph{Algebraic Curves and Riemann Surfaces}. AMS, 1995.
+		\item Shafarevich, I.R. \emph{Basic Algebraic Geometry 1}. Springer, 2013.
+		\item Lorenzini, D. \emph{An Invitation to Arithmetic Geometry}. AMS, 1996.
+		\item Tennison, B.R. \emph{Sheaf Theory}. Cambridge, 1975.
+		\item Stacks Project. Online.
+	\end{enumerate}
+	\subsection*{Complex Analysis, Elliptic Curves, Moduli}
+	\begin{enumerate}[label={[\arabic*]},resume]
+		\item Ahlfors, L.V. \emph{Complex Analysis}. McGraw-Hill, 1979.
+		\item Conway, J.B. \emph{Functions of One Complex Variable}. Springer, 1978.
+		\item Forster, O. \emph{Lectures on Riemann Surfaces}. Springer, 1981.
+		\item Serre, J.-P. \emph{GAGA}, Ann.\ of Math.\ 1956.
+		\item Silverman, J.H. \emph{The Arithmetic of Elliptic Curves}. Springer, 2009.
+		\item Washington, L.C. \emph{Elliptic Curves}. CRC, 2008.
+		\item Diamond, F. \& Shurman, J. \emph{A First Course in Modular Forms}. Springer, 2005.
+		\item Katz, N. \& Mazur, B. \emph{Arithmetic Moduli of Elliptic Curves} (selected).
+		\item Hindry, M. \& Silverman, J.H. \emph{Diophantine Geometry} (survey chapters).
+	\end{enumerate}
+	\subsection*{Cohomology, Class Field Theory, Non-commutative Glimpse}
+	\begin{enumerate}[label={[\arabic*]},resume]
+		\item Weibel, C. \emph{An Introduction to Homological Algebra}. Cambridge, 1994.
+		\item Rotman, J.J. \emph{An Introduction to Homological Algebra}. Springer, 2009.
+		\item Mac Lane, S. \emph{Homology}. Springer, 1963.
+		\item Serre, J.-P. \emph{Galois Cohomology}. Springer, 2002.
+		\item Serre, J.-P. \emph{Local Fields}. Springer, 1979.
+		\item Cassels, J.W.S. \& Fr\"ohlich, A. (eds.) \emph{Algebraic Number Theory}. LMS, 2010.
+		\item Iwasawa, K. \emph{Local Class Field Theory}. Oxford, 1986.
+		\item Gracia-Bond\'ia, V\'arilly \& Figueroa, \emph{Elements of Noncommutative Geometry} ch.3 (survey).
+		\item Kadison, R.V. \& Ringrose, J.R. \emph{Fundamentals of Operator Algebras}. AMS, 1997.
+		\item Connes, A. \emph{Noncommutative Geometry}. Academic Press, 1994 (further reading).
+	\end{enumerate}
+	\subsection*{Fundamental Groups \& Profinite Groups}
+	\begin{enumerate}[label={[\arabic*]},resume]
+		\item Szamuely, T. \emph{Galois Groups and Fundamental Groups}. Cambridge, 2009.
+		\item Grothendieck, A. \emph{SGA 1}. Springer, 2003.
+		\item Ribes, L. \& Zalesskii, P. \emph{Profinite Groups}. Springer, 2010.
+	\end{enumerate}
+	\subsection*{Topos Theory, Logic, Synthesis}
+	\begin{enumerate}[label={[\arabic*]},resume]
+		\item Mac Lane, S. \& Moerdijk, I. \emph{Sheaves in Geometry and Logic}. Springer, 1992.
+		\item Johnstone, P.T. \emph{Sketches of an Elephant}. Oxford, 2002.
+		\item SGA 4, exp.\ VI; SGA 1, exp.\ V.
+		\item Makkai, M. \& Reyes, G.E. \emph{First Order Categorical Logic}. Springer, 1977.
+		\item Hodges, W. \emph{Model Theory}. Cambridge, 1993.
+		\item Lawvere, F.W. (1969), diagonal arguments and cartesian closed categories.
+		\item Milne, J.S. \emph{\'Etale Cohomology}. Princeton, 1980.
+		\item Grothendieck, A. \emph{Esquisse d'un Programme}, in Schneps (ed.), CUP, 1997.
+		\item Schneps, L. (ed.) \emph{The Grothendieck Theory of Dessins d'Enfants}. Cambridge, 1994.
+		\item Frenkel, E.; Scholze, P.; Mazur, B. (outlook readings).
+	\end{enumerate}
+	
+	\vspace{1.5em}
+	\begin{center}
+		\rule{0.6\textwidth}{0.4pt}\\[0.5em]
+		\textit{End of Detailed Syllabus --- Point: From Number Theory to Algebraic Geometry and Logic}\\
+		\textit{Version 2.1 (Merged Maximal Edition) --- 64 meetings (P1--P3 + S1--S61)}
+	\end{center}
+	
+\end{document}

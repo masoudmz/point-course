@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نقطه — دیاگرام وابستگی جلسات</title>
+<style>
+  :root{--navy:#14304a;--brass:#b3812f;--paper:#f5efe3;--card:#fffdf6;--ink:#241e16;--muted:#79705f;--line:#e3dac8;--hl:#c0392b;--crit:#1e6e64;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+  header{background:linear-gradient(135deg,#0b1f33,#14304a 60%,#1f4e5f);color:#f4ecdc;padding:2.2rem 1.4rem;text-align:center;border-bottom:4px solid var(--brass);}
+  header h1{font-size:1.7rem;} header p{opacity:.85;font-size:.95rem;margin-top:.4rem;}
+  .wrap{max-width:1200px;margin:0 auto;padding:1.4rem;}
+  .help{background:var(--card);border:1px solid var(--line);border-right:4px solid var(--brass);border-radius:8px;padding:1rem 1.2rem;font-size:.9rem;margin-bottom:1rem;}
+  .controls{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin:.6rem 0 1rem;font-size:.9rem;}
+  .controls label{cursor:pointer;}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.9rem 1.1rem;font-size:.9rem;margin-bottom:1rem;min-height:70px;}
+  #panel b{color:var(--navy);}
+  .chain{direction:ltr;text-align:left;font-family:Consolas,monospace;font-size:.85rem;background:#f0ead8;border-radius:6px;padding:.35rem .6rem;margin:.3rem 0;overflow-x:auto;white-space:nowrap;}
+  .chain.short{border-right:3px solid var(--hl);}
+  .chain.crit{border-right:3px solid var(--crit);}
+  #graphbox{overflow:auto;border:1px solid var(--line);border-radius:8px;background:#fffdf6;margin-bottom:1.4rem;}
+  #svg{display:block;direction:ltr;}
+  rect.node{stroke:#333;stroke-width:1;cursor:pointer;}
+  rect.node.hl{stroke:var(--hl);stroke-width:3;}
+  rect.node.crit{stroke:var(--crit);stroke-width:3;}
+  text.lbl{pointer-events:none;font-family:Consolas,monospace;direction:ltr;text-anchor:start;fill:#fff;}
+  .edge{fill:none;stroke:#9aa;stroke-width:1;}
+  .edge.hl{stroke:var(--hl);stroke-width:2.5;}
+  .edge.crit{stroke:var(--crit);stroke-width:2.5;}
+  table{width:100%;border-collapse:collapse;font-size:.82rem;background:var(--card);}
+  th,td{border:1px solid var(--line);padding:.35rem .5rem;text-align:right;vertical-align:top;}
+  th{background:var(--navy);color:#f4ecdc;}
+  td.mono{direction:ltr;text-align:left;font-family:Consolas,monospace;font-size:.78rem;}
+  .legend{font-size:.8rem;color:var(--muted);margin:.4rem 0;}
+  .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-left:4px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>نقطه — دیاگرام وابستگی جلسات</h1>
+  <p>کوتاه‌ترین مسیر (سریع‌ترین ترک) و زنجیره‌ی بحرانی برای هر ۶۴ جلسه</p>
+</header>
+<div class="wrap">
+
+  <div class="help">
+    <b>راهنما:</b> یال <span dir="ltr">A → B</span> یعنی «A پیش‌نیاز مستقیم B است».
+    روی هر گره کلیک کنید تا مسیر برجسته شود و جزئیات در پنل زیر بیاید؛ متن کامل هر برچسب در tooltip (نگه‌داشتن ماوس) و در جدول پایین هم هست.
+    «کوتاه‌ترین مسیر» = کم‌ترین تعداد جلسه برای رسیدن به آن مبحث؛ «زنجیره‌ی بحرانی» = بلندترین زنجیره‌ی پیش‌نیازی (constraint واقعی زمان‌بندی).
+  </div>
+
+  <div class="controls">
+    <label><input type="radio" name="mode" value="short" checked> کوتاه‌ترین مسیر (قرمز)</label>
+    <label><input type="radio" name="mode" value="crit"> زنجیره‌ی بحرانی (سبز)</label>
+    <span class="legend">رنگ گره‌ها = پرده/Act:</span>
+    <span id="legend"></span>
+  </div>
+
+  <div id="panel">یک جلسه را انتخاب کنید…</div>
+
+  <div id="graphbox"><svg id="svg"></svg></div>
+
+  <h3 style="margin:.6rem 0;">جدول زنجیره‌ها برای همه‌ی جلسات</h3>
+  <table id="tbl">
+    <thead><tr><th>جلسه</th><th>عنوان</th><th>پیش‌نیازهای مستقیم</th><th>طول کوتاه‌ترین</th><th>کوتاه‌ترین مسیر</th><th>طول بحرانی</th><th>زنجیره‌ی بحرانی</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+</div>
+
+<script>
+const ACTS=["Prelude","Act 0","Act I","Act II","Act III","Act IV","Act V","Act VI","Interlude","Act VII","Postlude"];
+const COLORS=["#8e6c88","#4a6fa5","#b3812f","#7d5ba6","#1e6e64","#c0392b","#d68910","#117864","#5d6d7e","#2874a6","#6c3483"];
+const S=[
+ ["START","Start",-1],
+ ["P1","Group Theory I",0],["P2","Topology & Metric",0],["P3","Alg Topology Crash",0],
+ ["S1","Rings, Ideals, Spectra",1],["S2","Modules & Tensor",1],["S3","Fields & Closure",1],["S4","Category Essentials",1],
+ ["S5","Quadratic Residues",2],["S6","QR First Proof",2],["S7","QR Geometric",2],["S8","Reciprocity Galois",2],["S9","Cyclotomic",2],["S10","Summary I",2],
+ ["S11","Solvable Groups",3],["S12","Galois Extensions",3],["S13","FTGT",3],["S14","Radicals",3],["S15","Quintic",3],["S16","Absolute Galois",3],
+ ["S17","Ostrowski",4],["S18","Qp & Zp",4],["S19","Hensel",4],["S20","Ramification",4],["S21","Function Fields",4],["S22","Adeles",4],
+ ["S23","Comm Alg I",5],["S24","Dedekind",5],["S25","Nullstellensatz",5],["S26","Sheaves",5],["S27","Sheafification",5],["S28","Schemes",5],["S29","Functor of Points",5],["S30","Comm Alg II",5],["S31","Projective",5],["S32","Riemann-Roch",5],["S33","Valuative Crit.",5],["S34","Profinite Groups",5],["S35","Etale pi1",5],["S36","Bridge Summary",5],
+ ["S37","Complex I",6],["S38","Riemann Surfaces",6],["S39","Elliptic Geometry",6],["S40","Elliptic Arithmetic",6],["S41","Moduli",6],
+ ["S42","Hom Alg I",7],["S43","Hom Alg II",7],["S44","Group Cohomology",7],["S45","Galois Cohomology",7],["S46","Artin Map",7],["S47","Artin Reciprocity",7],["S48","Existence",7],["S49","Ideles",7],["S50","Lubin-Tate",7],
+ ["S51","Gelfand-Naimark",8],
+ ["S52","Sites",9],["S53","Topoi",9],["S54","Geom Morphisms",9],["S55","Enough Points",9],["S56","Classifying Topoi",9],["S57","Model Theory",9],["S58","Deligne Proof",9],["S59","Deligne Geometry",9],
+ ["S60","Synthesis",10],["S61","Physics & Langlands",10]
+];
+const E=[
+ ["START","P1"],["START","P2"],["START","S1"],
+ ["P1","P3"],["P2","P3"],
+ ["S1","S2"],["S1","S3"],["S2","S4"],["S3","S4"],
+ ["P1","S5"],["S3","S5"],["S5","S6"],["S6","S7"],["S7","S8"],["S3","S8"],["S8","S9"],["S9","S10"],
+ ["P1","S11"],["P1","S12"],["S3","S12"],["S12","S13"],["S13","S14"],["S11","S14"],["S14","S15"],["S13","S16"],["S4","S16"],
+ ["P2","S17"],["S17","S18"],["S4","S18"],["S18","S19"],["S17","S20"],["S12","S20"],["S17","S21"],["S18","S22"],
+ ["S1","S23"],["S23","S24"],["S22","S24"],["S23","S25"],["P2","S26"],["S4","S26"],["S26","S27"],["S27","S28"],["S23","S28"],["S4","S29"],["S28","S29"],["S2","S30"],["S28","S30"],["S28","S31"],["S31","S32"],["S30","S33"],["S32","S33"],["S4","S34"],["P2","S34"],["S30","S35"],["S34","S35"],["P3","S35"],["S35","S36"],
+ ["P2","S37"],["S37","S38"],["S32","S38"],["S38","S39"],["S32","S39"],["S39","S40"],["S38","S40"],["S39","S41"],["S29","S41"],
+ ["S2","S42"],["S42","S43"],["S43","S44"],["P1","S44"],["S44","S45"],["S12","S45"],["S18","S45"],["S24","S46"],["S20","S46"],["S46","S47"],["S45","S47"],["S47","S48"],["S48","S49"],["S22","S49"],["S18","S50"],
+ ["S28","S51"],
+ ["S27","S52"],["S28","S52"],["S52","S53"],["S27","S53"],["S53","S54"],["S4","S54"],["S54","S55"],["S54","S56"],["S56","S57"],["S57","S58"],["S55","S58"],["S58","S59"],["S35","S59"],
+ ["S59","S60"],["S51","S60"],["S60","S61"]
+];
+
+const idx={}; S.forEach((s,i)=>idx[s[0]]=i);
+const preds={},succs={}; S.forEach(s=>{preds[s[0]]=[];succs[s[0]]=[];});
+E.forEach(([a,b])=>{succs[a].push(b);preds[b].push(a);});
+
+const indeg={}; S.forEach(s=>indeg[s[0]]=preds[s[0]].length);
+const q=S.filter(s=>indeg[s[0]]===0).map(s=>s[0]); const topo=[];
+while(q.length){const u=q.shift();topo.push(u);succs[u].forEach(v=>{if(--indeg[v]===0)q.push(v);});}
+
+const layer={},parLong={}; topo.forEach(u=>{layer[u]=0;parLong[u]=null;});
+topo.forEach(u=>{preds[u].forEach(p=>{if(layer[p]+1>layer[u]){layer[u]=layer[p]+1;parLong[u]=p;}});});
+
+const dist={},parShort={}; S.forEach(s=>{dist[s[0]]=Infinity;parShort[s[0]]=null;});
+dist["START"]=0; const bq=["START"];
+while(bq.length){const u=bq.shift();succs[u].forEach(v=>{if(dist[v]===Infinity){dist[v]=dist[u]+1;parShort[v]=u;bq.push(v);}});}
+
+function chainShort(n){const c=[];let u=n;while(u){c.unshift(u);u=parShort[u];}return c;}
+function chainLong(n){const c=[];let u=n;while(u){c.unshift(u);u=parLong[u];}return c;}
+
+// layout
+const byLayer={}; topo.forEach(u=>{(byLayer[layer[u]]=byLayer[layer[u]]||[]).push(u);});
+Object.values(byLayer).forEach(a=>a.sort((x,y)=>idx[x]-idx[y]));
+const maxRows=Math.max(...Object.values(byLayer).map(a=>a.length));
+const W=170,H=40,GAPX=196,GAPY=50,PAD=30;
+const pos={};
+Object.entries(byLayer).forEach(([L,a])=>{
+  const off=PAD+(maxRows-a.length)*GAPY/2;
+  a.forEach((u,r)=>{pos[u]=[PAD+L*GAPX, off+r*GAPY];});
+});
+const svgW=PAD*2+(Math.max(...topo.map(u=>layer[u]))+1)*GAPX;
+const svgH=PAD*2+maxRows*GAPY;
+
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("svg");
+svg.setAttribute("width",svgW); svg.setAttribute("height",svgH);
+svg.setAttribute("viewBox",`0 0 ${svgW} ${svgH}`);
+svg.innerHTML=`<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa"/></marker>
+<marker id="arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+<marker id="arc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1e6e64"/></marker>
+</defs>`;
+const gE=document.createElementNS(NS,"g"), gR=document.createElementNS(NS,"g"), gL=document.createElementNS(NS,"g");
+svg.appendChild(gE); svg.appendChild(gR); svg.appendChild(gL);
+
+const edgeEls={};
+E.forEach(([a,b])=>{
+  const [x1,y1]=pos[a],[x2,y2]=pos[b];
+  const p=document.createElementNS(NS,"path");
+  const sx=x1+W, sy=y1+H/2, tx=x2, ty=y2+H/2, mx=(sx+tx)/2;
+  p.setAttribute("d",`M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`);
+  p.setAttribute("class","edge"); p.setAttribute("marker-end","url(#ar)");
+  gE.appendChild(p); edgeEls[a+"|"+b]=p;
+});
+
+const nodeEls={};
+S.forEach(s=>{
+  const [x,y]=pos[s[0]];
+  const r=document.createElementNS(NS,"rect");
+  r.setAttribute("x",x);r.setAttribute("y",y);r.setAttribute("width",W-14);r.setAttribute("height",H-6);r.setAttribute("rx",7);
+  r.setAttribute("fill", s[2]<0? "#cfd6d6" : COLORS[s[2]]); r.setAttribute("fill-opacity", s[2]<0?1:0.88);
+  r.setAttribute("class","node");
+  const ti=document.createElementNS(NS,"title");
+  ti.textContent=s[0]+" — "+s[1]+" ("+(s[2]<0?"شروع":ACTS[s[2]])+")";
+  r.appendChild(ti);
+  r.addEventListener("click",()=>select(s[0]));
+  gR.appendChild(r); nodeEls[s[0]]=r;
+
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("class","lbl");
+  const t1=document.createElementNS(NS,"tspan");
+  t1.setAttribute("x",x+8); t1.setAttribute("y",y+15); t1.setAttribute("font-size","10.5"); t1.setAttribute("font-weight","bold");
+  t1.textContent=s[0];
+  const lab=s[1].length>24? s[1].slice(0,23)+"…" : s[1];
+  const t2=document.createElementNS(NS,"tspan");
+  t2.setAttribute("x",x+8); t2.setAttribute("y",y+29); t2.setAttribute("font-size","9");
+  t2.textContent=lab;
+  t.appendChild(t1); t.appendChild(t2);
+  gL.appendChild(t);
+});
+
+document.getElementById("legend").innerHTML=ACTS.map((a,i)=>`<span class="sw" style="background:${COLORS[i]}"></span>${a}`).join(" ");
+
+let mode="short", cur=null;
+document.querySelectorAll('input[name=mode]').forEach(r=>r.addEventListener("change",e=>{mode=e.target.value; if(cur)select(cur);}));
+function select(id){
+  cur=id;
+  Object.values(nodeEls).forEach(r=>r.classList.remove("hl","crit"));
+  Object.values(edgeEls).forEach(p=>{p.classList.remove("hl","crit");p.setAttribute("marker-end","url(#ar)");});
+  const chain = mode==="short"? chainShort(id): chainLong(id);
+  const cls = mode==="short"? "hl":"crit";
+  chain.forEach(u=>nodeEls[u].classList.add(cls));
+  for(let i=0;i<chain.length-1;i++){const p=edgeEls[chain[i]+"|"+chain[i+1]];p.classList.add(cls);p.setAttribute("marker-end",mode==="short"?"url(#arh)":"url(#arc)");}
+  const pr=preds[id].filter(p=>p!=="START");
+  document.getElementById("panel").innerHTML=
+    `<b>${id} — ${S[idx[id]][1]}</b> («${S[idx[id]][2]<0?"شروع":ACTS[S[idx[id]][2]]}»)<br>`+
+    `پیش‌نیازهای مستقیم: ${pr.length? pr.join(", ") : "— (ورودی)"}<br>`+
+    `کوتاه‌ترین مسیر (${dist[id]} گام): <span class="chain short">${chainShort(id).join(" → ")}</span>`+
+    `زنجیره‌ی بحرانی (${layer[id]} گام): <span class="chain crit">${chainLong(id).join(" → ")}</span>`;
+}
+
+const tb=document.querySelector("#tbl tbody");
+S.filter(s=>s[0]!=="START").forEach(s=>{
+  const id=s[0];
+  const pr=preds[id].filter(p=>p!=="START");
+  tb.insertAdjacentHTML("beforeend",
+   `<tr><td><b>${id}</b></td><td>${s[1]}</td><td>${pr.join(", ")||"—"}</td><td>${dist[id]}</td><td class="mono">${chainShort(id).join("→")}</td><td>${layer[id]}</td><td class="mono">${chainLong(id).join("→")}</td></tr>`);
+});
+
+select("S35");
+</script>
+</body>
+</html>
