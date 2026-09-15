@@ -27,7 +27,7 @@ Online (GitHub Pages): <https://masoudmz.github.io/point-course/> — syllabus a
 
 <!-- SESSIONS:START -->
 
-> **Progress:** 6/64 sessions have compiled lecture notes.
+> **Progress:** 7/64 sessions have compiled lecture notes.
 
 
 ### Prelude — Essential Prerequisites
@@ -45,7 +45,7 @@ Online (GitHub Pages): <https://masoudmz.github.io/point-course/> — syllabus a
 | S1 | Rings, Ideals, Quotients, Prime & Maximal Ideals | [site](https://masoudmz.github.io/point-course/#s1) | [tex](lectures/S1-rings.tex) | [pdf](lectures/S1-rings.pdf) | ✅ done |
 | S2 | Modules, Tensor Products, and Exact Sequences | [site](https://masoudmz.github.io/point-course/#s2) | [tex](lectures/S2-modules.tex) | [pdf](lectures/S2-modules.pdf) | ✅ done |
 | S3 | Fields, Extensions, and Algebraic Closure | [site](https://masoudmz.github.io/point-course/#s3) | [tex](lectures/S3-fields.tex) | [pdf](lectures/S3-fields.pdf) | ✅ done |
-| S4 | Category Theory Essentials | [site](https://masoudmz.github.io/point-course/#s4) | — | — | 🚧 planned |
+| S4 | Category Theory Essentials | [site](https://masoudmz.github.io/point-course/#s4) | [tex](lectures/S4-category.tex) | [pdf](lectures/S4-category.pdf) | ✅ done |
 
 ### Act I — The Point as a Prime Number
 
