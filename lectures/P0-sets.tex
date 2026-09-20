@@ -1,0 +1,398 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+
+% ── theorem environments (numbered, standard) ──
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{exercise}{Exercise}
+
+% ── master macro block (safe, multi-character) ──
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\id}{\operatorname{id}}
+
+\title{
+  {\color{blue!40!black}\textbf{\Huge Point}}\\[0.3em]
+  \Large \textit{From Number Theory to Algebraic Geometry and Logic}\\[0.7em]
+  \large \textbf{Session P0 --- Set Theory, Order, and the Axiom of Choice}\\[0.3em]
+  \normalsize \emph{Complete lecture notes with proofs, examples, and exercises}
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+\noindent
+This is the true session zero of the course --- the one the first class actually needed. It builds
+the set-theoretic scaffolding everything else stands on: equivalence relations and their exact
+correspondence with partitions (the logic of every quotient to come: $\Z/n$, $G/N$, $M\otimes N$,
+sheafification); order relations (preorder, partial order, strict order) and the anatomy of
+extrema (minimum vs minimal, bounds, well-orders); and the axiomatic frame ZF with the
+\textbf{Axiom of Choice}, its equivalents (Well-Ordering, Zorn's lemma --- with the equivalence
+cycle proved or sketched), and its famous consequences and equivalents: bases of vector spaces,
+Tychonoff, Tarski's theorem, spanning trees, and the precise tier of the Completeness Theorem.
+Zorn's lemma is the engine of three existence theorems later in the course: Krull (S1), algebraic
+closures (S3), and Deligne (S58).
+\end{abstract}
+
+\subsection*{Session plan (150 minutes)}
+\begin{center}\small
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Time} & \textbf{Block} \\
+\hline
+0:00--0:10 & Orientation: why set theory first; where P0 feeds (S1, S3, S2, S27, S58) \\
+0:10--0:35 & \S1 Equivalence relations and partitions (the logic of quotients) \\
+0:35--1:00 & \S2--\S3 Orders: preorder/partial/strict; minima vs minimal; bounds; well-orders \\
+1:00--1:10 & \emph{Break} \\
+1:10--1:35 & \S4 From Russell's paradox to ZF \\
+1:35--2:10 & \S5 Axiom of Choice; the equivalence cycle; the list of equivalents \\
+2:10--2:30 & Exercises / wrap-up: Zorn as the course's existence engine \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Conventions}
+A \emph{relation} on $X$ is a subset of $X\times X$; we write $x\sim y$ for $(x,y)\in R$.
+Orders are written $\preceq$ (reflexive form) and $\prec$ (strict form). ``Poset'' means
+partially ordered set. ZF denotes Zermelo--Fraenkel set theory without Choice; ZFC $=$ ZF $+$ AC.
+
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════
+\section{Equivalence Relations and Partitions}
+% ══════════════════════════════════════════════
+
+\begin{definition}[Equivalence relation; class; quotient]
+A relation $\sim$ on $X$ is an \textbf{equivalence relation} if it is reflexive ($x\sim x$),
+symmetric ($x\sim y\Rightarrow y\sim x$), and transitive. The \textbf{class} of $x$ is
+$[x]=\{y\in X:y\sim x\}$; the \textbf{quotient set} is $X/{\sim}=\{[x]:x\in X\}$.
+\end{definition}
+
+\begin{definition}[Partition]
+A \textbf{partition} of $X$ is a family $\mathcal P\subseteq\Pow(X)$ of nonempty, pairwise disjoint
+sets whose union is $X$.
+\end{definition}
+
+\begin{theorem}[Equivalence $\leftrightarrow$ partition]\label{thm:equiv-partition}
+\begin{enumerate}[label=(\alph*)]
+  \item If $\sim$ is an equivalence relation on $X$, then $X/{\sim}$ is a partition of $X$.
+  \item If $\mathcal P$ is a partition of $X$, then $x\sim_{\mathcal P} y\iff \exists P\in\mathcal P,\ x,y\in P$
+    is an equivalence relation, and its classes are exactly the members of $\mathcal P$.
+\end{enumerate}
+Hence equivalence relations on $X$ and partitions of $X$ are in canonical bijection.
+\end{theorem}
+\begin{proof}
+(a) Each $x\in[x]$ by reflexivity, so the union is $X$ and classes are nonempty. If
+$z\in[x]\cap[y]$ then $x\sim z$ and $z\sim y$, so $x\sim y$; then for any $u\in[x]$: $u\sim x\sim y$
+gives $u\in[y]$, hence $[x]\subseteq[y]$; symmetrically $[y]\subseteq[x]$. So distinct classes are
+disjoint. (b) Reflexive since $\mathcal P$ covers $X$; symmetric by definition; transitive because
+if $x,y\in P$ and $y,z\in Q$ then $y\in P\cap Q$, forcing $P=Q$ by disjointness, so $x,z\in P$.
+The class of $x$ is the unique $P\ni x$. The two passages invert each other.
+\end{proof}
+
+\begin{example}[Quotients everywhere]\label{ex:quotients}
+\begin{itemize}
+  \item Congruence mod $n$ on $\Z$: classes $[0],\dots,[n-1]$; quotient $\Z/n\Z$ (S1).
+  \item Construction of $\Q$: on $\Z\times(\Z\setminus\{0\})$, $(a,b)\sim(c,d)\iff ad=bc$;
+    checking this is an equivalence relation \emph{is} the construction of the rationals.
+  \item Cosets $G/H$ (P1), orbits of a group action (P1), stalks and sheafification (S26--S27),
+    tensor products as quotients of free modules (S2): every quotient in the course is
+    Theorem~\ref{thm:equiv-partition} at work --- \emph{identifying what should be the same point}.
+\end{itemize}
+\end{example}
+
+\begin{remark}[Choosing representatives]
+A quotient map $X\to X/{\sim}$ generally has no canonical section: picking one representative per
+class for infinitely many classes is exactly where the Axiom of Choice (\S5) enters. Keep this in
+mind for S2 and S27.
+\end{remark}
+
+% ══════════════════════════════════════════════
+\section{Order Relations and Their Kin}
+% ══════════════════════════════════════════════
+
+\begin{definition}[Preorder, partial order, strict order, total order]
+A relation $\preceq$ on $P$ is a \textbf{preorder} if reflexive and transitive; a \textbf{partial
+order} if also antisymmetric ($x\preceq y\preceq x\Rightarrow x=y$); \textbf{total/linear} if any two
+elements are comparable. A relation $\prec$ is a \textbf{strict partial order} if irreflexive and
+transitive; a \textbf{strict total order} if additionally $x\prec y$ or $x=y$ or $y\prec x$ for all $x,y$.
+\end{definition}
+
+\begin{proposition}[The two forms of order correspond]\label{prop:order-forms}
+If $\preceq$ is a partial order then $x\prec y\iff(x\preceq y\ \wedge\ x\neq y)$ is a strict partial
+order; if $\prec$ is a strict partial order then $x\preceq y\iff(x\prec y\ \vee\ x=y)$ is a partial
+order. These passages are mutually inverse.
+\end{proposition}
+\begin{proof}
+Irreflexivity of $\prec$ is immediate; transitivity: if $x\prec y\prec z$ then $x\preceq z$, and
+$x=z$ would give $x\preceq y\preceq x$, hence $x=y$ by antisymmetry, contradicting $x\prec y$; so
+$x\neq z$, i.e.\ $x\prec z$. The converse direction and the round-trips are similar case analyses.
+\end{proof}
+
+\begin{proposition}[A preorder is a partial order on its quotient]\label{prop:preorder-quotient}
+If $\preceq$ is a preorder on $P$, then $x\sim y\iff(x\preceq y\ \wedge\ y\preceq x)$ is an
+\emph{equivalence relation}, and $[x]\preceq[y]\iff x\preceq y$ is a well-defined \emph{partial order}
+on $P/{\sim}$. Thus \S1 and \S2 meet: every preorder becomes a poset after quotienting.
+\end{proposition}
+\begin{proof}
+Reflexivity/symmetry of $\sim$ are built in; transitivity uses transitivity of $\preceq$ twice.
+Well-definedness: if $x\sim x'$ and $x\preceq y$ then $x'\preceq x\preceq y\preceq y'$, so
+$x'\preceq y'$. Antisymmetry on classes is exactly the definition of $\sim$.
+\end{proof}
+
+\begin{example}\label{ex:orders}
+\begin{itemize}
+  \item $(\N,\mid)$ divisibility: partial, not total ($2\nmid 3$, $3\nmid 2$).
+  \item $(\Pow(X),\subseteq)$: partial; chains $=$ nested families, antichains $=$ pairwise disjoint (or incomparable) families.
+  \item Preorder of functions $f\preceq g\iff f=O(g)$ (analysis): not antisymmetric --- quotienting gives the poset of growth rates (Proposition~\ref{prop:preorder-quotient}).
+  \item Lexicographic order on $\R^2$: total.
+\end{itemize}
+\end{example}
+
+% ══════════════════════════════════════════════
+\section{Extrema, Bounds, and Well-Orders}
+% ══════════════════════════════════════════════
+
+\begin{definition}[Bounds and extrema]
+In a poset $(P,\preceq)$ with $S\subseteq P$: $u$ is an \textbf{upper bound} of $S$ if $s\preceq u$
+for all $s\in S$ (lower bound dually); the \textbf{supremum} is the least upper bound.
+$m\in S$ is the \textbf{minimum} of $S$ if $m\preceq s$ for all $s\in S$; $m$ is \textbf{minimal} if
+no $s\in S$ satisfies $s\prec m$. Maximum/maximal are dual.
+\end{definition}
+
+\begin{example}[Minimum $\neq$ minimal]\label{ex:minimal}
+In $P=\{a,b,c\}$ with $a\prec c$, $b\prec c$ and $a,b$ incomparable (Figure~1): the minimal elements
+are $a$ and $b$ (two of them!), there is \emph{no} minimum; $c$ is both maximum and maximal; the set
+$\{a,b\}$ has upper bound $c$ (its supremum) but no maximum. In $(\N_{\ge2},\mid)$: minimal elements
+are the primes; the minimum is $2$? no --- $2$ does not divide $3$: there is no minimum, only minima.
+\end{example}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.2]
+  \node (c) at (0,1.6) {$c$};
+  \node (a) at (-1,0) {$a$};
+  \node (b) at (1,0) {$b$};
+  \draw (a) -- (c); \draw (b) -- (c);
+  \node at (0,-0.8) {\small two minimal elements, no minimum; $c$ = maximum = supremum of $\{a,b\}$};
+\end{tikzpicture}
+\caption{Hasse diagram: minimal vs minimum, maximal vs maximum, bounds vs extrema.}
+\end{figure}
+
+\begin{definition}[Well-order]
+A total order $\preceq$ on $W$ is a \textbf{well-order} if every nonempty $S\subseteq W$ has a
+minimum. Examples: $(\N,\le)$; $(\Z,\le)$ and $(\R,\le)$ are \emph{not}; every ordinal is.
+\end{definition}
+
+\begin{proposition}\label{prop:wo-basic}
+A well-order has no infinite strictly decreasing chain $x_1\succ x_2\succ\cdots$; conversely, a total
+order with no infinite decreasing chain is a well-order \emph{provided} countable choice is available
+(over ZF the forward direction is unconditional).
+\end{proposition}
+\begin{proof}
+If $x_1\succ x_2\succ\cdots$ exists then $\{x_i:i\in\N\}$ is nonempty with no minimum. Conversely, if
+$S\neq\varnothing$ has no minimum, pick $x_1\in S$; having $x_n$, the set $\{s\in S:s\prec x_n\}$ is
+nonempty (else $x_n$ were minimal$=$minimum), so choose $x_{n+1}$ in it --- producing a decreasing
+chain. (The recursive choices use dependent choice; note where.)
+\end{proof}
+
+% ══════════════════════════════════════════════
+\section{From Russell's Paradox to ZF}
+% ══════════════════════════════════════════════
+
+\begin{proposition}[Russell]
+There is no set $R$ with $R=\{x:x\notin x\}$.
+\end{proposition}
+\begin{proof}
+If $R$ were a set, then $R\in R\iff R\notin R$ by definition --- contradiction. Hence
+``the set of all sets'' cannot exist: comprehension must be restricted.
+\end{proof}
+
+\begin{definition}[The ZF axioms, informally]
+Language: only $\in$ and $=$. Axioms: \textbf{Extensionality} (same elements $\Rightarrow$ same set);
+\textbf{Pairing} $\{x,y\}$; \textbf{Union} $\bigcup\mathcal F$; \textbf{Power set} $\Pow(X)$;
+\textbf{Infinity} (an inductive set exists); \textbf{Separation} (from a set, carve out by any
+formula --- the safe replacement of naive comprehension); \textbf{Replacement} (images of sets under
+definable functions are sets); \textbf{Foundation} (no infinite $\in$-chains; every nonempty set has
+an $\in$-minimal element). \textbf{Choice} is \emph{not} among them --- it is the guest of \S5.
+\end{definition}
+
+\begin{remark}[What ZF cannot do alone]
+ZF proves each $X_i\neq\varnothing$ has elements, but not that an \emph{infinite family} admits a
+simultaneous choice: Russell's socks (no distinguishing property) vs shoes (left/right gives a rule).
+Everything in \S5 measures exactly this gap.
+\end{remark}
+
+% ══════════════════════════════════════════════
+\section{The Axiom of Choice and Its Equivalents}
+% ══════════════════════════════════════════════
+
+\begin{definition}[AC, WO, Zorn]
+\textbf{AC:} every family $\{X_i\}_{i\in I}$ of nonempty sets has a choice function
+$c:I\to\bigcup_i X_i$ with $c(i)\in X_i$; equivalently $\prod_i X_i\neq\varnothing$.
+\textbf{WO (Well-Ordering Principle):} every set admits a well-order.
+\textbf{Zorn (ZL):} if $(P,\preceq)\neq\varnothing$ and every chain has an upper bound in $P$, then
+$P$ has a maximal element.
+\end{definition}
+
+\begin{proposition}[WO $\Rightarrow$ AC, in ZF]\label{prop:wo-ac}
+\end{proposition}
+\begin{proof}
+Well-order $W=\bigcup_i X_i$. For each $i$, $X_i$ is a nonempty subset of $W$, hence has a
+$W$-least element; set $c(i)=\min_W X_i$. This is a choice function --- no choice used in the proof.
+\end{proof}
+
+\begin{proposition}[Zorn $\Rightarrow$ AC, in ZF]\label{prop:zorn-ac}
+\end{proposition}
+\begin{proof}
+Let $\mathcal F$ be the set of partial choice functions: $f\in\mathcal F$ iff $f$ is a function with
+$\mathrm{dom}(f)\subseteq I$ and $f(i)\in X_i$. Order $\mathcal F$ by extension; $\mathcal F\neq\varnothing$
+(empty function). A chain $\mathcal C$ has upper bound $\bigcup\mathcal C$ (union of compatible
+functions is a partial choice function). Zorn gives maximal $f$. If $\mathrm{dom}(f)\neq I$, pick
+$i\notin\mathrm{dom}(f)$ and $x\in X_i$ (a \emph{single} choice, legal in ZF) and extend $f$ by
+$i\mapsto x$ --- contradicting maximality. Hence $\mathrm{dom}(f)=I$.
+\end{proof}
+
+\begin{proposition}[AC $\Rightarrow$ WO and AC $\Rightarrow$ Zorn: sketches]\label{prop:ac-wo-zorn}
+\emph{AC $\Rightarrow$ WO:} fix a choice function $c$ on $\Pow(X)\setminus\{\varnothing\}$; by
+transfinite recursion set $x_\alpha=c\big(X\setminus\{x_\beta:\beta<\alpha\}\big)$; the recursion must
+stop (no injection from the class of ordinals into a set --- Hartogs), and at the stopping stage $X$
+is exhausted, so $\alpha\mapsto x_\alpha$ well-orders $X$. \emph{AC $\Rightarrow$ Zorn:} assuming no
+maximal element, recursively build a strictly increasing chain $x_\alpha$ by choosing at each stage
+a strict upper bound of $\{x_\beta:\beta<\alpha\}$ (which exists since chains have upper bounds and
+no upper bound is maximal); again Hartogs bounds the length --- contradiction.
+\end{proposition}
+
+\begin{corollary}
+Over ZF, the three statements AC, WO, ZL are equivalent (Propositions~\ref{prop:wo-ac},
+\ref{prop:zorn-ac}, \ref{prop:ac-wo-zorn}); so are Hausdorff's Maximality Principle and Tukey's lemma.
+\end{corollary}
+
+\begin{theorem}[The list of equivalents and near-equivalents]\label{thm:ac-list}
+Over ZF, the following are \textbf{equivalent} to AC:
+\begin{enumerate}[label=(\arabic*)]
+  \item Every vector space has a basis (Blass, 1984).
+  \item Tychonoff's theorem: arbitrary products of compact spaces are compact.
+  \item Tarski's theorem: for every infinite $A$, $|A\times A|=|A|$.
+  \item Every connected graph has a spanning tree (forward direction: Zorn on forests ordered by inclusion).
+  \item Every surjection has a section (a reformulation of AC itself).
+\end{enumerate}
+And the following live in strictly weaker tiers (important to know, easy to overstate):
+the \textbf{Boolean Prime Ideal / Ultrafilter Lemma} and the general \textbf{G\"odel Completeness
+Theorem} (equivalent to BPI; the countable-language case is provable in ZF); \textbf{Hahn--Banach};
+and mere \emph{consequences} of AC such as the existence of non-measurable sets.
+\end{theorem}
+
+\begin{remark}[Where the course spends Zorn]
+Krull's theorem (S1: maximal ideals exist) $\to$ algebraic closures (S3) $\to$ Deligne's theorem
+(S58: coherent topoi have enough points). Three existence theorems, one engine --- and each is a
+``points exist'' statement, fitting the course's theme perfectly.
+\end{remark}
+
+% ══════════════════════════════════════════════
+\section{Exercises}
+% ══════════════════════════════════════════════
+\begin{exercise}
+Prove both directions of Theorem~\ref{thm:equiv-partition} for: congruence mod $n$ on $\Z$; and
+$x\sim y\iff |x|=|y|$ on $\R$ (describe the partition geometrically).
+\end{exercise}
+\begin{exercise}
+Carry out the construction of $\Q$ from $\Z\times(\Z\setminus\{0\})$: verify $(a,b)\sim(c,d)\iff ad=bc$
+is an equivalence relation, and that $[(a,b)]+[(c,d)]=[(ad+bc,bd)]$ is well defined.
+\end{exercise}
+\begin{exercise}
+Show $f\preceq g\iff f=O(g)$ is a preorder on positive functions $\N\to\R_{>0}$ but not a partial
+order; describe the quotient poset (growth rates) and identify its minimum.
+\end{exercise}
+\begin{exercise}
+In $(\Pow(X)\setminus\{\varnothing\},\subseteq)$ with $|X|\ge2$: find minimal and maximal elements;
+does a minimum exist? Repeat for $(\N_{\ge2},\mid)$.
+\end{exercise}
+\begin{exercise}
+Prove Proposition~\ref{prop:order-forms} in full (all case analyses), and show lexicographic order on
+$\R^2$ is a strict total order.
+\end{exercise}
+\begin{exercise}
+Prove the forward direction of Proposition~\ref{prop:wo-basic} in ZF, and pinpoint exactly where the
+converse uses dependent choice; give a poset with no decreasing chain that is not well-ordered.
+\end{exercise}
+\begin{exercise}
+Prove Proposition~\ref{prop:zorn-ac} in full detail (verify $\bigcup\mathcal C$ is a function and a
+partial choice function; verify maximality forces full domain).
+\end{exercise}
+\begin{exercise}
+Use Zorn to prove Krull's theorem: every proper ideal of a commutative ring with $1\neq0$ lies in a
+maximal ideal (this is S1's engine --- prove it here first).
+\end{exercise}
+\begin{exercise}
+Use Zorn to prove every vector space has a basis (order the linearly independent subsets by
+inclusion); identify where the chain upper bound uses unions.
+\end{exercise}
+\begin{exercise}
+Prove Tychonoff's theorem for \emph{finite} products in ZF by induction, and locate the exact step
+where the general proof must invoke choice (ultrafilters or subbases).
+\end{exercise}
+\begin{exercise}
+Show AC $\iff$ every surjection $p:E\to B$ has a section $s:B\to E$ ($p\circ s=\id_B$); interpret
+sections as ``continuous choices of points of fibers'' and compare with Remark~1.4.
+\end{exercise}
+\begin{exercise}
+Explain why Russell's paradox does not contradict Separation: for a set $A$, show
+$\{x\in A:x\notin x\}\notin A$; conclude no universal set exists in ZF.
+\end{exercise}
+
+% ══════════════════════════════════════════════
+\section*{Where This Session Feeds the Course}
+\addcontentsline{toc}{section}{Where This Session Feeds the Course}
+% ══════════════════════════════════════════════
+\begin{itemize}
+  \item \textbf{Depends on:} nothing --- this is session zero.
+  \item \textbf{Feeds:} S1 (Krull via Zorn; quotients $R/I$); S2 (tensor as quotient; choosing
+    representatives); S3 (algebraic closure via Zorn); S27 (sheafification classes); S34/S16
+    (orderings of finite subextensions for inverse limits); S58 (Deligne via Zorn); P1 (cosets as
+    partitions, Exercise~12 preview).
+  \item \textbf{Unifying thread:} quotient by equivalence $=$ identifying points that must agree;
+    order $=$ the scaffolding on which Zorn climbs; Zorn $=$ the engine that guarantees the
+    \emph{existence} of the points (maximal ideals, closures, models) the course studies.
+\end{itemize}
+
+\subsection*{References for this session}
+\begin{enumerate}[label={[\arabic*]}]
+  \item Halmos, P.R. \emph{Naive Set Theory} (the classic first read).
+  \item Enderton, H.B. \emph{Elements of Set Theory} (proofs of the equivalence cycle).
+  \item Jech, T. \emph{The Axiom of Choice} / \emph{Set Theory} (the definitive treatment).
+  \item Howard, P. \& Rubin, J. \emph{Consequences of the Axiom of Choice} (the list, with tiers).
+  \item Davey, B. \& Priestley, H. \emph{Introduction to Lattices and Order} (order theory).
+\end{enumerate}
+
+\vspace{1.5em}
+\begin{center}
+\rule{0.6\textwidth}{0.4pt}\\[0.5em]
+\textit{End of Session P0 --- next: Session P1, Group Theory: Part I}
+\end{center}
+
+\end{document}

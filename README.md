@@ -27,13 +27,14 @@ Online (GitHub Pages): <https://masoudmz.github.io/point-course/> — syllabus a
 
 <!-- SESSIONS:START -->
 
-> **Progress:** 7/64 sessions have compiled lecture notes.
+> **Progress:** 8/65 sessions have compiled lecture notes.
 
 
 ### Prelude — Essential Prerequisites
 
 | ID | Session | Online | LaTeX | PDF | Status |
 |:--:|---|---|:--:|:--:|:--:|
+| P0 | Set Theory, Order, and the Axiom of Choice | [site](https://masoudmz.github.io/point-course/#sP0) | [tex](lectures/P0-sets.tex) | [pdf](lectures/P0-sets.pdf) | ✅ done |
 | P1 | Group Theory: Part I | [site](https://masoudmz.github.io/point-course/#sP1) | [tex](lectures/P1-groups.tex) | [pdf](lectures/P1-groups.pdf) | ✅ done |
 | P2 | Topology and Metric Spaces | [site](https://masoudmz.github.io/point-course/#sP2) | [tex](lectures/P2-topology.tex) | [pdf](lectures/P2-topology.pdf) | ✅ done |
 | P3 | Algebraic Topology Crash Course | [site](https://masoudmz.github.io/point-course/#sP3) | [tex](lectures/P3-algtop.tex) | [pdf](lectures/P3-algtop.pdf) | ✅ done |
