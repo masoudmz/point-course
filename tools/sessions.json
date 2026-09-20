@@ -1,68 +1,394 @@
 {
   "sessions": [
-    {"act": "Prelude — Essential Prerequisites", "id": "P1", "title": "Group Theory: Part I", "slug": "P1-groups"},
-    {"act": "Prelude — Essential Prerequisites", "id": "P2", "title": "Topology and Metric Spaces", "slug": "P2-topology"},
-    {"act": "Prelude — Essential Prerequisites", "id": "P3", "title": "Algebraic Topology Crash Course", "slug": "P3-algtop"},
-    {"act": "Act 0 — Foundations", "id": "S1", "title": "Rings, Ideals, Quotients, Prime & Maximal Ideals", "slug": "S1-rings"},
-    {"act": "Act 0 — Foundations", "id": "S2", "title": "Modules, Tensor Products, and Exact Sequences", "slug": "S2-modules"},
-    {"act": "Act 0 — Foundations", "id": "S3", "title": "Fields, Extensions, and Algebraic Closure", "slug": "S3-fields"},
-    {"act": "Act 0 — Foundations", "id": "S4", "title": "Category Theory Essentials", "slug": "S4-category"},
-    {"act": "Act I — The Point as a Prime Number", "id": "S5", "title": "Quadratic Residues and the Legendre Symbol", "slug": "S5-legendre"},
-    {"act": "Act I — The Point as a Prime Number", "id": "S6", "title": "Quadratic Reciprocity: Statement and First Proof", "slug": "S6-qr1"},
-    {"act": "Act I — The Point as a Prime Number", "id": "S7", "title": "Quadratic Reciprocity: Geometric Proofs & Generalizations", "slug": "S7-qr2"},
-    {"act": "Act I — The Point as a Prime Number", "id": "S8", "title": "Reciprocity in the Language of Galois Theory", "slug": "S8-qr-galois"},
-    {"act": "Act I — The Point as a Prime Number", "id": "S9", "title": "Cyclotomic Extensions and Frobenius Elements", "slug": "S9-cyclotomic"},
-    {"act": "Act I — The Point as a Prime Number", "id": "S10", "title": "Summary: From Reciprocity to Galois Theory", "slug": "S10-summary1"},
-    {"act": "Act II — Galois Theory and Solvability", "id": "S11", "title": "Solvable Groups, Sₙ, and Aₙ", "slug": "S11-solvable"},
-    {"act": "Act II — Galois Theory and Solvability", "id": "S12", "title": "Galois Extensions, Finite Fields, and Linear Independence", "slug": "S12-galois-ext"},
-    {"act": "Act II — Galois Theory and Solvability", "id": "S13", "title": "The Fundamental Theorem of Galois Theory", "slug": "S13-ftgt"},
-    {"act": "Act II — Galois Theory and Solvability", "id": "S14", "title": "Solvable Groups and Solvability by Radicals", "slug": "S14-radicals"},
-    {"act": "Act II — Galois Theory and Solvability", "id": "S15", "title": "The Insolvability of the Quintic", "slug": "S15-quintic"},
-    {"act": "Act II — Galois Theory and Solvability", "id": "S16", "title": "The Absolute Galois Group", "slug": "S16-abs-galois"},
-    {"act": "Act III — Valuations and p-adic Points", "id": "S17", "title": "Absolute Values, Valuations, and Ostrowski's Theorem", "slug": "S17-ostrowski"},
-    {"act": "Act III — Valuations and p-adic Points", "id": "S18", "title": "Construction of ℚₚ and ℤₚ", "slug": "S18-qp"},
-    {"act": "Act III — Valuations and p-adic Points", "id": "S19", "title": "Hensel's Lemma and p-adic Topology", "slug": "S19-hensel"},
-    {"act": "Act III — Valuations and p-adic Points", "id": "S20", "title": "Extension of Valuations: Ramification and Residue Degree", "slug": "S20-ramification"},
-    {"act": "Act III — Valuations and p-adic Points", "id": "S21", "title": "Function Fields and the Geometric Analogy", "slug": "S21-function-fields"},
-    {"act": "Act III — Valuations and p-adic Points", "id": "S22", "title": "Adeles, Ideles, and Adelic Compactness", "slug": "S22-adeles"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S23", "title": "Commutative Algebra I", "slug": "S23-comm-alg-1"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S24", "title": "Dedekind Domains and Ideal Class Groups", "slug": "S24-dedekind"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S25", "title": "Affine Varieties and Hilbert's Nullstellensatz", "slug": "S25-nullstellensatz"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S26", "title": "Presheaves and Sheaves", "slug": "S26-sheaves"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S27", "title": "Sheafification, Categories of Sheaves, and Étale Spaces", "slug": "S27-sheafification"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S28", "title": "Schemes: Spec(R), the Structure Sheaf, Closed & Generic Points", "slug": "S28-schemes"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S29", "title": "The Functor of Points and Yoneda's Perspective", "slug": "S29-functor-of-points"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S30", "title": "Commutative Algebra II: Morphisms, Fiber Products, Étale Maps", "slug": "S30-comm-alg-2"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S31", "title": "Projective Varieties and Points at Infinity", "slug": "S31-projective"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S32", "title": "Divisors, the Product Formula, and Riemann–Roch", "slug": "S32-riemann-roch"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S33", "title": "The Valuative Criterion of Properness", "slug": "S33-valuative"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S34", "title": "Free Groups and Profinite Groups", "slug": "S34-profinite"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S35", "title": "Étale Fundamental Group and Grothendieck's Galois Theory", "slug": "S35-etale-pi1"},
-    {"act": "Act IV — Algebraic Geometry", "id": "S36", "title": "Summary: The Bridge Between Number Theory and Geometry", "slug": "S36-bridge"},
-    {"act": "Act V — Curves over ℂ and Elliptic Curves", "id": "S37", "title": "Complex Analysis I: Holomorphic Functions & Cauchy Theory", "slug": "S37-complex-1"},
-    {"act": "Act V — Curves over ℂ and Elliptic Curves", "id": "S38", "title": "Complex Analysis II: Riemann Surfaces", "slug": "S38-riemann-surfaces"},
-    {"act": "Act V — Curves over ℂ and Elliptic Curves", "id": "S39", "title": "Elliptic Curves: Geometry and Group Law", "slug": "S39-elliptic-1"},
-    {"act": "Act V — Curves over ℂ and Elliptic Curves", "id": "S40", "title": "Elliptic Curves: Arithmetic and Modular Forms", "slug": "S40-elliptic-2"},
-    {"act": "Act V — Curves over ℂ and Elliptic Curves", "id": "S41", "title": "Points as Objects: Moduli Spaces and Arithmetic", "slug": "S41-moduli"},
-    {"act": "Act VI — Class Field Theory", "id": "S42", "title": "Homological Algebra I", "slug": "S42-homological-1"},
-    {"act": "Act VI — Class Field Theory", "id": "S43", "title": "Homological Algebra II", "slug": "S43-homological-2"},
-    {"act": "Act VI — Class Field Theory", "id": "S44", "title": "Group Cohomology and Tate Cohomology", "slug": "S44-group-cohomology"},
-    {"act": "Act VI — Class Field Theory", "id": "S45", "title": "Galois Cohomology and the Fundamental Exact Sequence", "slug": "S45-galois-cohomology"},
-    {"act": "Act VI — Class Field Theory", "id": "S46", "title": "The Artin Map", "slug": "S46-artin-map"},
-    {"act": "Act VI — Class Field Theory", "id": "S47", "title": "Artin Reciprocity", "slug": "S47-reciprocity"},
-    {"act": "Act VI — Class Field Theory", "id": "S48", "title": "The Existence Theorem", "slug": "S48-existence"},
-    {"act": "Act VI — Class Field Theory", "id": "S49", "title": "The Idele Formulation and Global CFT", "slug": "S49-ideles"},
-    {"act": "Act VI — Class Field Theory", "id": "S50", "title": "Local Class Field Theory: Lubin–Tate", "slug": "S50-lubin-tate"},
-    {"act": "Interlude — Spaces without Points", "id": "S51", "title": "Gelfand–Naimark and Pointless Spaces", "slug": "S51-gelfand-naimark"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S52", "title": "Sites and Grothendieck Topologies", "slug": "S52-sites"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S53", "title": "Sheaves on Sites and Topoi", "slug": "S53-topoi"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S54", "title": "Geometric Morphisms and Points of a Topos", "slug": "S54-geometric-morphisms"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S55", "title": "Enough Points", "slug": "S55-enough-points"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S56", "title": "Classifying Topoi and Geometric Theories", "slug": "S56-classifying-topoi"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S57", "title": "Geometric Model Theory", "slug": "S57-model-theory"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S58", "title": "Deligne's Theorem: Statement and Proof", "slug": "S58-deligne-proof"},
-    {"act": "Act VII — Topos Theory and Logic", "id": "S59", "title": "Deligne's Theorem in Algebraic Geometry", "slug": "S59-deligne-geometry"},
-    {"act": "Postlude — Synthesis and the Big Picture", "id": "S60", "title": "The Point: One Concept, Three Worlds", "slug": "S60-synthesis"},
-    {"act": "Postlude — Synthesis and the Big Picture", "id": "S61", "title": "Open Discussion: Points in Physics, Non-commutative Geometry, and Langlands", "slug": "S61-outlook"}
+    {
+      "act": "Prelude — Essential Prerequisites",
+      "id": "P0",
+      "title": "Set Theory, Order, and the Axiom of Choice",
+      "slug": "P0-sets"
+    },
+    {
+      "act": "Prelude — Essential Prerequisites",
+      "id": "P1",
+      "title": "Group Theory: Part I",
+      "slug": "P1-groups"
+    },
+    {
+      "act": "Prelude — Essential Prerequisites",
+      "id": "P2",
+      "title": "Topology and Metric Spaces",
+      "slug": "P2-topology"
+    },
+    {
+      "act": "Prelude — Essential Prerequisites",
+      "id": "P3",
+      "title": "Algebraic Topology Crash Course",
+      "slug": "P3-algtop"
+    },
+    {
+      "act": "Act 0 — Foundations",
+      "id": "S1",
+      "title": "Rings, Ideals, Quotients, Prime & Maximal Ideals",
+      "slug": "S1-rings"
+    },
+    {
+      "act": "Act 0 — Foundations",
+      "id": "S2",
+      "title": "Modules, Tensor Products, and Exact Sequences",
+      "slug": "S2-modules"
+    },
+    {
+      "act": "Act 0 — Foundations",
+      "id": "S3",
+      "title": "Fields, Extensions, and Algebraic Closure",
+      "slug": "S3-fields"
+    },
+    {
+      "act": "Act 0 — Foundations",
+      "id": "S4",
+      "title": "Category Theory Essentials",
+      "slug": "S4-category"
+    },
+    {
+      "act": "Act I — The Point as a Prime Number",
+      "id": "S5",
+      "title": "Quadratic Residues and the Legendre Symbol",
+      "slug": "S5-legendre"
+    },
+    {
+      "act": "Act I — The Point as a Prime Number",
+      "id": "S6",
+      "title": "Quadratic Reciprocity: Statement and First Proof",
+      "slug": "S6-qr1"
+    },
+    {
+      "act": "Act I — The Point as a Prime Number",
+      "id": "S7",
+      "title": "Quadratic Reciprocity: Geometric Proofs & Generalizations",
+      "slug": "S7-qr2"
+    },
+    {
+      "act": "Act I — The Point as a Prime Number",
+      "id": "S8",
+      "title": "Reciprocity in the Language of Galois Theory",
+      "slug": "S8-qr-galois"
+    },
+    {
+      "act": "Act I — The Point as a Prime Number",
+      "id": "S9",
+      "title": "Cyclotomic Extensions and Frobenius Elements",
+      "slug": "S9-cyclotomic"
+    },
+    {
+      "act": "Act I — The Point as a Prime Number",
+      "id": "S10",
+      "title": "Summary: From Reciprocity to Galois Theory",
+      "slug": "S10-summary1"
+    },
+    {
+      "act": "Act II — Galois Theory and Solvability",
+      "id": "S11",
+      "title": "Solvable Groups, Sₙ, and Aₙ",
+      "slug": "S11-solvable"
+    },
+    {
+      "act": "Act II — Galois Theory and Solvability",
+      "id": "S12",
+      "title": "Galois Extensions, Finite Fields, and Linear Independence",
+      "slug": "S12-galois-ext"
+    },
+    {
+      "act": "Act II — Galois Theory and Solvability",
+      "id": "S13",
+      "title": "The Fundamental Theorem of Galois Theory",
+      "slug": "S13-ftgt"
+    },
+    {
+      "act": "Act II — Galois Theory and Solvability",
+      "id": "S14",
+      "title": "Solvable Groups and Solvability by Radicals",
+      "slug": "S14-radicals"
+    },
+    {
+      "act": "Act II — Galois Theory and Solvability",
+      "id": "S15",
+      "title": "The Insolvability of the Quintic",
+      "slug": "S15-quintic"
+    },
+    {
+      "act": "Act II — Galois Theory and Solvability",
+      "id": "S16",
+      "title": "The Absolute Galois Group",
+      "slug": "S16-abs-galois"
+    },
+    {
+      "act": "Act III — Valuations and p-adic Points",
+      "id": "S17",
+      "title": "Absolute Values, Valuations, and Ostrowski's Theorem",
+      "slug": "S17-ostrowski"
+    },
+    {
+      "act": "Act III — Valuations and p-adic Points",
+      "id": "S18",
+      "title": "Construction of ℚₚ and ℤₚ",
+      "slug": "S18-qp"
+    },
+    {
+      "act": "Act III — Valuations and p-adic Points",
+      "id": "S19",
+      "title": "Hensel's Lemma and p-adic Topology",
+      "slug": "S19-hensel"
+    },
+    {
+      "act": "Act III — Valuations and p-adic Points",
+      "id": "S20",
+      "title": "Extension of Valuations: Ramification and Residue Degree",
+      "slug": "S20-ramification"
+    },
+    {
+      "act": "Act III — Valuations and p-adic Points",
+      "id": "S21",
+      "title": "Function Fields and the Geometric Analogy",
+      "slug": "S21-function-fields"
+    },
+    {
+      "act": "Act III — Valuations and p-adic Points",
+      "id": "S22",
+      "title": "Adeles, Ideles, and Adelic Compactness",
+      "slug": "S22-adeles"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S23",
+      "title": "Commutative Algebra I",
+      "slug": "S23-comm-alg-1"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S24",
+      "title": "Dedekind Domains and Ideal Class Groups",
+      "slug": "S24-dedekind"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S25",
+      "title": "Affine Varieties and Hilbert's Nullstellensatz",
+      "slug": "S25-nullstellensatz"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S26",
+      "title": "Presheaves and Sheaves",
+      "slug": "S26-sheaves"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S27",
+      "title": "Sheafification, Categories of Sheaves, and Étale Spaces",
+      "slug": "S27-sheafification"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S28",
+      "title": "Schemes: Spec(R), the Structure Sheaf, Closed & Generic Points",
+      "slug": "S28-schemes"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S29",
+      "title": "The Functor of Points and Yoneda's Perspective",
+      "slug": "S29-functor-of-points"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S30",
+      "title": "Commutative Algebra II: Morphisms, Fiber Products, Étale Maps",
+      "slug": "S30-comm-alg-2"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S31",
+      "title": "Projective Varieties and Points at Infinity",
+      "slug": "S31-projective"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S32",
+      "title": "Divisors, the Product Formula, and Riemann–Roch",
+      "slug": "S32-riemann-roch"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S33",
+      "title": "The Valuative Criterion of Properness",
+      "slug": "S33-valuative"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S34",
+      "title": "Free Groups and Profinite Groups",
+      "slug": "S34-profinite"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S35",
+      "title": "Étale Fundamental Group and Grothendieck's Galois Theory",
+      "slug": "S35-etale-pi1"
+    },
+    {
+      "act": "Act IV — Algebraic Geometry",
+      "id": "S36",
+      "title": "Summary: The Bridge Between Number Theory and Geometry",
+      "slug": "S36-bridge"
+    },
+    {
+      "act": "Act V — Curves over ℂ and Elliptic Curves",
+      "id": "S37",
+      "title": "Complex Analysis I: Holomorphic Functions & Cauchy Theory",
+      "slug": "S37-complex-1"
+    },
+    {
+      "act": "Act V — Curves over ℂ and Elliptic Curves",
+      "id": "S38",
+      "title": "Complex Analysis II: Riemann Surfaces",
+      "slug": "S38-riemann-surfaces"
+    },
+    {
+      "act": "Act V — Curves over ℂ and Elliptic Curves",
+      "id": "S39",
+      "title": "Elliptic Curves: Geometry and Group Law",
+      "slug": "S39-elliptic-1"
+    },
+    {
+      "act": "Act V — Curves over ℂ and Elliptic Curves",
+      "id": "S40",
+      "title": "Elliptic Curves: Arithmetic and Modular Forms",
+      "slug": "S40-elliptic-2"
+    },
+    {
+      "act": "Act V — Curves over ℂ and Elliptic Curves",
+      "id": "S41",
+      "title": "Points as Objects: Moduli Spaces and Arithmetic",
+      "slug": "S41-moduli"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S42",
+      "title": "Homological Algebra I",
+      "slug": "S42-homological-1"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S43",
+      "title": "Homological Algebra II",
+      "slug": "S43-homological-2"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S44",
+      "title": "Group Cohomology and Tate Cohomology",
+      "slug": "S44-group-cohomology"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S45",
+      "title": "Galois Cohomology and the Fundamental Exact Sequence",
+      "slug": "S45-galois-cohomology"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S46",
+      "title": "The Artin Map",
+      "slug": "S46-artin-map"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S47",
+      "title": "Artin Reciprocity",
+      "slug": "S47-reciprocity"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S48",
+      "title": "The Existence Theorem",
+      "slug": "S48-existence"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S49",
+      "title": "The Idele Formulation and Global CFT",
+      "slug": "S49-ideles"
+    },
+    {
+      "act": "Act VI — Class Field Theory",
+      "id": "S50",
+      "title": "Local Class Field Theory: Lubin–Tate",
+      "slug": "S50-lubin-tate"
+    },
+    {
+      "act": "Interlude — Spaces without Points",
+      "id": "S51",
+      "title": "Gelfand–Naimark and Pointless Spaces",
+      "slug": "S51-gelfand-naimark"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S52",
+      "title": "Sites and Grothendieck Topologies",
+      "slug": "S52-sites"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S53",
+      "title": "Sheaves on Sites and Topoi",
+      "slug": "S53-topoi"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S54",
+      "title": "Geometric Morphisms and Points of a Topos",
+      "slug": "S54-geometric-morphisms"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S55",
+      "title": "Enough Points",
+      "slug": "S55-enough-points"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S56",
+      "title": "Classifying Topoi and Geometric Theories",
+      "slug": "S56-classifying-topoi"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S57",
+      "title": "Geometric Model Theory",
+      "slug": "S57-model-theory"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S58",
+      "title": "Deligne's Theorem: Statement and Proof",
+      "slug": "S58-deligne-proof"
+    },
+    {
+      "act": "Act VII — Topos Theory and Logic",
+      "id": "S59",
+      "title": "Deligne's Theorem in Algebraic Geometry",
+      "slug": "S59-deligne-geometry"
+    },
+    {
+      "act": "Postlude — Synthesis and the Big Picture",
+      "id": "S60",
+      "title": "The Point: One Concept, Three Worlds",
+      "slug": "S60-synthesis"
+    },
+    {
+      "act": "Postlude — Synthesis and the Big Picture",
+      "id": "S61",
+      "title": "Open Discussion: Points in Physics, Non-commutative Geometry, and Langlands",
+      "slug": "S61-outlook"
+    }
   ]
 }
