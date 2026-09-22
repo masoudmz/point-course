@@ -1,0 +1,509 @@
+{
+  "_help": "One entry per file. 'file' may omit the extension (resolved fuzzily). 'keys' are substrings of index.html (raw HTML, including <em> tags).",
+  "_pending_help": "Entries below have no file in references/ yet. When you add the file, move the object into 'entries' and set 'file' to the actual name.",
+  "entries": [
+    {
+      "file": "Artin - Algebra.pdf",
+      "keys": [
+        "Artin, E. <em>Algebra</em>",
+        "Artin ch.2",
+        "Artin ch.4",
+        "Artin ch.5"
+      ]
+    },
+    {
+      "file": "I. N. Herstein - Topics In Algebra, 2nd Edition.pdf",
+      "keys": [
+        "Herstein ch.2",
+        "Herstein, I.N"
+      ]
+    },
+    {
+      "file": "Rotman - An introduction to the theory of groups.pdf",
+      "keys": [
+        "Rotman, J.J. <em>An Introduction to the Theory of Groups</em>",
+        "Rotman ch.1–4",
+        "Rotman ch.4"
+      ]
+    },
+    {
+      "file": "Munkres - A First Course in Topology.pdf",
+      "keys": [
+        "Munkres, J.R.",
+        "Munkres ch.2–4",
+        "Munkres §51–54"
+      ]
+    },
+    {
+      "file": "Wilson A Sutherland - Introduction to Metric and Topological Spaces.pdf",
+      "keys": [
+        "Sutherland",
+        "Sutherland, W.A."
+      ]
+    },
+    {
+      "file": "Rudin - Principles of Mathematical Analysis.pdf",
+      "keys": [
+        "Rudin, W.",
+        "Rudin ch.2–4"
+      ]
+    },
+    {
+      "file": "Hatcher - Algebraic Topology.pdf",
+      "keys": [
+        "Hatcher, A.",
+        "Hatcher ch.0–1 (selected)"
+      ]
+    },
+    {
+      "file": "J. P. May - A Concise Course in Algebraic Topology.pdf",
+      "keys": [
+        "May ch.1–3 (selected)",
+        "May, J.P."
+      ]
+    },
+    {
+      "file": "Gouvêa, F.Q. - p-adic Numbers.pdf",
+      "keys": [
+        "Gouvêa, F.Q.",
+        "Gouvêa ch.1–3",
+        "Gouvêa ch.1–2",
+        "Gouvêa ch.3–4",
+        "Gouvêa ch.4",
+        "Gouvêa ch.2"
+      ]
+    },
+    {
+      "file": "Szamuely, T. - Galois Groups and Fundamental Groups.pdf",
+      "keys": [
+        "Szamuely, T.",
+        "Szamuely ch.2",
+        "Szamuely ch.1",
+        "Szamuely ch.4–5"
+      ]
+    }
+  ],
+  "_pending": [
+    {
+      "file": "Artin - Galois Theory.pdf",
+      "keys": [
+        "Artin, E. <em>Galois Theory</em>",
+        "Artin, Galois Theory"
+      ]
+    },
+    {
+      "file": "Mac Lane - Categories for the Working Mathematician.pdf",
+      "keys": [
+        "Mac Lane, S. <em>Categories for the Working Mathematician</em>",
+        "Mac Lane, CWM"
+      ]
+    },
+    {
+      "file": "Leinster - Basic Category Theory.pdf",
+      "keys": [
+        "Leinster, T. <em>Basic Category Theory</em>",
+        "Leinster"
+      ]
+    },
+    {
+      "file": "Mac Lane - Homology.pdf",
+      "keys": [
+        "Mac Lane, S. <em>Homology</em>",
+        "Mac Lane, Homology"
+      ]
+    },
+    {
+      "file": "Mac Lane Moerdijk - Sheaves in Geometry and Logic.pdf",
+      "keys": [
+        "Sheaves in Geometry and Logic",
+        "Mac Lane–Moerdijk"
+      ]
+    },
+    {
+      "file": "Ireland Rosen - Classical Introduction to Modern Number Theory.pdf",
+      "keys": [
+        "A Classical Introduction to Modern Number Theory",
+        "Ireland–Rosen"
+      ]
+    },
+    {
+      "file": "Hardy Wright - An Introduction to the Theory of Numbers.pdf",
+      "keys": [
+        "An Introduction to the Theory of Numbers",
+        "Hardy–Wright"
+      ]
+    },
+    {
+      "file": "Cox - Primes of the Form x2 + ny2.pdf",
+      "keys": [
+        "Primes of the Form",
+        "Cox ch.1"
+      ]
+    },
+    {
+      "file": "Lemmermeyer - Reciprocity Laws.pdf",
+      "keys": [
+        "Reciprocity Laws",
+        "Lemmermeyer"
+      ]
+    },
+    {
+      "file": "Lang - Algebra.pdf",
+      "keys": [
+        "Lang, S. <em>Algebra</em>. Springer",
+        "Lang, Algebra",
+        "Lang ch.VI",
+        "Lang ch.V",
+        "Lang ch.XVI"
+      ]
+    },
+    {
+      "file": "Lang - Algebraic Number Theory.pdf",
+      "keys": [
+        "Lang, S. <em>Algebraic Number Theory</em>",
+        "Lang, ANT",
+        "Lang ch.XIII"
+      ]
+    },
+    {
+      "file": "Neukirch - Algebraic Number Theory.pdf",
+      "keys": [
+        "Neukirch, J. <em>Algebraic Number Theory</em>",
+        "Neukirch"
+      ]
+    },
+    {
+      "file": "Cassels Frohlich - Algebraic Number Theory.pdf",
+      "keys": [
+        "Cassels, J.W.S.",
+        "Cassels–Fröhlich"
+      ]
+    },
+    {
+      "file": "Stewart - Galois Theory.pdf",
+      "keys": [
+        "Stewart, I. <em>Galois Theory</em>",
+        "Stewart ch.3–4"
+      ]
+    },
+    {
+      "file": "Weil - Basic Number Theory.pdf",
+      "keys": [
+        "Weil, A. <em>Basic Number Theory</em>",
+        "Weil"
+      ]
+    },
+    {
+      "file": "Serre - A Course in Arithmetic.pdf",
+      "keys": [
+        "Serre, J.-P. <em>A Course in Arithmetic</em>",
+        "Serre, Arithmetic"
+      ]
+    },
+    {
+      "file": "Serre - Local Fields.pdf",
+      "keys": [
+        "Serre, J.-P. <em>Local Fields</em>",
+        "Serre, Local Fields"
+      ]
+    },
+    {
+      "file": "Serre - Galois Cohomology.pdf",
+      "keys": [
+        "Serre, J.-P. <em>Galois Cohomology</em>",
+        "Serre, Galois Cohomology",
+        "Serre ch.II"
+      ]
+    },
+    {
+      "file": "Atiyah Macdonald - Introduction to Commutative Algebra.pdf",
+      "keys": [
+        "Atiyah, M.F.",
+        "Atiyah–Macdonald"
+      ]
+    },
+    {
+      "file": "Eisenbud - Commutative Algebra.pdf",
+      "keys": [
+        "Eisenbud, D. <em>Commutative Algebra</em>",
+        "Eisenbud ch."
+      ]
+    },
+    {
+      "file": "Eisenbud Harris - The Geometry of Schemes.pdf",
+      "keys": [
+        "The Geometry of Schemes",
+        "Eisenbud–Harris"
+      ]
+    },
+    {
+      "file": "Vakil - The Rising Sea.pdf",
+      "keys": [
+        "Vakil, R.",
+        "Vakil ch."
+      ]
+    },
+    {
+      "file": "Hartshorne - Algebraic Geometry.pdf",
+      "keys": [
+        "Hartshorne, R.",
+        "Hartshorne ch."
+      ]
+    },
+    {
+      "file": "Gortz Wedhorn - Algebraic Geometry I.pdf",
+      "keys": [
+        "Görtz, U.",
+        "Görtz–Wedhorn"
+      ]
+    },
+    {
+      "file": "Fulton - Algebraic Curves.pdf",
+      "keys": [
+        "Fulton, W. <em>Algebraic Curves</em>",
+        "Fulton"
+      ]
+    },
+    {
+      "file": "Miranda - Algebraic Curves and Riemann Surfaces.pdf",
+      "keys": [
+        "Miranda, R.",
+        "Miranda"
+      ]
+    },
+    {
+      "file": "Shafarevich - Basic Algebraic Geometry 1.pdf",
+      "keys": [
+        "Shafarevich, I.R."
+      ]
+    },
+    {
+      "file": "Lorenzini - An Invitation to Arithmetic Geometry.pdf",
+      "keys": [
+        "Lorenzini, D.",
+        "Lorenzini"
+      ]
+    },
+    {
+      "file": "Tennison - Sheaf Theory.pdf",
+      "keys": [
+        "Tennison, B.R.",
+        "Tennison"
+      ]
+    },
+    {
+      "file": "Ahlfors - Complex Analysis.pdf",
+      "keys": [
+        "Ahlfors, L.V.",
+        "Ahlfors"
+      ]
+    },
+    {
+      "file": "Conway - Functions of One Complex Variable.pdf",
+      "keys": [
+        "Conway, J.B.",
+        "Conway, Functions"
+      ]
+    },
+    {
+      "file": "Forster - Lectures on Riemann Surfaces.pdf",
+      "keys": [
+        "Forster, O.",
+        "Forster"
+      ]
+    },
+    {
+      "file": "Serre - GAGA (paper).pdf",
+      "keys": [
+        "Serre, GAGA"
+      ]
+    },
+    {
+      "file": "Silverman - The Arithmetic of Elliptic Curves.pdf",
+      "keys": [
+        "Silverman, J.H. <em>The Arithmetic of Elliptic Curves</em>",
+        "Silverman ch."
+      ]
+    },
+    {
+      "file": "Washington - Elliptic Curves.pdf",
+      "keys": [
+        "Washington, L.C.",
+        "Washington"
+      ]
+    },
+    {
+      "file": "Diamond Shurman - A First Course in Modular Forms.pdf",
+      "keys": [
+        "Diamond, F.",
+        "Diamond–Shurman"
+      ]
+    },
+    {
+      "file": "Weibel - An Introduction to Homological Algebra.pdf",
+      "keys": [
+        "Weibel, C.",
+        "Weibel ch."
+      ]
+    },
+    {
+      "file": "Rotman - An Introduction to Homological Algebra.pdf",
+      "keys": [
+        "Rotman, J.J. <em>An Introduction to Homological Algebra</em>",
+        "Rotman, Homological"
+      ]
+    },
+    {
+      "file": "Iwasawa - Local Class Field Theory.pdf",
+      "keys": [
+        "Iwasawa, K.",
+        "Iwasawa"
+      ]
+    },
+    {
+      "file": "Grothendieck - SGA 1.pdf",
+      "keys": [
+        "SGA 1",
+        "SGA1"
+      ]
+    },
+    {
+      "file": "Grothendieck - SGA 4.pdf",
+      "keys": [
+        "SGA 4",
+        "SGA4"
+      ]
+    },
+    {
+      "file": "Ribes Zalesskii - Profinite Groups.pdf",
+      "keys": [
+        "Ribes, L.",
+        "Ribes–Zalesskii"
+      ]
+    },
+    {
+      "file": "Johnstone - Sketches of an Elephant.pdf",
+      "keys": [
+        "Johnstone, P.T.",
+        "Johnstone ch."
+      ]
+    },
+    {
+      "file": "Makkai Reyes - First Order Categorical Logic.pdf",
+      "keys": [
+        "Makkai, M.",
+        "Makkai–Reyes"
+      ]
+    },
+    {
+      "file": "Hodges - Model Theory.pdf",
+      "keys": [
+        "Hodges, W.",
+        "Hodges"
+      ]
+    },
+    {
+      "file": "Milne - Etale Cohomology.pdf",
+      "keys": [
+        "Milne, J.S.",
+        "Milne, Étale"
+      ]
+    },
+    {
+      "file": "Lawvere - Diagonal arguments and cartesian closed categories (paper).pdf",
+      "keys": [
+        "Lawvere (1969)"
+      ]
+    },
+    {
+      "file": "Connes - Noncommutative Geometry.pdf",
+      "keys": [
+        "Connes, A.",
+        "Connes, Noncommutative",
+        "Connes"
+      ]
+    },
+    {
+      "file": "Kadison Ringrose - Fundamentals of Operator Algebras.pdf",
+      "keys": [
+        "Kadison, R.V.",
+        "Kadison–Ringrose"
+      ]
+    },
+    {
+      "file": "Grothendieck - Esquisse d'un Programme.pdf",
+      "keys": [
+        "Esquisse"
+      ]
+    },
+    {
+      "file": "Schneps - Dessins d'Enfants.pdf",
+      "keys": [
+        "Schneps, L.",
+        "Schneps"
+      ]
+    },
+    {
+      "file": "Frenkel - Langlands Correspondence for Loop Groups.pdf",
+      "keys": [
+        "Frenkel, E.",
+        "Frenkel"
+      ]
+    },
+    {
+      "file": "Scholze - Perfectoid Spaces.pdf",
+      "keys": [
+        "Scholze, P.",
+        "Scholze"
+      ]
+    },
+    {
+      "file": "Mazur - Arithmetic Topology.pdf",
+      "keys": [
+        "Mazur, B.",
+        "Mazur"
+      ]
+    },
+    {
+      "file": "Rosen - Number Theory in Function Fields.pdf",
+      "keys": [
+        "Rosen ch.1"
+      ]
+    },
+    {
+      "file": "Halmos - Naive Set Theory.pdf",
+      "keys": [
+        "Halmos, P.R.",
+        "Halmos"
+      ]
+    },
+    {
+      "file": "Enderton - Elements of Set Theory.pdf",
+      "keys": [
+        "Enderton, H.B.",
+        "Enderton"
+      ]
+    },
+    {
+      "file": "Jech - The Axiom of Choice.pdf",
+      "keys": [
+        "Jech, T. <em>The Axiom of Choice</em>",
+        "Jech"
+      ]
+    },
+    {
+      "file": "Howard Rubin - Consequences of the Axiom of Choice.pdf",
+      "keys": [
+        "Consequences of the Axiom of Choice",
+        "Howard–Rubin"
+      ]
+    },
+    {
+      "file": "Davey Priestley - Introduction to Lattices and Order.pdf",
+      "keys": [
+        "Introduction to Lattices and Order",
+        "Davey–Priestley"
+      ]
+    }
+  ]
+}
