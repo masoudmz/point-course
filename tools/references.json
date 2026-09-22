@@ -81,6 +81,48 @@
         "Szamuely ch.1",
         "Szamuely ch.4–5"
       ]
+    },
+    {
+      "file": "Hartshorne - Algebraic Geometry.pdf",
+      "keys": [
+        "Hartshorne, R.",
+        "Hartshorne ch."
+      ]
+    },
+    {
+      "file": "Halmos - Naive Set Theory.pdf",
+      "keys": [
+        "Halmos, P.R.",
+        "Halmos"
+      ]
+    },
+    {
+      "file": "Enderton - Elements of Set Theory.pdf",
+      "keys": [
+        "Enderton, H.B.",
+        "Enderton"
+      ]
+    },
+    {
+      "file": "Jech - The Axiom of Choice.pdf",
+      "keys": [
+        "Jech, T. <em>The Axiom of Choice</em>",
+        "Jech"
+      ]
+    },
+    {
+      "file": "Paul Howard, Jean E, Rubin - Consequences of the axiom of choice.djvu",
+      "keys": [
+        "Consequences of the Axiom of Choice",
+        "Howard–Rubin"
+      ]
+    },
+    {
+      "file": "Davey, B. & Priestley, H. - Introduction to Lattices and Order.pdf",
+      "keys": [
+        "Introduction to Lattices and Order",
+        "Davey–Priestley"
+      ]
     }
   ],
   "_pending": [
@@ -241,13 +283,6 @@
       "keys": [
         "Vakil, R.",
         "Vakil ch."
-      ]
-    },
-    {
-      "file": "Hartshorne - Algebraic Geometry.pdf",
-      "keys": [
-        "Hartshorne, R.",
-        "Hartshorne ch."
       ]
     },
     {
@@ -468,41 +503,6 @@
       "file": "Rosen - Number Theory in Function Fields.pdf",
       "keys": [
         "Rosen ch.1"
-      ]
-    },
-    {
-      "file": "Halmos - Naive Set Theory.pdf",
-      "keys": [
-        "Halmos, P.R.",
-        "Halmos"
-      ]
-    },
-    {
-      "file": "Enderton - Elements of Set Theory.pdf",
-      "keys": [
-        "Enderton, H.B.",
-        "Enderton"
-      ]
-    },
-    {
-      "file": "Jech - The Axiom of Choice.pdf",
-      "keys": [
-        "Jech, T. <em>The Axiom of Choice</em>",
-        "Jech"
-      ]
-    },
-    {
-      "file": "Howard Rubin - Consequences of the Axiom of Choice.pdf",
-      "keys": [
-        "Consequences of the Axiom of Choice",
-        "Howard–Rubin"
-      ]
-    },
-    {
-      "file": "Davey Priestley - Introduction to Lattices and Order.pdf",
-      "keys": [
-        "Introduction to Lattices and Order",
-        "Davey–Priestley"
       ]
     }
   ]
