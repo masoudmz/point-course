@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Point — Admin</title>
+<style>
+body{font-family:Georgia,serif;background:#f5efe3;color:#241e16;margin:0;line-height:1.6;}
+.wrap{max-width:1150px;margin:auto;padding:1.5rem;}
+h1{color:#14304a;}
+input{padding:.5rem;margin:.2rem;border:1px solid #ccc;border-radius:6px;font-family:inherit;}
+button{padding:.4rem .9rem;border:none;border-radius:6px;background:#1e6e64;color:#fff;cursor:pointer;margin:.15rem;font-size:.85rem;}
+button.danger{background:#a33;}
+button.warn{background:#b3812f;}
+table{border-collapse:collapse;width:100%;background:#fffdf6;font-size:.85rem;margin-top:1rem;}
+th,td{border:1px solid #e3dac8;padding:.45rem .5rem;text-align:left;vertical-align:top;}
+th{background:#14304a;color:#f4ecdc;}
+.priv{color:#a33;font-weight:bold;} .pub{color:#1e6e64;font-weight:bold;}
+.msg{color:#a33;margin-left:.6rem;}
+</style></head><body>
+<div class="wrap">
+<h1>Submissions Admin</h1>
+<div id="loginBox">
+  <input id="email" placeholder="admin email" autocomplete="username">
+  <input id="pass" type="password" placeholder="password" autocomplete="current-password">
+  <button onclick="login()">Sign in</button>
+  <span id="loginMsg" class="msg"></span>
+</div>
+<div id="adminBox" style="display:none">
+  <button onclick="load()">Refresh</button>
+  <button onclick="logout()">Sign out</button>
+  <span id="count"></span>
+  <table><thead><tr>
+    <th>Date</th><th>Session</th><th>By</th><th>Visibility</th><th>Notes</th><th>Files</th><th>Actions</th>
+  </tr></thead><tbody id="rows"></tbody></table>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script id="submission-cfg" type="application/json">{"backend": "supabase", "supabase": {"url": "https://vusnkdhvbolgwgrqbsrf.supabase.co", "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1c25rZGh2Ym9sZ3dncnFic3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMDQwNTAsImV4cCI6MjEwNTY4MDA1MH0.8jJH8nEY70b6so1liHL--10IEk4RzOkDP5RUw6-ir0E"}, "firebase": {"apiKey": "...", "authDomain": "...", "projectId": "...", "storageBucket": "...", "messagingSenderId": "...", "appId": "..."}, "session_ids": ["P0", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S57", "S58", "S59", "S60", "S61"]}</script>
+<script>/*admin-js*/
+const CFG = JSON.parse(document.getElementById('submission-cfg').textContent);
+const sb = supabase.createClient(CFG.supabase.url, CFG.supabase.anon_key);
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pubUrl = f => f.url || (f.bucket === 'solutions-public'
+  ? CFG.supabase.url + '/storage/v1/object/public/' + f.bucket + '/' + f.path : null);
+
+async function login(){
+  const { error } = await sb.auth.signInWithPassword({ email: el('email').value, password: el('pass').value });
+  el('loginMsg').textContent = error ? error.message : '';
+  if (!error) { el('loginBox').style.display = 'none'; el('adminBox').style.display = ''; load(); }
+}
+async function logout(){ await sb.auth.signOut(); location.reload(); }
+
+async function load(){
+  const { data, error } = await sb.from('submissions').select('*').order('created_at', { ascending: false });
+  if (error) return alert(error.message);
+  window._rows = data;
+  el('count').textContent = ' — ' + data.length + ' submission(s)';
+  el('rows').innerHTML = data.map(r =>
+    '<tr><td>' + esc((r.created_at || '').slice(0, 16)) + '</td>' +
+    '<td>' + esc(r.session) + '</td>' +
+    '<td>' + esc(r.name || 'Anonymous') + '</td>' +
+    '<td>' + (r.is_public ? '<span class="pub">public</span>' : '<span class="priv">private</span>') + '</td>' +
+    '<td>' + esc(r.solution || '') + '</td>' +
+    '<td>' + (r.files || []).map((f, i) =>
+         '<button onclick="openFile(\'' + r.id + '\',' + i + ')">' + esc(f.name) + '</button>').join(' ') + '</td>' +
+    '<td>' +
+      '<button class="warn" onclick="toggle(\'' + r.id + '\',' + (!r.is_public) + ')">' +
+        (r.is_public ? 'make private' : 'make public') + '</button> ' +
+      '<button class="danger" onclick="del(\'' + r.id + '\')">delete</button>' +
+    '</td></tr>').join('') || '<tr><td colspan="7"><em>No submissions.</em></td></tr>';
+}
+
+async function openFile(id, i){
+  const f = window._rows.find(x => x.id === id).files[i];
+  const direct = pubUrl(f);
+  if (direct && f.bucket === 'solutions-public') return window.open(direct, '_blank');
+  const { data, error } = await sb.storage.from(f.bucket).createSignedUrl(f.path, 3600);
+  if (error) return alert(error.message);
+  window.open(data.signedUrl, '_blank');
+}
+
+async function toggle(id, makePublic){
+  const { error } = await sb.from('submissions').update({ is_public: makePublic }).eq('id', id);
+  if (error) return alert(error.message);
+  load();
+}
+
+async function del(id){
+  if (!confirm('Delete this submission and ALL its files?')) return;
+  const r = window._rows.find(x => x.id === id);
+  for (const f of (r.files || [])) {
+    const { error } = await sb.storage.from(f.bucket).remove([f.path]);
+    if (error) console.warn('file remove failed:', f.path, error.message);
+  }
+  const { error } = await sb.from('submissions').delete().eq('id', id);
+  if (error) return alert(error.message);
+  load();
+}
+
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) { el('loginBox').style.display = 'none'; el('adminBox').style.display = ''; load(); }
+});
+</script>
+</body></html>
