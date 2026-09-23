@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Point — Submissions</title>
+<style>
+body{font-family:Georgia,serif;background:#f5efe3;color:#241e16;margin:0;line-height:1.6;}
+header{background:#14304a;color:#f4ecdc;padding:1.6rem;text-align:center;} header a{color:#f3e6c8;}
+.wrap{max-width:960px;margin:auto;padding:1.4rem;}
+.intro{background:#fffdf6;padding:1.1rem;border-radius:8px;border-left:4px solid #1e6e64;margin-bottom:1.4rem;}
+table{border-collapse:collapse;width:100%;background:#fffdf6;font-size:.88rem;}
+th,td{border:1px solid #e3dac8;padding:.45rem .6rem;text-align:left;vertical-align:top;}
+th{background:#14304a;color:#f4ecdc;}
+a{color:#1e6e64;}
+</style></head><body>
+<header><h1>Point — Public Submissions</h1>
+<p><a href="index.html">← back to syllabus</a></p></header>
+<div class="wrap">
+<div class="intro">Solutions that students chose to share. To submit your own, use the
+<strong>Submit Solution</strong> button next to any session in the <a href="index.html">syllabus</a>.</div>
+<table><thead><tr><th>Session</th><th>By</th><th>Notes</th><th>Files</th><th>Date</th></tr></thead>
+<tbody id="subsBody"><tr><td colspan="5"><em>Loading…</em></td></tr></tbody></table>
+</div>
+<script id="submission-cfg" type="application/json">{"backend": "supabase", "supabase": {"url": "https://vusnkdhvbolgwgrqbsrf.supabase.co/rest/v1/", "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1c25rZGh2Ym9sZ3dncnFic3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMDQwNTAsImV4cCI6MjEwNTY4MDA1MH0.8jJH8nEY70b6so1liHL--10IEk4RzOkDP5RUw6-ir0E"}, "firebase": {"apiKey": "...", "authDomain": "...", "projectId": "...", "storageBucket": "...", "messagingSenderId": "...", "appId": "..."}, "session_ids": ["P0", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S57", "S58", "S59", "S60", "S61"]}</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>/*submissions-list-js*/
+(function(){
+const CFG = JSON.parse(document.getElementById('submission-cfg').textContent);
+let sb=null, fb=null;
+if (CFG.backend==='supabase') sb=supabase.createClient(CFG.supabase.url, CFG.supabase.anon_key);
+if (CFG.backend==='firebase'){ firebase.initializeApp(CFG.firebase); fb=firebase.firestore(); }
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(){
+  let rows=[];
+  if (CFG.backend==='supabase'){
+    const r=await sb.from('submissions').select('*').eq('is_public',true).limit(300);
+    if (r.error) throw new Error(r.error.message);
+    rows=r.data.map(x=>({t:x.created_at,session:x.session,name:x.name,solution:x.solution,files:x.files||[]}));
+  } else {
+    const snap=await fb.collection('submissions').where('isPublic','==',true).limit(300).get();
+    snap.forEach(d=>{const x=d.data();rows.push({t:new Date(x.createdAt||0).toISOString(),session:x.session,name:x.name,solution:x.solution,files:x.files||[]});});
+  }
+  rows.sort((a,b)=> (b.t||'').localeCompare(a.t||''));
+  const tb=document.getElementById('subsBody');
+  tb.innerHTML = rows.length ? rows.map(r=>
+    '<tr><td>'+esc(r.session)+'</td><td>'+esc(r.name||'Anonymous')+'</td><td>'+esc((r.solution||'').slice(0,120))+'</td><td>'+
+    (r.files.filter(f=>f.url).map(f=>'<a href="'+esc(f.url)+'" target="_blank">'+esc(f.name)+'</a>').join('<br>')||'—')+
+    '</td><td>'+esc((r.t||'').slice(0,10))+'</td></tr>').join('')
+    : '<tr><td colspan="5"><em>No public submissions yet.</em></td></tr>';
+}
+load().catch(e=>{document.getElementById('subsBody').innerHTML='<tr><td colspan="5">Error: '+esc(e.message)+'</td></tr>';});
+})();
+</script>
+</body></html>

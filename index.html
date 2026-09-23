@@ -135,6 +135,28 @@
   border-radius: 1px;
 }
 </style>
+<style>/*submission-modal*/
+.submission-btn{font-size:.72rem;font-weight:700;border:1px solid var(--teal);color:var(--teal);border-radius:10px;padding:.1rem .6rem;margin-left:.5rem;cursor:pointer;background:transparent;}
+.submission-btn:hover{background:var(--teal);color:#fff;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;justify-content:center;align-items:center;}
+.modal-overlay.active{display:flex;}
+.modal-box{background:#fffdf6;border-radius:12px;padding:1.6rem;max-width:620px;width:92%;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.modal-box h3{margin-top:0;color:var(--navy);}
+.modal-box label{display:block;font-weight:600;margin:.7rem 0 .25rem;font-size:.9rem;}
+.modal-box input,.modal-box textarea,.modal-box select{width:100%;padding:.5rem;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:.9rem;}
+.modal-box textarea{min-height:100px;resize:vertical;}
+.hint{font-size:.78rem;color:#888;}
+.checkbox-row{display:flex;align-items:center;gap:.5rem;margin:.7rem 0;}
+.checkbox-row input{width:auto;}
+.modal-actions{display:flex;gap:.8rem;justify-content:flex-end;margin-top:1.2rem;}
+.modal-actions button{padding:.55rem 1.3rem;border:none;border-radius:6px;font-weight:700;cursor:pointer;}
+.btn-cancel{background:#e0e0e0;color:#333;} .btn-submit{background:var(--teal);color:#fff;}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;}
+.status-msg{padding:.7rem;border-radius:6px;margin-top:.9rem;font-size:.9rem;}
+.status-msg.success{background:#d4edda;color:#155724;}
+.status-msg.error{background:#f8d7da;color:#721c24;}
+.status-msg.info{background:#fff3cd;color:#856404;}
+</style>
 </head>
 <body>
 
@@ -224,7 +246,7 @@
   <div class="act-header"><span class="act-number">Prelude</span><h2>Essential Prerequisites</h2></div>
   <div class="act-description">The common algebraic, topological, and homotopical language, built from scratch.</div>
 
-    <div class="session" id="sP0"><div class="session-title"><span class="session-number">P0</span><h3>Set Theory, Order, and the Axiom of Choice</h3></div>
+    <div class="session" id="sP0"><div class="session-title"><span class="session-number">P0</span><h3>Set Theory, Order, and the Axiom of Choice</h3><button class="submission-btn" onclick="openSubmissionModal('P0')">Submit Solution</button></div>
     <span class="files"><a href="lectures/P0-sets.pdf">PDF</a><a href="lectures/P0-sets.tex">TeX</a></span>
     <ul>
       <li>Equivalence relations and their canonical bijection with partitions; quotient sets</li>
@@ -237,7 +259,7 @@
     </ul>
     <div class="session-refs"><strong>Refs:</strong> <a href="references/Halmos - Naive Set Theory.pdf">Halmos</a>; <a href="references/Enderton - Elements of Set Theory.pdf">Enderton</a>; <a href="references/Jech - The Axiom of Choice.pdf">Jech</a>; <a href="references/Paul Howard, Jean E, Rubin - Consequences of the axiom of choice.djvu">Howard–Rubin</a>; <a href="references/Davey, B. & Priestley, H. - Introduction to Lattices and Order.pdf">Davey–Priestley</a>.</div>
     <span class="backtop"><a href="#toc">↑ contents</a></span></div>
-<div class="session" id="sP1"><div class="session-title"><span class="session-number">P1</span><h3>Group Theory: Part I</h3></div>
+<div class="session" id="sP1"><div class="session-title"><span class="session-number">P1</span><h3>Group Theory: Part I</h3><button class="submission-btn" onclick="openSubmissionModal('P1')">Submit Solution</button></div>
     <span class="files"><a href="lectures/P1-groups.pdf">PDF</a><a href="lectures/P1-groups.tex">TeX</a></span>
     <ul>
       <li>Groups and examples: ℤ, ℚ*, Sₙ, GLₙ(k), SOₙ(ℝ), circle group; abelian vs non-abelian; orders</li>
@@ -253,7 +275,7 @@
     <div class="session-refs"><strong>Refs:</strong> <a href="references/Artin - Algebra.pdf">Artin ch.2</a>; <a href="references/I. N. Herstein - Topics In Algebra, 2nd Edition.pdf">Herstein ch.2</a>; <a href="references/Rotman - An introduction to the theory of groups.pdf">Rotman ch.1–4</a>.</div>
     <span class="backtop"><a href="#toc">↑ contents</a></span></div>
 
-  <div class="session" id="sP2"><div class="session-title"><span class="session-number">P2</span><h3>Topology and Metric Spaces</h3></div>
+  <div class="session" id="sP2"><div class="session-title"><span class="session-number">P2</span><h3>Topology and Metric Spaces</h3><button class="submission-btn" onclick="openSubmissionModal('P2')">Submit Solution</button></div>
     <span class="files"><a href="lectures/P2-topology.pdf">PDF</a><a href="lectures/P2-topology.tex">TeX</a></span>
     <ul>
       <li>Topology axioms; open/closed; bases; subspace &amp; product topologies; infinite products vs box (remark previewing restricted product, S22)</li>
@@ -268,7 +290,7 @@
     <div class="session-refs"><strong>Refs:</strong> <a href="references/Munkres - A First Course in Topology.pdf">Munkres ch.2–4</a>; <a href="references/Wilson A Sutherland - Introduction to Metric and Topological Spaces.pdf">Sutherland</a>; <a href="references/Rudin - Principles of Mathematical Analysis.pdf">Rudin ch.2–4</a>; <a href="references/Gouvêa, F.Q. - p-adic Numbers.pdf">Gouvêa ch.1–3</a>.</div>
     <span class="backtop"><a href="#toc">↑ contents</a></span></div>
 
-  <div class="session" id="sP3"><div class="session-title"><span class="session-number">P3</span><h3>Algebraic Topology Crash Course</h3></div>
+  <div class="session" id="sP3"><div class="session-title"><span class="session-number">P3</span><h3>Algebraic Topology Crash Course</h3><button class="submission-btn" onclick="openSubmissionModal('P3')">Submit Solution</button></div>
     <span class="files"><a href="lectures/P3-algtop.pdf">PDF</a><a href="lectures/P3-algtop.tex">TeX</a></span>
     <ul>
       <li>Paths &amp; homotopy of paths; homotopy equivalence; π₁(X,x₀); computations for S¹ and the torus; simply-connected spaces</li>
@@ -1233,6 +1255,101 @@
   }
   document.getElementById('expandAll').addEventListener('click',function(){setAll(true);});
   document.getElementById('collapseAll').addEventListener('click',function(){setAll(false);});
+</script>
+<div class="modal-overlay" id="submissionModal">
+  <div class="modal-box">
+    <h3>Submit solutions — <span id="sub-session-label"></span></h3>
+    <form id="submissionForm">
+      <input type="hidden" id="sub-session">
+      <label for="sub-name">Your name (optional — leave blank for anonymous)</label>
+      <input type="text" id="sub-name" autocomplete="off">
+      <label for="sub-solution">Notes / solution text (optional)</label>
+      <textarea id="sub-solution" placeholder="e.g. which exercises are solved, remarks..."></textarea>
+      <label for="sub-file">Files (one or more: photos of handwriting or a typed PDF)</label>
+      <input type="file" id="sub-file" accept="image/*,application/pdf" multiple>
+      <div class="hint">Images (JPG/PNG/…) or PDF · max 10MB each · multiple files allowed</div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="sub-public" checked>
+        <label for="sub-public" style="margin:0;font-weight:normal;">Make my submission public (visible to everyone)</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeSubmissionModal()">Cancel</button>
+        <button type="submit" class="btn-submit" id="submitBtn">Submit</button>
+      </div>
+      <div id="statusMsg"></div>
+    </form>
+  </div>
+</div>
+<script id="submission-cfg" type="application/json">{"backend": "supabase", "supabase": {"url": "https://vusnkdhvbolgwgrqbsrf.supabase.co/rest/v1/", "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1c25rZGh2Ym9sZ3dncnFic3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMDQwNTAsImV4cCI6MjEwNTY4MDA1MH0.8jJH8nEY70b6so1liHL--10IEk4RzOkDP5RUw6-ir0E"}, "firebase": {"apiKey": "...", "authDomain": "...", "projectId": "...", "storageBucket": "...", "messagingSenderId": "...", "appId": "..."}, "session_ids": ["P0", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S57", "S58", "S59", "S60", "S61"]}</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>/*submission-modal-js*/
+(function(){
+const CFG = JSON.parse(document.getElementById('submission-cfg').textContent);
+let sb = null, fb = null;
+if (CFG.backend === 'supabase') sb = supabase.createClient(CFG.supabase.url, CFG.supabase.anon_key);
+if (CFG.backend === 'firebase') { firebase.initializeApp(CFG.firebase); fb = { db: firebase.firestore(), st: firebase.storage() }; }
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function show(kind, msg){ $('statusMsg').innerHTML = '<div class="status-msg '+kind+'">'+esc(msg)+'</div>'; }
+window.openSubmissionModal = function(sid){
+  $('sub-session').value = sid; $('sub-session-label').textContent = sid;
+  $('submissionModal').classList.add('active'); document.body.style.overflow='hidden';
+};
+window.closeSubmissionModal = function(){
+  $('submissionModal').classList.remove('active'); document.body.style.overflow='';
+  $('submissionForm').reset(); $('statusMsg').innerHTML='';
+};
+$('submissionModal').addEventListener('click', e => { if (e.target.classList.contains('modal-overlay')) closeSubmissionModal(); });
+const safe = n => n.replace(/[^\w.\-]+/g,'_');
+async function store(files, isPublic, session){
+  const out = [];
+  if (CFG.backend === 'supabase') {
+    const bucket = isPublic ? 'solutions-public' : 'solutions-private';
+    for (const f of files) {
+      const path = session + '/' + Date.now() + '-' + safe(f.name);
+      const up = await sb.storage.from(bucket).upload(path, f, { upsert: false });
+      if (up.error) throw new Error(up.error.message);
+      out.push({ bucket, path, name: f.name, size: f.size,
+                 url: isPublic ? sb.storage.from(bucket).getPublicUrl(path).publicUrl : null });
+    }
+    const ins = await sb.from('submissions').insert([{
+      session, name: $('sub-name').value.trim() || null,
+      solution: $('sub-solution').value.trim() || null, is_public: isPublic, files: out }]);
+    if (ins.error) throw new Error(ins.error.message);
+  } else {
+    const prefix = isPublic ? 'public' : 'private';
+    for (const f of files) {
+      const ref = fb.st.ref(prefix + '/' + session + '/' + Date.now() + '-' + safe(f.name));
+      await ref.put(f);
+      out.push({ path: ref.fullPath, name: f.name, size: f.size,
+                 url: isPublic ? await ref.getDownloadURL() : null });
+    }
+    await fb.db.collection('submissions').add({
+      session, name: $('sub-name').value.trim() || null,
+      solution: $('sub-solution').value.trim() || null, isPublic, files: out, createdAt: Date.now() });
+  }
+  return out;
+}
+$('submissionForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const session = $('sub-session').value;
+  const files = Array.from($('sub-file').files);
+  const solution = $('sub-solution').value.trim();
+  if (!files.length && !solution) return show('error', 'Add at least one file or a written solution.');
+  for (const f of files) {
+    if (!(f.type.startsWith('image/') || f.type === 'application/pdf'))
+      return show('error', 'Only images or PDF allowed: ' + f.name);
+    if (f.size > 10*1024*1024) return show('error', 'File too large (max 10MB): ' + f.name);
+  }
+  const btn = $('submitBtn'); btn.disabled = true; show('info', 'Uploading…');
+  try {
+    await store(files, $('sub-public').checked, session);
+    show('success', '✓ Submitted — thank you!');
+    setTimeout(closeSubmissionModal, 1600);
+  } catch (err) { show('error', '✗ ' + err.message); }
+  finally { btn.disabled = false; }
+});
+})();
 </script>
 </body>
 </html>
