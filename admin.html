@@ -79,10 +79,30 @@ async function openFile(id, i){
   window.open(data.signedUrl, '_blank');
 }
 
+async function moveFile(f, destBucket){
+  const { data: blob, error: dl } = await sb.storage.from(f.bucket).download(f.path);
+  if (dl) throw new Error(dl.message);
+  const { error: up } = await sb.storage.from(destBucket).upload(f.path, blob, { upsert: true });
+  if (up) throw new Error(up.message);
+  await sb.storage.from(f.bucket).remove([f.path]);
+  return { ...f, bucket: destBucket,
+           url: destBucket === 'solutions-public'
+             ? CFG.supabase.url + '/storage/v1/object/public/' + destBucket + '/' + f.path
+             : null };
+}
 async function toggle(id, makePublic){
-  const { error } = await sb.from('submissions').update({ is_public: makePublic }).eq('id', id);
-  if (error) return alert(error.message);
-  load();
+  try {
+    const r = window._rows.find(x => x.id === id);
+    const dest = makePublic ? 'solutions-public' : 'solutions-private';
+    const newFiles = [];
+    for (const f of (r.files || [])) {
+      newFiles.push(f.bucket === dest ? f : await moveFile(f, dest));
+    }
+    const { error } = await sb.from('submissions')
+      .update({ is_public: makePublic, files: newFiles }).eq('id', id);
+    if (error) throw new Error(error.message);
+    load();
+  } catch (e) { alert('Toggle failed: ' + e.message); }
 }
 
 async function del(id){
