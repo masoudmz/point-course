@@ -29,6 +29,7 @@ let sb=null, fb=null;
 if (CFG.backend==='supabase') sb=supabase.createClient(CFG.supabase.url, CFG.supabase.anon_key);
 if (CFG.backend==='firebase'){ firebase.initializeApp(CFG.firebase); fb=firebase.firestore(); }
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pubUrl=f=>f.url||(f.bucket==='solutions-public'?CFG.supabase.url+'/storage/v1/object/public/'+f.bucket+'/'+f.path:null);
 async function load(){
   let rows=[];
   if (CFG.backend==='supabase'){
@@ -43,7 +44,7 @@ async function load(){
   const tb=document.getElementById('subsBody');
   tb.innerHTML = rows.length ? rows.map(r=>
     '<tr><td>'+esc(r.session)+'</td><td>'+esc(r.name||'Anonymous')+'</td><td>'+esc((r.solution||'').slice(0,120))+'</td><td>'+
-    (r.files.filter(f=>f.url).map(f=>'<a href="'+esc(f.url)+'" target="_blank">'+esc(f.name)+'</a>').join('<br>')||'—')+
+    (r.files.map(f=>{const u=pubUrl(f);return u?'<a href="'+esc(u)+'" target="_blank">'+esc(f.name)+'</a>':esc(f.name)+' (private)';}).join('<br>')||'—')+
     '</td><td>'+esc((r.t||'').slice(0,10))+'</td></tr>').join('')
     : '<tr><td colspan="5"><em>No public submissions yet.</em></td></tr>';
 }
