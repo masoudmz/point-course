@@ -96,7 +96,7 @@ async function store(files, isPublic, session){
       const up = await sb.storage.from(bucket).upload(path, f, { upsert: false });
       if (up.error) throw new Error(up.error.message);
       out.push({ bucket, path, name: f.name, size: f.size,
-                 url: isPublic ? sb.storage.from(bucket).getPublicUrl(path).publicUrl : null });
+                 url: isPublic ? sb.storage.from(bucket).getPublicUrl(path).data.publicUrl : null });
     }
     const ins = await sb.from('submissions').insert([{
       session, name: $('sub-name').value.trim() || null,
